@@ -17,7 +17,7 @@ const { verifyEmail, resendVerifyEmail } = require("../../services/email");
 router.post(
   "/signup",
   validateUsers(schemas.registerAndLoginSchema),
-  ctrl.users.register
+  ctrl.auth.register
 );
 
 router.get("/verify/:verificationToken", verifyEmail);
@@ -27,20 +27,20 @@ router.post("/verify", validateBody(schemas.emailSchema), resendVerifyEmail);
 router.post(
   "/login",
   validateUsers(schemas.registerAndLoginSchema),
-  ctrl.users.login
+  ctrl.auth.login
 );
 
-router.get("/current", authenticate, ctrl.users.getCurrent);
+router.get("/current", authenticate, ctrl.auth.getCurrent);
 
-router.post("/signout", authenticate, ctrl.users.logOut);
+router.post("/signout", authenticate, ctrl.auth.logOut);
 
-router.patch("/", authenticate, ctrl.users.updateSubscription);
+router.patch("/", authenticate, ctrl.auth.updateSubscription);
 
 router.patch(
   "/avatars",
   authenticate,
   upload.single("avatar"),
-  ctrl.users.updateAvatar
+  ctrl.auth.updateAvatar
 );
 
 module.exports = router;
