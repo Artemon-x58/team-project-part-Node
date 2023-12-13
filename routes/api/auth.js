@@ -15,7 +15,7 @@ const schemas = require("../../schemas");
 const { verifyEmail, resendVerifyEmail } = require("../../services/email");
 
 router.post(
-  "/register",
+  "/signup",
   validateUsers(schemas.registerAndLoginSchema),
   ctrl.users.register
 );
@@ -32,7 +32,7 @@ router.post(
 
 router.get("/current", authenticate, ctrl.users.getCurrent);
 
-router.post("/logout", authenticate, ctrl.users.logOut);
+router.post("/signout", authenticate, ctrl.users.logOut);
 
 router.patch("/", authenticate, ctrl.users.updateSubscription);
 
