@@ -36,4 +36,25 @@ const emailSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
 });
 
-module.exports = { registerAndLoginSchema, loginSchema, emailSchema };
+const updateUserSchema = Joi.object({
+  name: Joi.string()
+    .required("Set name for user")
+    .pattern(
+      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+      "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+    ),
+  age: Joi.number().min(1).max(110).required(),
+  weight: Joi.number().min(5).max(300).required(),
+  height: Joi.number().min(50).max(240).required(),
+  kef: Joi.number()
+    .valid(...validKefs)
+    .required(),
+  gender: Joi.string().required(),
+});
+
+module.exports = {
+  registerAndLoginSchema,
+  loginSchema,
+  emailSchema,
+  updateUserSchema,
+};

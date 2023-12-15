@@ -3,7 +3,7 @@ const { Weight } = require("../models");
 const updateWeightValue = async (owner, weight) => {
   await Weight.findOneAndUpdate(
     { owner },
-    { $set: { weight } },
+    { $set: { weight: weight } },
     { new: true }
   ).exec();
 };
