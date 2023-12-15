@@ -20,9 +20,10 @@ const userSchema = new Schema(
       type: String,
       match: emailRegexp,
       required: [true, "Email is required"],
+      index: true,
       unique: true,
     },
-       token: {
+    token: {
       type: String,
       default: "",
     },
