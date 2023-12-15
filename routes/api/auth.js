@@ -32,8 +32,6 @@ router.get("/current", authenticate, ctrl.auth.getCurrent);
 
 router.post("/signout", authenticate, ctrl.auth.logOut);
 
-router.patch("/", authenticate, ctrl.auth.updateSubscription);
-
 router.patch(
   "/avatars",
   authenticate,

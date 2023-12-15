@@ -1,5 +1,5 @@
 const authRouter = require("./auth");
-const userRouter = require("./water");
+const userRouter = require("./user");
 
 module.exports = {
   authRouter,
