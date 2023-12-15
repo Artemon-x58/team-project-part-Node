@@ -12,7 +12,7 @@ const {
 } = require("../../middlewares");
 
 const schemas = require("../../schemas");
-const { verifyEmail, resendVerifyEmail } = require("../../services/email");
+const { resendVerifyEmail } = require("../../services/email");
 
 router.post(
   "/signup",
@@ -20,15 +20,13 @@ router.post(
   ctrl.auth.register
 );
 
-router.get("/verify/:verificationToken", verifyEmail);
-
-router.post("/verify", validateBody(schemas.emailSchema), resendVerifyEmail);
-
 router.post(
-  "/login",
-  validateUsers(schemas.registerAndLoginSchema),
-  ctrl.auth.login
+  "/forgot-password",
+  validateBody(schemas.emailSchema),
+  resendVerifyEmail
 );
+
+router.post("/login", validateUsers(schemas.loginSchema), ctrl.auth.login);
 
 router.get("/current", authenticate, ctrl.auth.getCurrent);
 

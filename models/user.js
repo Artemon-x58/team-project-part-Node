@@ -6,6 +6,11 @@ const emailRegexp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      match: /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+    },
     password: {
       type: String,
       minLength: 6,
@@ -29,13 +34,31 @@ const userSchema = new Schema(
     avatarURL: {
       type: String,
     },
-    verify: {
-      type: Boolean,
-      default: false,
+    age: {
+      type: Number,
+      required: [true, "Set age for user"],
     },
-    verificationToken: {
+    weight: {
+      type: Number,
+      required: [true, "Set weight for user"],
+    },
+    height: {
+      type: Number,
+      required: [true, "Set height for user"],
+    },
+    kef: {
+      type: Number,
+      required: [true, "Set kef for user"],
+    },
+    gender: {
       type: String,
-      default: "",
+      enum: ["male", "female"],
+      required: [true, "Set gender for user"],
+    },
+    yourGoal: {
+      type: String,
+      enum: ["lose fat", "maintain", "gain muscle"],
+      required: [true, "Set your goal for user"],
     },
   },
   { versionKey: false, timestamps: true }

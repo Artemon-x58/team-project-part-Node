@@ -3,7 +3,6 @@ const { User } = require("../../models");
 
 const updateSubscription = async (req, res) => {
   const { id } = req.user;
-  console.log(id);
   const { subscription } = req.body;
 
   const validSubscriptions = ["startert", "pro", "business"];
