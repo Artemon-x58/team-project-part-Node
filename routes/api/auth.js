@@ -26,7 +26,7 @@ router.post(
   resendVerifyEmail
 );
 
-router.post("/login", validateUsers(schemas.loginSchema), ctrl.auth.login);
+router.post("/signin", validateUsers(schemas.loginSchema), ctrl.auth.login);
 
 router.get("/current", authenticate, ctrl.auth.getCurrent);
 

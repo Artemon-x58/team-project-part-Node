@@ -7,6 +7,8 @@ const { authRouter, userRouter } = require("./routes/api");
 
 const app = express();
 
+app.use(express.urlencoded({ extended: false }));
+
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
