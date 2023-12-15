@@ -1,8 +1,10 @@
 const { ctrlWrapper } = require("../../helpers");
-const waterChange = require("./waterChange");
+const waterEdit = require("./waterEdit");
 const updateSubscription = require("./updateSubscription");
+const weightEdit = require("./weightEdit");
 
 module.exports = {
-  waterChange: ctrlWrapper(waterChange),
+  waterEdit: ctrlWrapper(waterEdit),
   updateSubscription: ctrlWrapper(updateSubscription),
+  weightEdit: ctrlWrapper(weightEdit),
 };

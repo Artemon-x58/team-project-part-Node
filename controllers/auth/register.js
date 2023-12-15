@@ -3,6 +3,7 @@ const { HttpError } = require("../../helpers");
 const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
+const { initialWeightValue } = require("../../weight");
 
 // require("dotenv").config();
 
@@ -37,7 +38,8 @@ const register = async (req, res) => {
   });
 
   await initialWaterValue(newUser.id, newUser.weight, newUser.kef);
-  
+  await initialWeightValue(newUser.id, newUser.weight);
+
   res.status(201).json({
     code: 201,
     user: {

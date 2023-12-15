@@ -7,7 +7,6 @@ const initialWaterValue = async (userId, weight, kef) => {
   const date = currentDate();
 
   await Water.create({
-    // recommendedDailyWaterIntake: water,
     waterAndDate: { water: 0, date },
     owner: userId,
     recommendedWater: water,

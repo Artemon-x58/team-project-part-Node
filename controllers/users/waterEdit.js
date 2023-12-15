@@ -1,16 +1,12 @@
 const { currentDate } = require("../../helpers");
 const { Water } = require("../../models");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const { SECRET_KEY } = process.env;
-
-const waterChange = async (req, res) => {
-  const today = currentDate();
-
-  const decoded = await jwt.verify(req.body.token, SECRET_KEY);
-  const owner = decoded.id;
+const waterEdit = async (req, res) => {
+  const { id: owner } = req.user;
   const { water } = req.body;
+
+  const today = currentDate();
 
   // Проверяем, существует ли объект с указанной датой
   const existingWater = await Water.findOne({
@@ -46,4 +42,4 @@ const waterChange = async (req, res) => {
   }
 };
 
-module.exports = waterChange;
+module.exports = waterEdit;
