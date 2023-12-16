@@ -1,11 +1,13 @@
 const { currentDate } = require("../../helpers");
-const { Weight } = require("../../models");
+const { Weight, User } = require("../../models");
 
 const weightEdit = async (req, res) => {
   const { id: owner } = req.user;
   const { weight } = req.body;
 
   const today = currentDate();
+
+  await User.findByIdAndUpdate(owner, { weight });
 
   const existingWeight = await Weight.findOne({
     owner,
@@ -26,12 +28,12 @@ const weightEdit = async (req, res) => {
     // Если объект не существует, создаем новый
     const updatedWeight = await Weight.findOneAndUpdate(
       { owner },
-      { $push: { waterAndDate: { weight, date: today } } },
+      { $push: { weightAndDate: { weight, date: today } } },
       { new: true, upsert: true }
     );
 
     // Находим объект в массиве с нужной датой
-    const newWeight = updatedWeight.waterAndDate.find(
+    const newWeight = updatedWeight.weightAndDate.find(
       (item) => item.date === today
     );
 
