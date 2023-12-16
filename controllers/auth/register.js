@@ -36,9 +36,8 @@ const register = async (req, res) => {
     password: hashPassword,
     avatarURL,
   });
-
-  await initialWaterValue(newUser.id, newUser.weight, newUser.kef);
-  await initialWeightValue(newUser.id, newUser.weight);
+  initialWaterValue(newUser.id, newUser.weight, newUser.kef);
+  initialWeightValue(newUser.id, newUser.weight);
 
   res.status(201).json({
     code: 201,
