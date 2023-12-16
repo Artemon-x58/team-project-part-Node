@@ -11,13 +11,14 @@ router.put(
   ctrl.users.updateUserSetting
 );
 
-
 router.post(
   "/water-intake",
   authenticate,
   validateUsers(schemas.waterSchema),
   ctrl.users.waterEdit
 );
+
+router.delete("/water-intake", authenticate, ctrl.users.waterDelete);
 
 router.post(
   "/edit-weight",
