@@ -1,5 +1,7 @@
 const { HttpError } = require("../../helpers");
 const { User } = require("../../models");
+const { updateWaterValue } = require("../../water");
+const { updateWeightValue } = require("../../weight");
 
 const updateUserSetting = async (req, res) => {
   const user = await User.findByIdAndUpdate(req.user.id, req.body, {
@@ -8,6 +10,9 @@ const updateUserSetting = async (req, res) => {
   if (!user) {
     throw HttpError(404);
   }
+  const { id, weight, kef } = user;
+  updateWaterValue(id, weight, kef);
+  updateWeightValue(id, weight);
   res.status(200).send({ code: 200, user });
 };
 
