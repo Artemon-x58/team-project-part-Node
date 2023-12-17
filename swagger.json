@@ -1,0 +1,127 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "HealthyHub",
+    "description": "API documentation for project...",
+    "contact": {
+      "email": "artem1145819@gmail.com"
+    }
+  },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json", "multipart/form-data"],
+  "servers": [{ "url": "http://localhost:5000" }],
+  "tags": [
+    { "name": "Auth", "description": "Authorization endpoints" },
+    { "name": "User", "description": "User endpoints" },
+    { "name": "Food", "description": "recommended-food" }
+  ],
+
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Created session for existing user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registerAndLoginSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (validation error)",
+            "content": {}
+          },
+          "409": {
+            "description": "Email already in use",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "registerAndLoginSchema": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password",
+          "age",
+          "weight",
+          "height",
+          "kef",
+          "gender",
+          "yourGoal",
+          "avatarURL"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+            "example": "Jacob Mercer"
+          },
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "user123"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 110,
+            "example": 30
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 5,
+            "maximum": 300,
+            "example": 80
+          },
+          "height": {
+            "type": "number",
+            "minimum": 50,
+            "maximum": 240,
+            "example": 180
+          },
+          "kef": {
+            "type": "number",
+            "enum": ["1.2", "1.375", "1.55", "1.725", "1.9"],
+            "example": 1.2
+          },
+          "gender": {
+            "type": "string",
+            "enum": ["male", "female"],
+            "example": "male"
+          },
+          "yourGoal": {
+            "type": "string",
+            "enum": ["lose fat", "maintain", "gain muscle"],
+            "example": "lose fat"
+          },
+          "avatarURL": {
+            "type": "string",
+            "example": "//www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"
+          },
+          "token": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      }
+    }
+  }
+}
