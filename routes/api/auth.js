@@ -16,7 +16,7 @@ const { resendVerifyEmail } = require("../../services/email");
 
 router.post(
   "/signup",
-  validateUsers(schemas.registerAndLoginSchema),
+  validateUsers(schemas.registerSchema),
   ctrl.auth.register
 );
 

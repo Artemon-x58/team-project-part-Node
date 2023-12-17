@@ -6,13 +6,13 @@ const waterDelete = async (req, res) => {
 
   const today = currentDate();
 
-  const result = await Water.findOneAndUpdate(
+  const { waterAndDate } = await Water.findOneAndUpdate(
     { owner, "waterAndDate.date": today },
     { $set: { "waterAndDate.$.water": 0 } },
     { new: true }
   ).exec();
 
-  res.status(200).json({ result });
+  const todayWaterEntry = waterAndDate.find((entry) => entry.date === today);
+  res.json({ code: 200, data: todayWaterEntry });
 };
-
 module.exports = waterDelete;

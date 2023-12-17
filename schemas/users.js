@@ -6,7 +6,7 @@ const validKefs = [1.2, 1.375, 1.55, 1.725, 1.9];
 
 const validGoals = ["lose fat", "maintain", "gain muscle"];
 
-const registerAndLoginSchema = Joi.object({
+const registerSchema = Joi.object({
   name: Joi.string()
     .required("Set name for user")
     .pattern(
@@ -53,7 +53,7 @@ const updateUserSchema = Joi.object({
 });
 
 module.exports = {
-  registerAndLoginSchema,
+  registerSchema,
   loginSchema,
   emailSchema,
   updateUserSchema,

@@ -8,14 +8,12 @@ const waterEdit = async (req, res) => {
 
   const today = currentDate();
 
-  // Проверяем, существует ли объект с указанной датой
   const existingWater = await Water.findOne({
     owner,
     "waterAndDate.date": today,
   });
 
   if (existingWater) {
-    // Если объект существует, приплюсовываем воду
     const updatedWater = await Water.findOneAndUpdate(
       { owner, "waterAndDate.date": today },
       { $inc: { "waterAndDate.$.water": water } },
@@ -26,19 +24,17 @@ const waterEdit = async (req, res) => {
     );
     res.status(200).json({ data: addedWater });
   } else {
-    // Если объект не существует, создаем новый
     const newWater = await Water.findOneAndUpdate(
       { owner },
       { $push: { waterAndDate: { water, date: today } } },
       { new: true, upsert: true }
     );
 
-    // Находим объект в массиве с нужной датой
     const addedWater = newWater.waterAndDate.find(
       (item) => item.date === today
     );
 
-    res.status(201).json({ data: addedWater });
+    res.status(200).json({ code: 200, data: addedWater });
   }
 };
 
