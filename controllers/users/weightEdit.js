@@ -1,6 +1,7 @@
 const { currentDate, HttpError } = require("../../helpers");
 const { Weight, User } = require("../../models");
 const { updateWaterValue } = require("../../water");
+const { updateCalories } = require("../../calories");
 
 const weightEdit = async (req, res) => {
   const { id: owner } = req.user;
@@ -18,7 +19,15 @@ const weightEdit = async (req, res) => {
   if (!user) {
     throw HttpError(404);
   }
-
+  updateCalories(
+    user.id,
+    user.gender,
+    user.weight,
+    user.height,
+    user.kef,
+    user.age,
+    user.yourGoal
+  );
   updateWaterValue(user.id, user.weight, user.kef);
 
   const existingWeight = await Weight.findOne({

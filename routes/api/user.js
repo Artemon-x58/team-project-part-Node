@@ -4,11 +4,41 @@ const schemas = require("../../schemas");
 const ctrl = require("../../controllers");
 const router = express.Router();
 
+router.get("/current", authenticate, ctrl.users.getCurrent);
+
 router.put(
   "/update",
   authenticate,
   validateUsers(schemas.updateUserSchema),
   ctrl.users.updateUserSetting
+);
+
+router.put(
+  "/goal",
+  authenticate,
+  validateUsers(schemas.goalSchema),
+  ctrl.users.goalEdit
+);
+
+router.post(
+  "/food-intake",
+  authenticate,
+  validateUsers(schemas.DairySchema),
+  ctrl.users.addDiary
+);
+
+router.put(
+  "/food-intake:id",
+  authenticate,
+  validateUsers(schemas.updateDiarySchema),
+  ctrl.users.updateDiary
+);
+
+router.delete(
+  "/food-intake",
+  authenticate,
+  validateUsers(schemas.deleteDairySchema),
+  ctrl.users.deleteDiary
 );
 
 router.post(
@@ -17,8 +47,14 @@ router.post(
   validateUsers(schemas.waterSchema),
   ctrl.users.waterEdit
 );
-
 router.delete("/water-intake", authenticate, ctrl.users.waterDelete);
+
+router.get(
+  "/statistics",
+  authenticate,
+  validateUsers(schemas.statisticsSchema),
+  ctrl.users.statistics
+);
 
 router.post(
   "/edit-weight",

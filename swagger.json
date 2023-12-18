@@ -1,0 +1,578 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "HealthyHub",
+    "description": "API documentation for project...",
+    "contact": {
+      "email": "artem1145819@gmail.com"
+    }
+  },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json", "multipart/form-data"],
+  "servers": [{ "url": "http://localhost:5000" }],
+  "tags": [
+    { "name": "Auth", "description": "Authorization endpoints" },
+    { "name": "User", "description": "User endpoints" },
+    { "name": "Food", "description": "recommended-food" }
+  ],
+
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "avatarURL",
+            "required": true,
+            "type": "string",
+            "description": "Get an avatar from 'gravatar'"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "required": false,
+            "type": "string",
+            "description": "Default value is an empty string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created session for existing user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (validation error)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequestResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorRemoveCategoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logged in",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**email** - string, User`s email,\n\n**password** - string, User`s password.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return the token to the user who logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithTokenSerializer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (validation error)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUnauthorizedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/forgot-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User forgot password",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**email** - string, User`s email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserForgotPassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sending a new password to the user's email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewPasswordResetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (validation error)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logged out",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Logout success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignOutUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/update": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Updated user`s information",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInformation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserInformationAnd Setting"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Email or password is wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "SignUpUser": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password",
+          "age",
+          "weight",
+          "height",
+          "kef",
+          "gender",
+          "yourGoal",
+          "avatarURL"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+            "example": "Jacob Mercer"
+          },
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "jacob@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "jac123"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 110,
+            "example": "30"
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 300,
+            "example": "82"
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 50,
+            "maximum": 240,
+            "example": "180"
+          },
+          "kef": {
+            "type": "number",
+            "enum": [1.2, 1.375, 1.55, 1.725, 1.9],
+            "example": 1.2
+          },
+          "gender": {
+            "type": "string",
+            "enum": ["male", "female"],
+            "example": "male"
+          },
+          "yourGoal": {
+            "type": "string",
+            "enum": ["lose fat", "maintain", "gain muscle"],
+            "example": "lose fat"
+          },
+          "avatarURL": {
+            "type": "string",
+            "example": "//www.gravatar.com/avatar/2eea8cfac156ef8898796b1dcd1a84e7"
+          },
+          "token": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "UserRegistration": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "jacob@gmail.com"
+          }
+        }
+      },
+      "SignInUser": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "jacob@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "jac123"
+          }
+        }
+      },
+      "UserWithTokenSerializer": {
+        "type": "object",
+        "required": ["token"],
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2YyZmQ2MjAyNGNkMzFjYTNhZDYzNyIsImlhdCI6MTcwMjgzNDMwMCwiZXhwIjoxNzAzNjYyMzAwfQ.Ch5pvle9Oon-r1eErOkd4J7qYY8yAcyhHyhdongUTy4"
+          }
+        }
+      },
+      "UserForgotPassword": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "jacob@gmail.com"
+          }
+        }
+      },
+      "NewPasswordResetResponse": {
+        "type": "object",
+        "required": ["message", "password"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "This is your new password as requested"
+          },
+          "password": {
+            "type": "string",
+            "example": "Uakgb_J5m9g-0JDMbcJqLJ"
+          }
+        }
+      },
+      "SignOutUser": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Logout success"
+          }
+        }
+      },
+      "UserInformation": {
+        "type": "object",
+        "required": [
+          "name",
+          "age",
+          "weight",
+          "height",
+          "kef",
+          "gender"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+            "example": "Jacob Mercer"
+          },          
+          "age": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 110,
+            "example": "30"
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 300,
+            "example": "82"
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 50,
+            "maximum": 240,
+            "example": "180"
+          },
+          "kef": {
+            "type": "number",
+            "enum": [1.2, 1.375, 1.55, 1.725, 1.9],
+            "example": 1.2
+          },
+          "gender": {
+            "type": "string",
+            "enum": ["male", "female"],
+            "example": "male"
+          }        
+        }
+      },
+      "UpdateUserInformationAnd Setting": {
+        "type": "object",
+        "required": [
+          "name",
+          "age",
+          "weight",
+          "height",
+          "kef",
+          "gender",
+          "recommendedWater"
+        ],
+        "properties": {
+          "password": {
+            "name": "string",
+            "example": "Jacob Mercer"
+          },
+          "age": {
+            "name": "string",
+            "example": 30
+          },
+          "weight": {
+            "name": "string",
+            "example": 80
+          },
+          "height": {
+            "name": "string",
+            "example": 180
+          },
+          "kef": {
+            "name": "string",
+            "example": 1.2
+          },
+          "gender": {
+            "name": "string",
+            "example": "male"
+          },
+          "recommendedWater": {
+            "type": "integer",
+            "example": 2400
+          }
+        }
+      },
+      "errorBadRequestResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error status code",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Bad request"
+          }
+        }
+      },
+      "errorUnauthorizedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error status code",
+            "example": 401
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Email or password is wrong"
+          }
+        }
+      },
+      "errorUserTokenExpiredResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error status code",
+            "example": 401
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Authentication failed. Please log in."
+          }
+        }
+      },
+      "errorRemoveCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error status code",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Email already in us"
+          }
+        }
+      }
+    }
+  }
+}

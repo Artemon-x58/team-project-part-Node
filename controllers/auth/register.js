@@ -4,8 +4,8 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
 const { initialWeightValue } = require("../../weight");
-
-// require("dotenv").config();
+const { initialCaloriesValue } = require("../../calories");
+const initialDiary = require("../../diary/initialDairy");
 
 const register = async (req, res) => {
   const { name, email, password, age, weight, height, kef, gender, yourGoal } =
@@ -36,8 +36,19 @@ const register = async (req, res) => {
     password: hashPassword,
     avatarURL,
   });
+
+  initialDiary(newUser.id);
   initialWaterValue(newUser.id, newUser.weight, newUser.kef);
   initialWeightValue(newUser.id, newUser.weight);
+  initialCaloriesValue(
+    newUser.id,
+    newUser.gender,
+    newUser.weight,
+    newUser.height,
+    newUser.kef,
+    newUser.age,
+    newUser.yourGoal
+  );
 
   res.status(201).json({
     code: 201,

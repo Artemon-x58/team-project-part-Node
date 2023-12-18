@@ -15,4 +15,5 @@ const waterDelete = async (req, res) => {
   const todayWaterEntry = waterAndDate.find((entry) => entry.date === today);
   res.json({ code: 200, data: todayWaterEntry });
 };
+
 module.exports = waterDelete;
