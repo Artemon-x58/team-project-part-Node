@@ -22,103 +22,308 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User registration",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string",
+            "description": "User name"
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "type": "string",
+            "description": "User email"
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "required": true,
+            "type": "string",
+            "description": "User password"
+          },
+          {
+            "in": "query",
+            "name": "age",
+            "required": true,
+            "type": "integer",
+            "description": "User age"
+          },
+          {
+            "in": "query",
+            "name": "weight",
+            "required": true,
+            "type": "integer",
+            "description": "User weight"
+          },
+          {
+            "in": "query",
+            "name": "height",
+            "required": true,
+            "type": "integer",
+            "description": "User height"
+          },
+          {
+            "in": "query",
+            "name": "kef",
+            "required": true,
+            "type": "number",
+            "description": "User kef"
+          },
+          {
+            "in": "query",
+            "name": "gender",
+            "required": true,
+            "type": "string",
+            "description": "User gender"
+          },
+          {
+            "in": "query",
+            "name": "yourGoal",
+            "required": true,
+            "type": "string",
+            "description": "User goal"
+          },
+          {
+            "in": "query",
+            "name": "avatarURL",
+            "required": true,
+            "type": "string",
+            "description": "avatarURL"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "required": false,
+            "type": "string",
+            "description": "Token for user, Default value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Created session for existing user",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/registerAndLoginSchema"
+                  "$ref": "#/components/schemas/registerSchema"
                 }
               }
             }
           },
           "400": {
             "description": "Bad Request (validation error)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequestResponse"
+                }
+              }
+            }
           },
           "409": {
             "description": "Email already in use",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorRemoveCategoryResponse"
+                }
+              }
+            }
           }
         }
       }
-    }
-  },
+    },
+
+    "/api/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logged in",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "type": "string",
+            "description": "User email"
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "required": true,
+            "type": "string",
+            "description": "User password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the token to the user who logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (validation error)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUnauthorizedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth//forgot-password": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User forgot password",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "email",
+              "required": true,
+              "type": "string",
+              "description": "User email"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return the token to the user who logged in",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/loginSchema"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request (validation error)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/errorBadRequestResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Email or password is wrong",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/errorUnauthorizedResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+  
 
   "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
-      "registerAndLoginSchema": {
+      "registerSchema": {
         "type": "object",
-        "required": [
-          "name",
-          "email",
-          "password",
-          "age",
-          "weight",
-          "height",
-          "kef",
-          "gender",
-          "yourGoal",
-          "avatarURL"
-        ],
+        "required": ["email"],
         "properties": {
-          "name": {
-            "type": "string",
-            "pattern": "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
-            "example": "Jacob Mercer"
-          },
           "email": {
             "type": "string",
-            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
-            "example": "user@example.com"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 6,
-            "example": "user123"
-          },
-          "age": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 110,
-            "example": 30
-          },
-          "weight": {
-            "type": "number",
-            "minimum": 5,
-            "maximum": 300,
-            "example": 80
-          },
-          "height": {
-            "type": "number",
-            "minimum": 50,
-            "maximum": 240,
-            "example": 180
-          },
-          "kef": {
-            "type": "number",
-            "enum": ["1.2", "1.375", "1.55", "1.725", "1.9"],
-            "example": 1.2
-          },
-          "gender": {
-            "type": "string",
-            "enum": ["male", "female"],
-            "example": "male"
-          },
-          "yourGoal": {
-            "type": "string",
-            "enum": ["lose fat", "maintain", "gain muscle"],
-            "example": "lose fat"
-          },
-          "avatarURL": {
-            "type": "string",
-            "example": "//www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"
-          },
+            "format": "email"
+          }
+        }
+      },
+      "loginSchema": {
+        "type": "object",
+        "required": ["token"],
+        "properties": {
           "token": {
             "type": "string",
-            "default": ""
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2YyZmQ2MjAyNGNkMzFjYTNhZDYzNyIsImlhdCI6MTcwMjgzNDMwMCwiZXhwIjoxNzAzNjYyMzAwfQ.Ch5pvle9Oon-r1eErOkd4J7qYY8yAcyhHyhdongUTy4"
+          }
+        }
+
+      },
+      "errorBadRequestResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error status code",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Bad request"
+          }
+        }
+      },
+      "errorUnauthorizedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error status code",
+            "example": 401
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Email or password is wrong"
+          }
+        }
+      },
+      "errorRemoveCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error status code",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Email already in us"
           }
         }
       }
