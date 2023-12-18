@@ -11,9 +11,3 @@ const logOut = async (req, res) => {
 };
 
 module.exports = logOut;
-
-
-
-
-
-
