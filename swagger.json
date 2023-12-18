@@ -25,89 +25,37 @@
         "parameters": [
           {
             "in": "query",
-            "name": "name",
-            "required": true,
-            "type": "string",
-            "description": "User name"
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "required": true,
-            "type": "string",
-            "description": "User email"
-          },
-          {
-            "in": "query",
-            "name": "password",
-            "required": true,
-            "type": "string",
-            "description": "User password"
-          },
-          {
-            "in": "query",
-            "name": "age",
-            "required": true,
-            "type": "integer",
-            "description": "User age"
-          },
-          {
-            "in": "query",
-            "name": "weight",
-            "required": true,
-            "type": "integer",
-            "description": "User weight"
-          },
-          {
-            "in": "query",
-            "name": "height",
-            "required": true,
-            "type": "integer",
-            "description": "User height"
-          },
-          {
-            "in": "query",
-            "name": "kef",
-            "required": true,
-            "type": "number",
-            "description": "User kef"
-          },
-          {
-            "in": "query",
-            "name": "gender",
-            "required": true,
-            "type": "string",
-            "description": "User gender"
-          },
-          {
-            "in": "query",
-            "name": "yourGoal",
-            "required": true,
-            "type": "string",
-            "description": "User goal"
-          },
-          {
-            "in": "query",
             "name": "avatarURL",
             "required": true,
             "type": "string",
-            "description": "avatarURL"
+            "description": "Get an avatar from 'gravatar'"
           },
           {
             "in": "query",
             "name": "token",
             "required": false,
             "type": "string",
-            "description": "Token for user, Default value"
+            "description": "Default value is an empty string"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpUser"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Created session for existing user",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/registerSchema"
+                  "$ref": "#/components/schemas/UserRegistration"
                 }
               }
             }
@@ -140,29 +88,25 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User logged in",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "email",
-            "required": true,
-            "type": "string",
-            "description": "User email"
-          },
-          {
-            "in": "query",
-            "name": "password",
-            "required": true,
-            "type": "string",
-            "description": "User password"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**email** - string, User`s email,\n\n**password** - string, User`s password.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInUser"
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Return the token to the user who logged in",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/loginSchema"
+                  "$ref": "#/components/schemas/UserWithTokenSerializer"
                 }
               }
             }
@@ -190,55 +134,48 @@
         }
       }
     },
-    "/api/auth//forgot-password": {
-        "post": {
-          "tags": ["Auth"],
-          "summary": "User forgot password",
-          "parameters": [
-            {
-              "in": "query",
-              "name": "email",
-              "required": true,
-              "type": "string",
-              "description": "User email"
+    "/api/auth/forgot-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User forgot password",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**email** - string, User`s email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserForgotPassword"
+              }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "Return the token to the user who logged in",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/loginSchema"
-                  }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sending a new password to the user's email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewPasswordResetResponse"
                 }
               }
-            },
-            "400": {
-              "description": "Bad Request (validation error)",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorBadRequestResponse"
-                  }
-                }
-              }
-            },
-            "401": {
-              "description": "Email or password is wrong",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorUnauthorizedResponse"
-                  }
+            }
+          },
+          "400": {
+            "description": "Bad Request (validation error)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequestResponse"
                 }
               }
             }
           }
         }
       }
-    },
-  
+    }
+
+  },
 
   "components": {
     "securitySchemes": {
@@ -249,7 +186,80 @@
       }
     },
     "schemas": {
-      "registerSchema": {
+      "SignUpUser": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password",
+          "age",
+          "weight",
+          "height",
+          "kef",
+          "gender",
+          "yourGoal",
+          "avatarURL"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+            "example": "Jacob Mercer"
+          },
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "jacob@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "jac123"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 110,
+            "example": "30"
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 300,
+            "example": "82"
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 50,
+            "maximum": 240,
+            "example": "180"
+          },
+          "kef": {
+            "type": "number",
+            "enum": [1.2, 1.375, 1.55, 1.725, 1.9],
+            "example": 1.2
+          },
+          "gender": {
+            "type": "string",
+            "enum": ["male", "female"],
+            "example": "male"
+          },
+          "yourGoal": {
+            "type": "string",
+            "enum": ["lose fat", "maintain", "gain muscle"],
+            "example": "lose fat"
+          },
+          "avatarURL": {
+            "type": "string",
+            "example": "//www.gravatar.com/avatar/2eea8cfac156ef8898796b1dcd1a84e7"
+          },
+          "token": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "UserRegistration": {
         "type": "object",
         "required": ["email"],
         "properties": {
@@ -259,7 +269,26 @@
           }
         }
       },
-      "loginSchema": {
+      "SignInUser": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "jacob@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "jac123"
+          }
+          }
+        },
+      "UserWithTokenSerializer": {
         "type": "object",
         "required": ["token"],
         "properties": {
@@ -268,7 +297,33 @@
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2YyZmQ2MjAyNGNkMzFjYTNhZDYzNyIsImlhdCI6MTcwMjgzNDMwMCwiZXhwIjoxNzAzNjYyMzAwfQ.Ch5pvle9Oon-r1eErOkd4J7qYY8yAcyhHyhdongUTy4"
           }
         }
-
+      },
+      "UserForgotPassword": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "jacob@gmail.com"
+          }
+          }
+        },
+      "NewPasswordResetResponse": {
+        "type": "object",
+        "required": ["message", "password"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "This is your new password as requested"
+          },
+          "password": {
+            "password": "string",
+            "example": "Uakgb_J5m9g-0JDMbcJqLJ"
+          }
+        }
       },
       "errorBadRequestResponse": {
         "type": "object",
@@ -330,3 +385,4 @@
     }
   }
 }
+
