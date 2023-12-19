@@ -530,7 +530,11 @@
           "caloriesToday",
           "recommendedWater",
           "waterToday",
-          "recommendedFood"
+          "recommendedFood",
+          "breakfast",
+          "lunch",
+          "dinner",
+          "snack"
         ],
         "properties": {
           "code": {
@@ -615,10 +619,6 @@
                 "type": "integer",
                 "example": 2250
               },
-              "date": {
-                "type": "string",
-                "example": "2023.12.19"
-              },
               "protein": {
                 "type": "integer",
                 "example": 560
@@ -630,6 +630,10 @@
               "carbohydrates": {
                 "type": "integer",
                 "example": 1240
+              },
+              "date": {
+                "type": "string",
+                "example": "2023.12.19"
               }
             }
           },
@@ -691,6 +695,166 @@
                       "example": 0.2
                     }
                   }
+                }
+              }
+            }
+          },
+          "breakfast": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "protein",
+                "fat",
+                "carbohydrates",
+                "date"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Eggs"
+                },
+                "calories": {
+                  "type": "integer",
+                  "example": 340
+                },
+                "protein": {
+                  "type": "number",
+                  "example": 12
+                },
+                "fat": {
+                  "type": "number",
+                  "example": 4
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "example": 72
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2023.12.19"
+                }
+              }
+            }
+          },
+          "lunch": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "protein",
+                "fat",
+                "carbohydrates",
+                "date"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Buckwheat"
+                },
+                "calories": {
+                  "type": "integer",
+                  "example": 340
+                },
+                "protein": {
+                  "type": "number",
+                  "example": 12
+                },
+                "fat": {
+                  "type": "number",
+                  "example": 4
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "example": 72
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2023.12.19"
+                }
+              }
+            }
+          },
+          "dinner": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "protein",
+                "fat",
+                "carbohydrates",
+                "date"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Chicken Breast"
+                },
+                "calories": {
+                  "type": "integer",
+                  "example": 165
+                },
+                "protein": {
+                  "type": "number",
+                  "example": 31
+                },
+                "fat": {
+                  "type": "number",
+                  "example": 3.6
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "example": 0
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2023.12.19"
+                }
+              }
+            }
+          },
+          "snack": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "protein",
+                "fat",
+                "carbohydrates",
+                "date"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Sweet Potatoes"
+                },
+                "calories": {
+                  "type": "integer",
+                  "example": 86
+                },
+                "protein": {
+                  "type": "number",
+                  "example": 1.6
+                },
+                "fat": {
+                  "type": "number",
+                  "example": 0.1
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "example": 20
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2023.12.19"
                 }
               }
             }
