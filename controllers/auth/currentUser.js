@@ -1,5 +1,6 @@
 const getCurrent = async (req, res) => {
-  res.json({ message: "Token is valid" });
+  const { email } = req.user;
+  res.json({ email, message: "Token is valid" });
 };
 
 module.exports = getCurrent;
