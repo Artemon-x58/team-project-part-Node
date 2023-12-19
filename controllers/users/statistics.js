@@ -1,4 +1,8 @@
-const { getMonthNumber, perDayThisMonth } = require("../../helpers");
+const {
+  getMonthNumber,
+  perDayThisMonth,
+  calculateAverage,
+} = require("../../helpers");
 const { Calories, Weight, Water } = require("../../models");
 
 const statistics = async (req, res) => {
@@ -23,7 +27,14 @@ const statistics = async (req, res) => {
   const weightPerDayThisMonth = perDayThisMonth(weightAndDate, monthNumber);
   const waterPerDayThisMonth = perDayThisMonth(waterAndDate, monthNumber);
 
+  const averageCalories = calculateAverage(caloriesPerDayThisMonth, "calories");
+  const averageWeight = calculateAverage(weightPerDayThisMonth, "weight");
+  const averageWater = calculateAverage(waterPerDayThisMonth, "water");
+
   res.json({
+    averageCalories,
+    averageWeight,
+    averageWater,
     caloriesPerDayThisMonth,
     weightPerDayThisMonth,
     waterPerDayThisMonth,

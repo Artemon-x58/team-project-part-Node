@@ -5,6 +5,7 @@ const currentDate = require("./currentDate");
 const getMonthNumber = require("./getMonthNumber");
 const getMonthFromDate = require("./getMonthFromDate");
 const perDayThisMonth = require("./perDayThisMonth");
+const calculateAverage = require("./calculateAverage");
 
 module.exports = {
   HttpError,
@@ -14,4 +15,5 @@ module.exports = {
   getMonthNumber,
   getMonthFromDate,
   perDayThisMonth,
+  calculateAverage,
 };
