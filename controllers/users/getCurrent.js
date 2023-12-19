@@ -81,3 +81,45 @@ const getCurrent = async (req, res) => {
 };
 
 module.exports = getCurrent;
+
+
+
+
+// "required": [
+//   "name",
+//   "age",
+//   "weight",
+//   "height",
+//   "kef",
+//   "gender",
+//   "recommendedWater"
+// ],
+// "properties": {
+//   "password": {
+//     "name": "string",
+//     "example": "Jacob Mercer"
+//   },
+//   "age": {
+//     "name": "string",
+//     "example": 30
+//   },
+//   "weight": {
+//     "name": "string",
+//     "example": 80
+//   },
+//   "height": {
+//     "name": "string",
+//     "example": 180
+//   },
+//   "kef": {
+//     "name": "string",
+//     "example": 1.2
+//   },
+//   "gender": {
+//     "name": "string",
+//     "example": "male"
+//   },
+//   "recommendedWater": {
+//     "type": "integer",
+//     "example": 2400
+//   }

@@ -15,7 +15,7 @@ const updateUserSetting = async (req, res) => {
   updateWaterValue(id, weight, kef);
   updateWeightValue(id, weight);
   updateCalories(id, gender, weight, height, kef, age, yourGoal);
-  res.status(200).send({ code: 200, user });
+  res.status(200).send({ code: 200, message: 'Settings were successfully updated'});
 };
 
 module.exports = updateUserSetting;
