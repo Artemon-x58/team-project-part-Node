@@ -1,5 +1,12 @@
 const multer = require("multer");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "dz0edwubh",
+  api_key: "377575274654915",
+  api_secret: "IVF3ksgDrTkRkQ3mcNMhJZCUFns",
+});
 
 const tempDir = path.join(__dirname, "../", "tmp");
 
