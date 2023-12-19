@@ -31,7 +31,7 @@ router.put(
   "/food-intake/:id",
   authenticate,
   validateUsers(schemas.dairyUpdateSchema),
-  ctrl.users.updateDiary
+  ctrl.users.updateDiaryById
 );
 
 router.delete(
@@ -39,6 +39,13 @@ router.delete(
   authenticate,
   validateUsers(schemas.deleteDairySchema),
   ctrl.users.deleteDiary
+);
+
+router.delete(
+  "/food-intake/:id",
+  authenticate,
+  validateUsers(schemas.deleteDairySchema),
+  ctrl.users.deleteDairyById
 );
 
 router.post(

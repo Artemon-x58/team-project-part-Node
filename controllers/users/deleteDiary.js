@@ -18,8 +18,6 @@ const deleteDiary = async (req, res) => {
     }
   ).exec();
 
-  res.json({ [meals]: [] });
-
   const filteredEntries = existingDiary[meals].filter(
     (item) => item.date === today
   );
@@ -28,6 +26,7 @@ const deleteDiary = async (req, res) => {
     sumObjectProperties(filteredEntries);
 
   deleteCaloriesToday(owner, calories, carbohydrates, protein, fat);
+  res.json({ [meals]: [] });
 };
 
 module.exports = deleteDiary;
