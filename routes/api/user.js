@@ -28,9 +28,9 @@ router.post(
 );
 
 router.put(
-  "/food-intake:id",
+  "/food-intake/:id",
   authenticate,
-  validateUsers(schemas.updateDiarySchema),
+  validateUsers(schemas.dairyUpdateSchema),
   ctrl.users.updateDiary
 );
 

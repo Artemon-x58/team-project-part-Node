@@ -10,6 +10,7 @@ const goalSchema = require("./goal");
 const DairySchema = require("./addDiary");
 const deleteDairySchema = require("./deleteDairy");
 const statisticsSchema = require("./statistics");
+const dairyUpdateSchema = require("./updateDiary");
 
 module.exports = {
   registerAndLoginSchema,
@@ -22,4 +23,5 @@ module.exports = {
   DairySchema,
   deleteDairySchema,
   statisticsSchema,
+  dairyUpdateSchema,
 };
