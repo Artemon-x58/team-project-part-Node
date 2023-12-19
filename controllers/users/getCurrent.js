@@ -12,7 +12,7 @@ const getCurrent = async (req, res) => {
 
   const today = currentDate();
 
-  const user = await User.findOne({ owner }).exec();
+  const user = await User.findOne({ _id: owner }).exec();
 
   if (!user) {
     throw HttpError(404, "User not found");
