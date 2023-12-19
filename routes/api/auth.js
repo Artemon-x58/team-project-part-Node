@@ -28,6 +28,8 @@ router.post(
 
 router.post("/signin", validateUsers(schemas.loginSchema), ctrl.auth.login);
 
+router.get("/currentUser", authenticate, ctrl.auth.currentUser);
+
 router.post("/signout", authenticate, ctrl.auth.logOut);
 
 router.patch(
