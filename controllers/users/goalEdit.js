@@ -7,18 +7,18 @@ const goalEdit = async (req, res) => {
 
   const { goal } = req.body;
 
-  const user = await User.findByIdAndUpdate(
+  const { yourGoal } = await User.findByIdAndUpdate(
     owner,
     { yourGoal: goal },
     { new: true }
   ).exec();
-  if (!user) {
+  if (!yourGoal) {
     throw HttpError(404);
   }
 
   const { recommendedCalories } = await Calories.findOne({ owner }).exec();
   const objectMacronutrients = macronutrients(
-    user.yourGoal,
+    yourGoal,
     recommendedCalories.calories
   );
 
@@ -35,7 +35,7 @@ const goalEdit = async (req, res) => {
     { new: true }
   ).exec();
 
-  res.status(200).send({ code: 200, user });
+  res.status(200).send({ code: 200, yourGoal });
 };
 
 module.exports = goalEdit;
