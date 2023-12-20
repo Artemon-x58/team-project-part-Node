@@ -55,6 +55,7 @@ const deleteDiary = async (req, res) => {
     fatPerDay = item.fat;
     return true;
   });
+  const newListMeals = await Diary.findOne({ owner });
   res.json({
     [meals]: {
       calories: caloriesPerDay,
@@ -62,6 +63,7 @@ const deleteDiary = async (req, res) => {
       protein: proteinPerDay,
       fat: fatPerDay,
     },
+    newListMeals: newListMeals[meals],
   });
 };
 

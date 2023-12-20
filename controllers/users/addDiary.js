@@ -12,11 +12,10 @@ const addDiary = async (req, res) => {
   const entries = req.body;
 
   const results = {};
-  const promises = [];
 
   for (const entry of entries) {
     const { meals, title, calories, carbohydrates, protein, fat } = entry;
-    const promise = Diary.findOneAndUpdate(
+    const result = await Diary.findOneAndUpdate(
       { owner },
       {
         $push: {
@@ -33,19 +32,8 @@ const addDiary = async (req, res) => {
       { new: true }
     ).exec();
 
-    promises.push(promise);
-  }
-
-  const existingDiaries = await Promise.all(promises);
-
-  for (let i = 0; i < existingDiaries.length; i++) {
-    const entry = existingDiaries[i];
-    const { meals } = entries[i];
-
-    if (!results[meals]) {
-      results[meals] = [];
-    }
-    results[meals].push(entry[meals][entry[meals].length - 1]);
+    results[meals] = results[meals] || [];
+    results[meals].push(result[meals][result[meals].length - 1]);
   }
 
   const sumNutrients = sumObjectProperties(req.body);
@@ -71,25 +59,21 @@ const addDiary = async (req, res) => {
     fat,
     date
   );
-  const meals = await NutrientsPerDay.findOne({
-    owner,
-    [key]: {
-      $elemMatch: {
-        date: date,
-      },
-    },
-  }).exec();
-  let caloriesPerDay, carbohydratesPerDay, proteinPerDay, fatPerDay;
-  meals[key].map((item) => {
-    caloriesPerDay = item.calories;
-    carbohydratesPerDay = item.carbohydrates;
-    proteinPerDay = item.protein;
-    fatPerDay = item.fat;
-    return true;
-  });
 
+  const newNutrients = await NutrientsPerDay.findOne({
+    owner,
+    [key]: { $elemMatch: { date: date } },
+  }).exec();
+
+  const {
+    calories: caloriesPerDay,
+    carbohydrates: carbohydratesPerDay,
+    protein: proteinPerDay,
+    fat: fatPerDay,
+  } = newNutrients[key][0];
+
+  const newListMeals = await Diary.findOne({ owner });
   res.status(201).json({
-    data: results,
     newCaloriesAndDate,
     [key]: {
       calories: caloriesPerDay,
@@ -97,6 +81,7 @@ const addDiary = async (req, res) => {
       protein: proteinPerDay,
       fat: fatPerDay,
     },
+    newListMeals: newListMeals[key],
   });
 };
 

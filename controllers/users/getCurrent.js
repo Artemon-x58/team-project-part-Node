@@ -5,7 +5,7 @@ const {
   Calories,
   Water,
   RecommendedFood,
-  Diary,
+  NutrientsPerDay,
 } = require("../../models");
 
 const getCurrent = async (req, res) => {
@@ -24,6 +24,8 @@ const getCurrent = async (req, res) => {
   const { recommendedCalories, caloriesAndDate } = await Calories.findOne({
     owner,
   }).exec();
+
+  console.log(caloriesAndDate);
 
   const caloriesToday = caloriesAndDate.reduce((acc, item) => {
     if (item.date === today) {
@@ -54,9 +56,11 @@ const getCurrent = async (req, res) => {
 
   const recommendedFood = await RecommendedFood.find();
 
-  const diary = await Diary.findOne({
+  const diary = await NutrientsPerDay.findOne({
     owner,
   }).exec();
+
+  console.log(diary);
 
   const findEntryByDate = (arr) => {
     return arr.filter((item) => item.date === today);
@@ -82,7 +86,6 @@ const getCurrent = async (req, res) => {
     lunchtSumNutrientsToday,
     dinnerSumNutrientsToday,
     snackSumNutrientsToday,
-
     recommendedFood,
   });
 };

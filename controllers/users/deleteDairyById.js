@@ -18,7 +18,9 @@ const deleteDairyById = async (req, res) => {
     { $pull: { [meals]: { _id: newId } } }
   ).exec();
 
-  const filteredEntries = result[meals].filter((item) => item.id === newId);
+  const filteredEntries = result[meals].filter(
+    (item) => item._id.toString() === newId
+  );
 
   const { calories, carbohydrates, protein, fat } =
     sumObjectProperties(filteredEntries);
@@ -33,25 +35,19 @@ const deleteDairyById = async (req, res) => {
     fat
   );
 
-  const promise = await NutrientsPerDay.findOne({
+  const nutrientsPerDay = await NutrientsPerDay.findOne({
     owner,
-    meals: {
-      $elemMatch: {
-        date: today,
-      },
-    },
+    [`${meals}.date`]: today,
   }).exec();
 
-  let caloriesPerDay, carbohydratesPerDay, proteinPerDay, fatPerDay;
-  promise[meals].map((item) => {
-    caloriesPerDay = item.calories;
-    carbohydratesPerDay = item.carbohydrates;
-    proteinPerDay = item.protein;
-    fatPerDay = item.fat;
-    return true;
-  });
+  const {
+    calories: caloriesPerDay,
+    carbohydrates: carbohydratesPerDay,
+    protein: proteinPerDay,
+    fat: fatPerDay,
+  } = nutrientsPerDay && nutrientsPerDay[meals][0];
 
-  console.log(promise);
+  const newListMeals = await Diary.findOne({ owner });
 
   res.json({
     [meals]: {
@@ -60,6 +56,7 @@ const deleteDairyById = async (req, res) => {
       protein: proteinPerDay,
       fat: fatPerDay,
     },
+    newListMeals: newListMeals[meals],
   });
 };
 

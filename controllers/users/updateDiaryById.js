@@ -84,6 +84,8 @@ const updateDiaryById = async (req, res) => {
     return true;
   });
 
+  const newListMeals = await Diary.findOne({ owner });
+
   res.json({
     [meals]: {
       calories: caloriesPerDay,
@@ -91,6 +93,7 @@ const updateDiaryById = async (req, res) => {
       protein: proteinPerDay,
       fat: fatPerDay,
     },
+    newListMeals: newListMeals[meals],
   });
 };
 
