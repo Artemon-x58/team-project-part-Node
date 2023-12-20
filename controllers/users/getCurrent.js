@@ -82,10 +82,7 @@ const getCurrent = async (req, res) => {
     lunchtSumNutrientsToday,
     dinnerSumNutrientsToday,
     snackSumNutrientsToday,
-    breakfast,
-    lunch,
-    dinner,
-    snack,
+
     recommendedFood,
   });
 };
