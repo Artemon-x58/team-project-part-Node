@@ -216,7 +216,7 @@
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "Data for the HomePage",
+            "description": "Date for the HomePage",
             "content": {
               "application/json": {
                 "schema": {
@@ -587,10 +587,7 @@
           "recommendedWater",
           "waterToday",
           "recommendedFood",
-          "breakfast",
-          "lunch",
-          "dinner",
-          "snack"
+          "diary"
         ],
         "properties": {
           "code": {
@@ -715,85 +712,177 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["name", "amount", "img", "calories", "nutrition"],
+              "required": [
+                "id",
+                "name",
+                "amount",
+                "img",
+                "calories",
+                "nutrition"
+              ],
               "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Product id ('mongoose')",
+                  "example": "657d8520ab6cfb355180b1d6"
+                },
                 "name": {
                   "type": "string",
+                  "description": "Product name",
                   "example": "Apples"
                 },
                 "amount": {
                   "type": "string",
+                  "description": "Product amount",
                   "example": "100 g"
                 },
                 "img": {
                   "type": "string",
-                  "format": "uri",
+                  "description": "Product img",
                   "example": "https://ftp.goit.study/img/you_health/Apples.png"
                 },
                 "calories": {
                   "type": "integer",
-                  "required": ["carbohydrates", "protein", "fat"],
+                  "description": "Product calories",
                   "example": 52
                 },
                 "nutrition": {
                   "type": "object",
+                  "required": ["carbohydrates", "protein", "fat"],
                   "properties": {
                     "carbohydrates": {
                       "type": "number",
+                      "description": "Carbohydrates content in the product",
                       "example": 14
                     },
                     "protein": {
                       "type": "number",
+                      "description": "Protein content in the product",
                       "example": 0.3
                     },
                     "fat": {
                       "type": "number",
+                      "description": "Fat content in the product",
                       "example": 0.2
                     }
                   }
                 }
               }
-            }
+            },
+            "example": [
+              {
+                "_id": "657d8520ab6cfb355180b1d6",
+                "name": "Apples",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Apples.png",
+                "calories": 52,
+                "nutrition": {
+                  "carbohydrates": 14,
+                  "protein": 0.3,
+                  "fat": 0.2
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1d7",
+                "name": "Strawberries",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Strawberries.png",
+                "calories": 32,
+                "nutrition": {
+                  "carbohydrates": 7.68,
+                  "protein": 0.67,
+                  "fat": 0.3
+                }
+              }
+            ]
           },
           "breakfast": {
             "type": "array",
             "items": {
               "type": "object",
               "required": [
-                "title",
+                "id",
+                "name",
+                "amount",
+                "img",
                 "calories",
-                "protein",
-                "fat",
-                "carbohydrates",
-                "date"
+                "nutrition"
               ],
               "properties": {
-                "title": {
+                "_id": {
                   "type": "string",
-                  "example": "Eggs"
+                  "description": "Product id ('mongoose')",
+                  "example": "657d8520ab6cfb355180b1d6"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Product name",
+                  "example": "Apples"
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "Product amount",
+                  "example": "100 g"
+                },
+                "img": {
+                  "type": "string",
+                  "description": "Product img",
+                  "example": "https://ftp.goit.study/img/you_health/Apples.png"
                 },
                 "calories": {
                   "type": "integer",
-                  "example": 340
+                  "description": "Product calories",
+                  "example": 52
                 },
-                "protein": {
-                  "type": "number",
-                  "example": 12
-                },
-                "fat": {
-                  "type": "number",
-                  "example": 4
-                },
-                "carbohydrates": {
-                  "type": "number",
-                  "example": 72
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2023.12.19"
+                "nutrition": {
+                  "type": "object",
+                  "required": ["carbohydrates", "protein", "fat"],
+                  "properties": {
+                    "carbohydrates": {
+                      "type": "number",
+                      "description": "Carbohydrates content in the product",
+                      "example": 14
+                    },
+                    "protein": {
+                      "type": "number",
+                      "description": "Protein content in the product",
+                      "example": 0.3
+                    },
+                    "fat": {
+                      "type": "number",
+                      "description": "Fat content in the product",
+                      "example": 0.2
+                    }
+                  }
                 }
               }
-            }
+            },
+            "example": [
+              {
+                "_id": "657d8520ab6cfb355180b1d6",
+                "name": "Apples",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Apples.png",
+                "calories": 52,
+                "nutrition": {
+                  "carbohydrates": 14,
+                  "protein": 0.3,
+                  "fat": 0.2
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1d7",
+                "name": "Strawberries",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Strawberries.png",
+                "calories": 32,
+                "nutrition": {
+                  "carbohydrates": 7.68,
+                  "protein": 0.67,
+                  "fat": 0.3
+                }
+              }
+            ]
           },
           "lunch": {
             "type": "array",
