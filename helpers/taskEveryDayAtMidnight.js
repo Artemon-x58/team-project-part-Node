@@ -1,5 +1,12 @@
 const cron = require("node-cron");
-const { Water, Calories, User, Weight } = require("../models");
+const {
+  Water,
+  Calories,
+  User,
+  Weight,
+  NutrientsPerDay,
+  Diary,
+} = require("../models");
 const currentDate = require("./currentDate");
 
 const taskEveryDayAtMidnight = (owner) => {
@@ -34,6 +41,18 @@ const taskEveryDayAtMidnight = (owner) => {
       { owner },
       { $push: { weightAndDate: { weight: user.weight, date: today } } },
       { new: true, upsert: true }
+    ).exec();
+
+    await NutrientsPerDay.findOneAndUpdate(
+      { owner },
+      { $set: { breakfast: [], dinner: [], lunch: [], snack: [] } },
+      { new: true }
+    ).exec();
+
+    await Diary.findOneAndUpdate(
+      { owner },
+      { $set: { breakfast: [], dinner: [], lunch: [], snack: [] } },
+      { new: true }
     ).exec();
   };
 

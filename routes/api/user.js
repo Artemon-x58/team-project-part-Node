@@ -66,7 +66,7 @@ router.get(
 );
 
 router.post(
-  "/edit-weight",
+  "/weight",
   authenticate,
   validateUsers(schemas.weightSchema),
   ctrl.users.weightEdit
