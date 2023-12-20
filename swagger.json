@@ -10,7 +10,12 @@
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json", "multipart/form-data"],
-  "servers": [{ "url": "http://localhost:5000" }],
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Development server"
+    }
+  ],
   "tags": [
     { "name": "Auth", "description": "Authorization endpoints" },
     { "name": "User", "description": "User endpoints" },
@@ -344,7 +349,7 @@
           }
         }
       }
-    },
+    }
   },
 
   "components": {
