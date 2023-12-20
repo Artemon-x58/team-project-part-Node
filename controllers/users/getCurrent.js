@@ -82,9 +82,16 @@ const getCurrent = async (req, res) => {
     lunchtSumNutrientsToday,
     dinnerSumNutrientsToday,
     snackSumNutrientsToday,
-
     recommendedFood,
   });
 };
 
 module.exports = getCurrent;
+
+
+
+
+// "breakfastSumNutrientsToday",
+//           "lunchtSumNutrientsToday",
+//           "dinnerSumNutrientsToday",
+//           "snackSumNutrientsToday"

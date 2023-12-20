@@ -307,11 +307,11 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
+          "description": "Description of request parameters:**yourGoal** - string, User`s new goal.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SignUpUser"
+                "$ref": "#/components/schemas/NewUserGoal"
               }
             }
           }
@@ -322,7 +322,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SendingUserData"
+                  "$ref": "#/components/schemas/NewGoalAndNewRecommended"
                 }
               }
             }
@@ -513,19 +513,30 @@
           }
         }
       },
+      "NewUserGoal": {
+        "type": "object",
+        "required": ["yourGoal"],
+        "properties": {
+          "yourGoal": {
+            "type": "string",
+            "enum": ["lose fat", "maintain", "gain muscle"],
+            "example": "maintain"
+          }
+        }
+      },
 
       "UserRegistration": {
         "type": "object",
-        "required": ["email"],
+        "required": ["message"],
         "properties": {
           "code": {
             "type": "integer",
             "description": "Positive status code",
             "example": 200
           },
-          "email": {
+          "message": {
             "type": "string",
-            "example": "jacob@gmail.com"
+            "example": "Registration success"
           }
         }
       },
@@ -587,7 +598,10 @@
           "recommendedWater",
           "waterToday",
           "recommendedFood",
-          "diary"
+          "breakfastSumNutrientsToday",
+          "lunchtSumNutrientsToday",
+          "dinnerSumNutrientsToday",
+          "snackSumNutrientsToday"
         ],
         "properties": {
           "code": {
@@ -796,211 +810,107 @@
               }
             ]
           },
-          "breakfast": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "id",
-                "name",
-                "amount",
-                "img",
-                "calories",
-                "nutrition"
-              ],
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "description": "Product id ('mongoose')",
-                  "example": "657d8520ab6cfb355180b1d6"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Product name",
-                  "example": "Apples"
-                },
-                "amount": {
-                  "type": "string",
-                  "description": "Product amount",
-                  "example": "100 g"
-                },
-                "img": {
-                  "type": "string",
-                  "description": "Product img",
-                  "example": "https://ftp.goit.study/img/you_health/Apples.png"
-                },
-                "calories": {
-                  "type": "integer",
-                  "description": "Product calories",
-                  "example": 52
-                },
-                "nutrition": {
-                  "type": "object",
-                  "required": ["carbohydrates", "protein", "fat"],
-                  "properties": {
-                    "carbohydrates": {
-                      "type": "number",
-                      "description": "Carbohydrates content in the product",
-                      "example": 14
-                    },
-                    "protein": {
-                      "type": "number",
-                      "description": "Protein content in the product",
-                      "example": 0.3
-                    },
-                    "fat": {
-                      "type": "number",
-                      "description": "Fat content in the product",
-                      "example": 0.2
-                    }
-                  }
-                }
-              }
-            },
-            "example": [
-              {
-                "_id": "657d8520ab6cfb355180b1d6",
-                "name": "Apples",
-                "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Apples.png",
-                "calories": 52,
-                "nutrition": {
-                  "carbohydrates": 14,
-                  "protein": 0.3,
-                  "fat": 0.2
-                }
+          "breakfastSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 52
               },
-              {
-                "_id": "657d8520ab6cfb355180b1d7",
-                "name": "Strawberries",
-                "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Strawberries.png",
-                "calories": 32,
-                "nutrition": {
-                  "carbohydrates": 7.68,
-                  "protein": 0.67,
-                  "fat": 0.3
-                }
-              }
-            ]
-          },
-          "lunch": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "title",
-                "calories",
-                "protein",
-                "fat",
-                "carbohydrates",
-                "date"
-              ],
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Buckwheat"
-                },
-                "calories": {
-                  "type": "integer",
-                  "example": 340
-                },
-                "protein": {
-                  "type": "number",
-                  "example": 12
-                },
-                "fat": {
-                  "type": "number",
-                  "example": 4
-                },
-                "carbohydrates": {
-                  "type": "number",
-                  "example": 72
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2023.12.19"
-                }
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 14
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0.3
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0.2
               }
             }
           },
-          "dinner": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "title",
-                "calories",
-                "protein",
-                "fat",
-                "carbohydrates",
-                "date"
-              ],
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Chicken Breast"
-                },
-                "calories": {
-                  "type": "integer",
-                  "example": 165
-                },
-                "protein": {
-                  "type": "number",
-                  "example": 31
-                },
-                "fat": {
-                  "type": "number",
-                  "example": 3.6
-                },
-                "carbohydrates": {
-                  "type": "number",
-                  "example": 0
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2023.12.19"
-                }
+          "lunchtSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 52
+              },
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 14
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0.3
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0.2
               }
             }
           },
-          "snack": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "title",
-                "calories",
-                "protein",
-                "fat",
-                "carbohydrates",
-                "date"
-              ],
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Sweet Potatoes"
-                },
-                "calories": {
-                  "type": "integer",
-                  "example": 86
-                },
-                "protein": {
-                  "type": "number",
-                  "example": 1.6
-                },
-                "fat": {
-                  "type": "number",
-                  "example": 0.1
-                },
-                "carbohydrates": {
-                  "type": "number",
-                  "example": 20
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2023.12.19"
-                }
+          "dinnerSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 52
+              },
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 14
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0.3
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0.2
+              }
+            }
+          },
+          "snackSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 52
+              },
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 14
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0.3
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0.2
               }
             }
           }
@@ -1018,6 +928,43 @@
           "message": {
             "type": "string",
             "example": "Settings were successfully updated"
+          }
+        }
+      },
+      "NewGoalAndNewRecommended": {
+        "type": "object",
+        "required": ["yourGoal", "newRecommended"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "yourGoal": {
+            "type": "string",
+            "example": "maintain"
+          },
+          "newRecommended": {
+            "type": "object",
+            "required": ["calories", "protein", "fat", "carbohydrates"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "example": 2260
+              },
+              "protein": {
+                "type": "integer",
+                "example": 680
+              },
+              "fat": {
+                "type": "integer",
+                "example": 450
+              },
+              "carbohydrates": {
+                "type": "integer",
+                "example": 1130
+              }
+            }
           }
         }
       },
