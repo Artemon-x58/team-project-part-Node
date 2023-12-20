@@ -20,7 +20,7 @@ const goalEdit = async (req, res) => {
     recommendedCalories.calories
   );
 
-  await Calories.findOneAndUpdate(
+  const result = await Calories.findOneAndUpdate(
     { owner },
     {
       $set: {
@@ -33,7 +33,9 @@ const goalEdit = async (req, res) => {
     { new: true }
   ).exec();
 
-  res.status(200).send({ code: 200, yourGoal });
+  const newRecommended = result.recommendedCalories;
+
+  res.status(200).send({ code: 200, yourGoal, newRecommended });
 };
 
 module.exports = goalEdit;

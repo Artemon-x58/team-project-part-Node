@@ -1,5 +1,5 @@
 const { currentDate, HttpError } = require("../../helpers");
-const { Weight, User } = require("../../models");
+const { Weight, User, Water, Calories } = require("../../models");
 const { updateWaterValue } = require("../../water");
 const { updateCalories } = require("../../calories");
 
@@ -48,21 +48,27 @@ const weightEdit = async (req, res) => {
     const newWeight = updatedWeight.weightAndDate.find(
       (item) => item.date === today
     );
-    res.status(200).json({ data: newWeight });
+    const { recommendedWater } = await Water.findOne({ owner }).exec();
+    const { recommendedCalories } = await Calories.findOne({ owner }).exec();
+    res
+      .status(200)
+      .json({ data: newWeight, recommendedCalories, recommendedWater });
   } else {
-    // Если объект не существует, создаем новый
     const updatedWeight = await Weight.findOneAndUpdate(
       { owner },
       { $push: { weightAndDate: { weight, date: today } } },
       { new: true, upsert: true }
     ).exec();
+    const { recommendedWater } = await Water.findOne({ owner }).exec();
+    const { recommendedCalories } = await Calories.findOne({ owner }).exec();
 
-    // Находим объект в массиве с нужной датой
     const newWeight = updatedWeight.weightAndDate.find(
       (item) => item.date === today
     );
 
-    res.status(201).json({ data: newWeight });
+    res
+      .status(201)
+      .json({ data: newWeight, recommendedCalories, recommendedWater });
   }
 };
 

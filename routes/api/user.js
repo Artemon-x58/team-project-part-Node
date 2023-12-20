@@ -23,7 +23,7 @@ router.put(
 router.post(
   "/food-intake",
   authenticate,
-  validateUsers(schemas.DairySchema),
+  validateUsers(schemas.addDairySchema),
   ctrl.users.addDiary
 );
 

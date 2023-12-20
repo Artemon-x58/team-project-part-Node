@@ -1,10 +1,17 @@
-const { deleteCaloriesToday, sumObjectProperties } = require("../../calories");
-const { Diary } = require("../../models");
+const {
+  deleteCaloriesToday,
+  sumObjectProperties,
+  deleteNutrientsPerDay,
+} = require("../../calories");
+const { currentDate } = require("../../helpers");
+const { Diary, NutrientsPerDay } = require("../../models");
 
 const deleteDairyById = async (req, res) => {
   const { id: newId } = req.params;
   const { id: owner } = req.user;
   const { meals } = req.body;
+
+  const today = currentDate();
 
   const result = await Diary.findOneAndUpdate(
     { owner },
@@ -17,8 +24,43 @@ const deleteDairyById = async (req, res) => {
     sumObjectProperties(filteredEntries);
 
   deleteCaloriesToday(owner, calories, carbohydrates, protein, fat);
+  await deleteNutrientsPerDay(
+    owner,
+    meals,
+    calories,
+    carbohydrates,
+    protein,
+    fat
+  );
 
-  res.json({ message: "Success" });
+  const promise = await NutrientsPerDay.findOne({
+    owner,
+    meals: {
+      $elemMatch: {
+        date: today,
+      },
+    },
+  }).exec();
+
+  let caloriesPerDay, carbohydratesPerDay, proteinPerDay, fatPerDay;
+  promise[meals].map((item) => {
+    caloriesPerDay = item.calories;
+    carbohydratesPerDay = item.carbohydrates;
+    proteinPerDay = item.protein;
+    fatPerDay = item.fat;
+    return true;
+  });
+
+  console.log(promise);
+
+  res.json({
+    [meals]: {
+      calories: caloriesPerDay,
+      carbohydrates: carbohydratesPerDay,
+      protein: proteinPerDay,
+      fat: fatPerDay,
+    },
+  });
 };
 
 module.exports = deleteDairyById;

@@ -1,7 +1,10 @@
-const { deleteCaloriesToday } = require("../../calories");
+const {
+  deleteCaloriesToday,
+  deleteNutrientsPerDay,
+} = require("../../calories");
 const sumObjectProperties = require("../../calories/sumObjectProperties");
 const { currentDate } = require("../../helpers");
-const { Diary } = require("../../models");
+const { Diary, NutrientsPerDay } = require("../../models");
 
 const deleteDiary = async (req, res) => {
   const { id: owner } = req.user;
@@ -24,9 +27,42 @@ const deleteDiary = async (req, res) => {
 
   const { calories, carbohydrates, protein, fat } =
     sumObjectProperties(filteredEntries);
+  await deleteNutrientsPerDay(
+    owner,
+    meals,
+    calories,
+    carbohydrates,
+    protein,
+    fat
+  );
 
   deleteCaloriesToday(owner, calories, carbohydrates, protein, fat);
-  res.json({ [meals]: [] });
+
+  const promise = await NutrientsPerDay.findOne({
+    owner,
+    meals: {
+      $elemMatch: {
+        date: today,
+      },
+    },
+  }).exec();
+
+  let caloriesPerDay, carbohydratesPerDay, proteinPerDay, fatPerDay;
+  promise[meals].map((item) => {
+    caloriesPerDay = item.calories;
+    carbohydratesPerDay = item.carbohydrates;
+    proteinPerDay = item.protein;
+    fatPerDay = item.fat;
+    return true;
+  });
+  res.json({
+    [meals]: {
+      calories: caloriesPerDay,
+      carbohydrates: carbohydratesPerDay,
+      protein: proteinPerDay,
+      fat: fatPerDay,
+    },
+  });
 };
 
 module.exports = deleteDiary;

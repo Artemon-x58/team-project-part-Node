@@ -1,3 +1,4 @@
+const { sumObjectProperties } = require("../../calories");
 const { currentDate, HttpError } = require("../../helpers");
 const {
   User,
@@ -66,22 +67,27 @@ const getCurrent = async (req, res) => {
   const dinner = findEntryByDate(diary.dinner);
   const snack = findEntryByDate(diary.snack);
 
+  const breakfastSumNutrientsToday = sumObjectProperties(breakfast);
+  const lunchtSumNutrientsToday = sumObjectProperties(lunch);
+  const dinnerSumNutrientsToday = sumObjectProperties(dinner);
+  const snackSumNutrientsToday = sumObjectProperties(snack);
+
   res.json({
     user: { name, avatarURL, age, weight, height, kef, gender, yourGoal },
-    recommendedCalories,
-    caloriesToday,
     recommendedWater,
     waterToday,
-    recommendedFood,
+    recommendedCalories,
+    caloriesToday,
+    breakfastSumNutrientsToday,
+    lunchtSumNutrientsToday,
+    dinnerSumNutrientsToday,
+    snackSumNutrientsToday,
     breakfast,
     lunch,
     dinner,
     snack,
+    recommendedFood,
   });
 };
 
 module.exports = getCurrent;
-
-
-
-

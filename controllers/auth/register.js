@@ -4,7 +4,10 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
 const { initialWeightValue } = require("../../weight");
-const { initialCaloriesValue } = require("../../calories");
+const {
+  initialCaloriesValue,
+  initialNutrientsPerDay,
+} = require("../../calories");
 const initialDiary = require("../../diary/initialDairy");
 const taskEveryDayAtMidnight = require("../../helpers/taskEveryDayAtMidnight");
 
@@ -39,6 +42,7 @@ const register = async (req, res) => {
   });
 
   initialDiary(newUser.id);
+  initialNutrientsPerDay(newUser.id);
   initialWaterValue(newUser.id, newUser.weight, newUser.kef);
   initialWeightValue(newUser.id, newUser.weight);
   initialCaloriesValue(

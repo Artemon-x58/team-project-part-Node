@@ -1,13 +1,11 @@
 const { Diary } = require("../models");
 
-const initialMacronutrientsData = [];
-
 const initialDiary = async (userId) => {
   await Diary.create({
-    breakfast: initialMacronutrientsData,
-    dinner: initialMacronutrientsData,
-    lunch: initialMacronutrientsData,
-    snack: initialMacronutrientsData,
+    breakfast: [],
+    dinner: [],
+    lunch: [],
+    snack: [],
     owner: userId,
   });
 };

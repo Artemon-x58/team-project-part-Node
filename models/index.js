@@ -4,6 +4,7 @@ const Weight = require("./weightUser");
 const RecommendedFood = require("./recommendedFood");
 const Calories = require("./calories");
 const Diary = require("./diary");
+const NutrientsPerDay = require("./nutrientsPerDay");
 
 module.exports = {
   User,
@@ -12,4 +13,5 @@ module.exports = {
   RecommendedFood,
   Calories,
   Diary,
+  NutrientsPerDay,
 };
