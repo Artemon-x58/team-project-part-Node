@@ -10,6 +10,7 @@ const updateDiaryById = require("./updateDiaryById");
 const statistics = require("./statistics");
 const getCurrent = require("./getCurrent");
 const deleteDairyById = require("./deleteDairyById");
+const getDiary = require("./getDiary");
 
 module.exports = {
   waterEdit: ctrlWrapper(waterEdit),
@@ -23,4 +24,5 @@ module.exports = {
   statistics: ctrlWrapper(statistics),
   getCurrent: ctrlWrapper(getCurrent),
   deleteDairyById: ctrlWrapper(deleteDairyById),
+  getDiary: ctrlWrapper(getDiary),
 };

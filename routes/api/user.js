@@ -20,6 +20,8 @@ router.put(
   ctrl.users.goalEdit
 );
 
+router.get("/food-intake", authenticate, ctrl.users.getDiary);
+
 router.post(
   "/food-intake",
   authenticate,
