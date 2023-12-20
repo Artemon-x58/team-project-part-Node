@@ -5,11 +5,9 @@ const { User, Calories } = require("../../models");
 const goalEdit = async (req, res) => {
   const { id: owner } = req.user;
 
-  const { goal } = req.body;
-
   const { yourGoal } = await User.findByIdAndUpdate(
     owner,
-    { yourGoal: goal },
+    { ...req.body },
     { new: true }
   ).exec();
   if (!yourGoal) {
