@@ -39,7 +39,7 @@ const addDiary = async (req, res) => {
   const sumNutrients = sumObjectProperties(req.body);
   const { calories, carbohydrates, protein, fat } = sumNutrients;
 
-  await addCaloriesToday(owner, calories, carbohydrates, protein, fat, date);
+  await addCaloriesToday(owner, calories, carbohydrates, protein, fat);
 
   const { caloriesAndDate } = await Calories.findOne({
     owner,
@@ -50,29 +50,19 @@ const addDiary = async (req, res) => {
   const newCaloriesAndDate = caloriesAndDate[0];
 
   const key = Object.keys(results)[0];
-  await addNutrientsPerDay(
-    owner,
-    key,
-    calories,
-    carbohydrates,
-    protein,
-    fat,
-    date
-  );
+  await addNutrientsPerDay(owner, key, calories, carbohydrates, protein, fat);
 
   const newNutrients = await NutrientsPerDay.findOne({
     owner,
-    [key]: { $elemMatch: { date: date } },
   }).exec();
-
   const {
     calories: caloriesPerDay,
     carbohydrates: carbohydratesPerDay,
     protein: proteinPerDay,
     fat: fatPerDay,
-  } = newNutrients[key][0];
+  } = newNutrients[key];
 
-  const newListMeals = await Diary.findOne({ owner });
+  const newListMeals = await Diary.findOne({ owner }).exec();
   res.status(201).json({
     newCaloriesAndDate,
     [key]: {

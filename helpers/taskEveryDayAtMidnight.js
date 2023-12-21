@@ -43,9 +43,18 @@ const taskEveryDayAtMidnight = (owner) => {
       { new: true, upsert: true }
     ).exec();
 
+    const initialState = { calories: 0, carbohydrates: 0, protein: 0, fat: 0 };
+
     await NutrientsPerDay.findOneAndUpdate(
       { owner },
-      { $set: { breakfast: [], dinner: [], lunch: [], snack: [] } },
+      {
+        $set: {
+          breakfast: initialState,
+          dinner: initialState,
+          lunch: initialState,
+          snack: initialState,
+        },
+      },
       { new: true }
     ).exec();
 

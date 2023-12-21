@@ -22,10 +22,6 @@ const macronutrientsSchema = {
     type: Number,
     required: [true, "enter a fat"],
   },
-  date: {
-    type: String,
-    required: true,
-  },
 };
 
 const diarySchema = new Schema(

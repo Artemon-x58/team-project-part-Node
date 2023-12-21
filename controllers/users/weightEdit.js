@@ -39,37 +39,15 @@ const weightEdit = async (req, res) => {
     throw HttpError(404);
   }
 
-  if (existingWeight) {
-    const updatedWeight = await Weight.findOneAndUpdate(
-      { owner, "weightAndDate.date": today },
-      { $set: { "weightAndDate.$.weight": weight } },
-      { new: true }
-    ).exec();
-    const newWeight = updatedWeight.weightAndDate.find(
-      (item) => item.date === today
-    );
-    const { recommendedWater } = await Water.findOne({ owner }).exec();
-    const { recommendedCalories } = await Calories.findOne({ owner }).exec();
-    res
-      .status(200)
-      .json({ data: newWeight, recommendedCalories, recommendedWater });
-  } else {
-    const updatedWeight = await Weight.findOneAndUpdate(
-      { owner },
-      { $push: { weightAndDate: { weight, date: today } } },
-      { new: true, upsert: true }
-    ).exec();
-    const { recommendedWater } = await Water.findOne({ owner }).exec();
-    const { recommendedCalories } = await Calories.findOne({ owner }).exec();
+  await Weight.findOneAndUpdate(
+    { owner, "weightAndDate.date": today },
+    { $set: { "weightAndDate.$.weight": weight } },
+    { new: true }
+  ).exec();
 
-    const newWeight = updatedWeight.weightAndDate.find(
-      (item) => item.date === today
-    );
-
-    res
-      .status(201)
-      .json({ data: newWeight, recommendedCalories, recommendedWater });
-  }
+  const { recommendedWater } = await Water.findOne({ owner }).exec();
+  const { recommendedCalories } = await Calories.findOne({ owner }).exec();
+  res.status(200).json({ data: weight, recommendedCalories, recommendedWater });
 };
 
 module.exports = weightEdit;

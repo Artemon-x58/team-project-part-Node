@@ -4,7 +4,7 @@ const {
   deleteNutrientsPerDay,
   addNutrientsPerDay,
 } = require("../../calories");
-const { HttpError, currentDate } = require("../../helpers");
+const { currentDate } = require("../../helpers");
 const { Diary, NutrientsPerDay } = require("../../models");
 
 const updateDiaryById = async (req, res) => {
@@ -13,24 +13,7 @@ const updateDiaryById = async (req, res) => {
   const { meals, calories, carbohydrates, protein, fat } = req.body;
   const date = currentDate();
 
-  const result = await Diary.findOne({
-    owner,
-    [`${meals}._id`]: newId,
-  }).exec();
-
-  if (!result) {
-    throw HttpError(404, "Diary not found");
-  }
-
-  const oldProduct = result[meals].find(
-    (item) => item._id.toString() === newId
-  );
-
-  if (!oldProduct) {
-    throw HttpError(404, "Product not found in the specified meal");
-  }
-
-  await Diary.update(
+  const result = await Diary.findOneAndUpdate(
     { owner, [`${meals}._id`]: newId },
     {
       $set: {
@@ -38,6 +21,9 @@ const updateDiaryById = async (req, res) => {
       },
     }
   ).exec();
+  const oldProduct = result[meals].find(
+    (item) => item._id.toString() === newId
+  );
 
   deleteCaloriesToday(
     owner,
@@ -46,7 +32,7 @@ const updateDiaryById = async (req, res) => {
     oldProduct.protein,
     oldProduct.fat
   );
-  addCaloriesToday(owner, calories, carbohydrates, protein, fat, date);
+  addCaloriesToday(owner, calories, carbohydrates, protein, fat);
 
   await deleteNutrientsPerDay(
     owner,
@@ -68,30 +54,15 @@ const updateDiaryById = async (req, res) => {
 
   const promise = await NutrientsPerDay.findOne({
     owner,
-    meals: {
-      $elemMatch: {
-        date: date,
-      },
-    },
   }).exec();
-
-  let caloriesPerDay, carbohydratesPerDay, proteinPerDay, fatPerDay;
-  promise[meals].map((item) => {
-    caloriesPerDay = item.calories;
-    carbohydratesPerDay = item.carbohydrates;
-    proteinPerDay = item.protein;
-    fatPerDay = item.fat;
-    return true;
-  });
-
   const newListMeals = await Diary.findOne({ owner });
 
   res.json({
     [meals]: {
-      calories: caloriesPerDay,
-      carbohydrates: carbohydratesPerDay,
-      protein: proteinPerDay,
-      fat: fatPerDay,
+      calories: promise[meals].calories,
+      carbohydrates: promise[meals].carbohydrates,
+      protein: promise[meals].protein,
+      fat: promise[meals].fat,
     },
     newListMeals: newListMeals[meals],
   });

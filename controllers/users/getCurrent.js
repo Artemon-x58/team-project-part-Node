@@ -25,8 +25,6 @@ const getCurrent = async (req, res) => {
     owner,
   }).exec();
 
-  console.log(caloriesAndDate);
-
   const caloriesToday = caloriesAndDate.reduce((acc, item) => {
     if (item.date === today) {
       acc = {
@@ -55,12 +53,11 @@ const getCurrent = async (req, res) => {
   }, {});
 
   const recommendedFood = await RecommendedFood.find();
+  const recommendedFoodForMainPage = recommendedFood.slice(0, 4);
 
   const diary = await NutrientsPerDay.findOne({
     owner,
   }).exec();
-
-  console.log(diary);
 
   const findEntryByDate = (arr) => {
     return arr.filter((item) => item.date === today);
@@ -86,16 +83,8 @@ const getCurrent = async (req, res) => {
     lunchtSumNutrientsToday,
     dinnerSumNutrientsToday,
     snackSumNutrientsToday,
-    recommendedFood,
+    recommendedFoodForMainPage,
   });
 };
 
 module.exports = getCurrent;
-
-
-
-
-// "breakfastSumNutrientsToday",
-//           "lunchtSumNutrientsToday",
-//           "dinnerSumNutrientsToday",
-//           "snackSumNutrientsToday"

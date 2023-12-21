@@ -18,18 +18,14 @@ const macronutrientsSchema = {
     type: Number,
     required: [true, "enter a fat"],
   },
-  date: {
-    type: String,
-    required: true,
-  },
 };
 
 const nutrientsPerDaySchema = new Schema(
   {
-    breakfast: [macronutrientsSchema],
-    dinner: [macronutrientsSchema],
-    lunch: [macronutrientsSchema],
-    snack: [macronutrientsSchema],
+    breakfast: macronutrientsSchema,
+    dinner: macronutrientsSchema,
+    lunch: macronutrientsSchema,
+    snack: macronutrientsSchema,
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
