@@ -39,15 +39,26 @@ const weightEdit = async (req, res) => {
     throw HttpError(404);
   }
 
-  await Weight.findOneAndUpdate(
+  const result = await Weight.findOneAndUpdate(
     { owner, "weightAndDate.date": today },
     { $set: { "weightAndDate.$.weight": weight } },
     { new: true }
   ).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
 
   const { recommendedWater } = await Water.findOne({ owner }).exec();
+  if (!recommendedWater) {
+    throw HttpError(404);
+  }
+
   const { recommendedCalories } = await Calories.findOne({ owner }).exec();
-  res.status(200).json({ data: weight, recommendedCalories, recommendedWater });
+
+  if (!recommendedCalories) {
+    throw HttpError(404);
+  }
+  res.status(200).json({ weight, recommendedCalories, recommendedWater });
 };
 
 module.exports = weightEdit;

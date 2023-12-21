@@ -4,12 +4,10 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
 const { initialWeightValue } = require("../../weight");
-const {
-  initialCaloriesValue,
-  initialNutrientsPerDay,
-} = require("../../calories");
+const { initialCaloriesValue } = require("../../calories");
 const initialDiary = require("../../diary/initialDairy");
 const taskEveryDayAtMidnight = require("../../helpers/taskEveryDayAtMidnight");
+const { initialNutrientsPerDay } = require("../../nutrients");
 
 const register = async (req, res) => {
   const { name, email, password, age, weight, height, kef, gender, yourGoal } =
@@ -40,6 +38,10 @@ const register = async (req, res) => {
     password: hashPassword,
     avatarURL,
   });
+
+  if (!newUser) {
+    throw HttpError(404);
+  }
 
   initialDiary(newUser.id);
   initialNutrientsPerDay(newUser.id);

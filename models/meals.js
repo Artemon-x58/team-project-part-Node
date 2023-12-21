@@ -4,7 +4,7 @@ const { handleMongooseError } = require("../helpers");
 const macronutrientsSchema = {
   title: {
     type: String,
-    // required: [true, "enter a title"],
+    required: [true, "enter a title"],
   },
   calories: {
     type: Number,

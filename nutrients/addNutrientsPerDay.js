@@ -1,3 +1,4 @@
+const { HttpError } = require("../helpers");
 const { NutrientsPerDay } = require("../models");
 
 const addNutrientsPerDay = async (
@@ -8,7 +9,7 @@ const addNutrientsPerDay = async (
   protein,
   fat
 ) => {
-  await NutrientsPerDay.findOneAndUpdate(
+  const result = await NutrientsPerDay.findOneAndUpdate(
     { owner },
     {
       $inc: {
@@ -20,6 +21,9 @@ const addNutrientsPerDay = async (
     },
     { new: true }
   ).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
 };
 
 module.exports = addNutrientsPerDay;

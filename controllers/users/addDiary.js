@@ -1,10 +1,7 @@
-const {
-  sumObjectProperties,
-  addCaloriesToday,
-  addNutrientsPerDay,
-} = require("../../calories");
+const { sumObjectProperties, addCaloriesToday } = require("../../calories");
 const { currentDate, HttpError } = require("../../helpers");
 const { Meals, Calories, NutrientsPerDay } = require("../../models");
+const { addNutrientsPerDay } = require("../../nutrients");
 
 const addDiary = async (req, res) => {
   const { id: owner } = req.user;
