@@ -1,19 +1,15 @@
-const { HttpError } = require("../helpers/");
-const validateBody = (schema) => {
+const { HttpError } = require("../helpers");
+
+const validateUsers = (schema) => {
   const func = (req, res, next) => {
     const { error } = schema.validate(req.body);
     if (error) {
-      const field = error.details[0].path[0];
-      const errorMessages = {
-        phone: error.message,
-        email: error.message,
-        default: "missing required name field",
-      };
-      throw HttpError(400, errorMessages[field] || errorMessages.default);
+      console.log("lol");
+      next(HttpError(400, error.message));
     }
     next();
   };
+
   return func;
 };
-
-module.exports = validateBody;
+module.exports = validateUsers;

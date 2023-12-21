@@ -10,14 +10,7 @@ const deleteCaloriesToday = async (
   protein,
   fat
 ) => {
-  const existingCalories = await Calories.findOne({
-    owner,
-    "caloriesAndDate.date": today,
-  });
-  if (!existingCalories) {
-    throw HttpError(404);
-  }
-  await Calories.findOneAndUpdate(
+  const result = await Calories.findOneAndUpdate(
     { owner, "caloriesAndDate.date": today },
     {
       $inc: {
@@ -29,6 +22,9 @@ const deleteCaloriesToday = async (
     },
     { new: true }
   ).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
 };
 
 module.exports = deleteCaloriesToday;

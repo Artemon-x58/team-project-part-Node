@@ -1,11 +1,10 @@
+const { deleteCaloriesToday, addCaloriesToday } = require("../../calories");
+const { currentDate, HttpError } = require("../../helpers");
+const { Meals, NutrientsPerDay } = require("../../models");
 const {
-  deleteCaloriesToday,
-  addCaloriesToday,
   deleteNutrientsPerDay,
   addNutrientsPerDay,
-} = require("../../calories");
-const { currentDate } = require("../../helpers");
-const { Meals, NutrientsPerDay } = require("../../models");
+} = require("../../nutrients");
 
 const updateDiaryById = async (req, res) => {
   const { id: newId } = req.params;
@@ -21,18 +20,22 @@ const updateDiaryById = async (req, res) => {
       },
     }
   ).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
+
   const oldProduct = result[meals].find(
     (item) => item._id.toString() === newId
   );
 
-  deleteCaloriesToday(
+  await deleteCaloriesToday(
     owner,
     oldProduct.calories,
     oldProduct.carbohydrates,
     oldProduct.protein,
     oldProduct.fat
   );
-  addCaloriesToday(owner, calories, carbohydrates, protein, fat);
+  await addCaloriesToday(owner, calories, carbohydrates, protein, fat);
 
   await deleteNutrientsPerDay(
     owner,
@@ -55,11 +58,17 @@ const updateDiaryById = async (req, res) => {
   const promise = await NutrientsPerDay.findOne({
     owner,
   }).exec();
+  if (!promise) {
+    throw HttpError(404);
+  }
+
   const newListMeals = await Meals.findOne({ owner });
+  if (!newListMeals) {
+    throw HttpError(404);
+  }
 
   res.json({
     [meals]: {
-      calories: promise[meals].calories,
       carbohydrates: promise[meals].carbohydrates,
       protein: promise[meals].protein,
       fat: promise[meals].fat,

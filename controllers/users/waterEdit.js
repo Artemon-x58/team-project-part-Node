@@ -13,12 +13,13 @@ const waterEdit = async (req, res) => {
     { $inc: { "waterAndDate.$.water": water } },
     { new: true }
   );
-  const addedWater = updatedWater.waterAndDate.find(
-    (item) => item.date === today
-  );
   if (!updatedWater) {
     throw HttpError(404);
   }
+
+  const addedWater = updatedWater.waterAndDate.find(
+    (item) => item.date === today
+  );
 
   res.status(200).json({ data: addedWater });
 };

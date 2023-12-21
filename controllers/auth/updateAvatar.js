@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary").v2;
+const { HttpError } = require("../../helpers");
 const { User } = require("../../models");
 
 const updateAvatar = async (req, res) => {
@@ -13,8 +14,10 @@ const updateAvatar = async (req, res) => {
   });
 
   const avatarURL = cloudinaryResult.secure_url;
-  await User.findByIdAndUpdate(_id, { avatarURL });
-
+  const result = await User.findByIdAndUpdate(_id, { avatarURL });
+  if (!result) {
+    throw HttpError(404);
+  }
   res.json({
     avatarURL,
   });

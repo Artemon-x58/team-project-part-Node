@@ -1,7 +1,7 @@
-const { currentDate } = require("../helpers");
+const { currentDate, HttpError } = require("../helpers");
 const { Calories } = require("../models");
+const { macronutrients } = require("../nutrients");
 
-const macronutrients = require("./macronutrients");
 const recommendedCalories = require("./recommendedCalories");
 
 const initialCaloriesValue = async (
@@ -17,7 +17,7 @@ const initialCaloriesValue = async (
   const objectMacronutrients = macronutrients(yourGoal, calories);
   const date = currentDate();
 
-  await Calories.create({
+  const result = await Calories.create({
     caloriesAndDate: {
       calories: 0,
       date,
@@ -28,6 +28,9 @@ const initialCaloriesValue = async (
     owner: userId,
     recommendedCalories: { calories, ...objectMacronutrients },
   });
+  if (!result) {
+    throw HttpError(404);
+  }
 };
 
 module.exports = initialCaloriesValue;

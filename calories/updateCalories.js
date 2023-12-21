@@ -1,5 +1,7 @@
+const { HttpError } = require("../helpers");
 const { Calories } = require("../models");
-const macronutrients = require("./macronutrients");
+const { macronutrients } = require("../nutrients");
+
 const recommendedCalories = require("./recommendedCalories");
 
 const updateCalories = async (
@@ -14,11 +16,14 @@ const updateCalories = async (
   const calories = recommendedCalories(gender, weight, height, kef, age);
   const objectMacronutrients = macronutrients(yourGoal, calories);
 
-  await Calories.findOneAndUpdate(
+  const result = await Calories.findOneAndUpdate(
     { owner },
     { $set: { recommendedCalories: { calories, ...objectMacronutrients } } },
     { new: true }
   ).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
 };
 
 module.exports = updateCalories;

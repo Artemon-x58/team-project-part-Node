@@ -1,4 +1,4 @@
-const { currentDate } = require("../helpers");
+const { currentDate, HttpError } = require("../helpers");
 const { Calories } = require("../models");
 
 const addCaloriesToday = async (
@@ -10,7 +10,7 @@ const addCaloriesToday = async (
 ) => {
   const today = currentDate();
 
-  await Calories.findOneAndUpdate(
+  const result = await Calories.findOneAndUpdate(
     { owner, "caloriesAndDate.date": today },
     {
       $inc: {
@@ -22,6 +22,10 @@ const addCaloriesToday = async (
     },
     { new: true }
   ).exec();
+
+  if (!result) {
+    throw HttpError(404);
+  }
 };
 
 module.exports = addCaloriesToday;

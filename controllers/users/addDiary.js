@@ -1,77 +1,60 @@
-const {
-  addCaloriesToday,
-  sumObjectProperties,
-  addNutrientsPerDay,
-} = require("../../calories");
-const { currentDate } = require("../../helpers");
+const { sumObjectProperties, addCaloriesToday } = require("../../calories");
+const { currentDate, HttpError } = require("../../helpers");
 const { Meals, Calories, NutrientsPerDay } = require("../../models");
+const { addNutrientsPerDay } = require("../../nutrients");
 
 const addDiary = async (req, res) => {
   const { id: owner } = req.user;
   const date = currentDate();
-  const entries = req.body;
+  const { meals, entries } = req.body;
 
-  const results = {};
-
-  for (const entry of entries) {
-    const { meals, title, calories, carbohydrates, protein, fat } = entry;
-    const result = await Meals.findOneAndUpdate(
-      { owner },
-      {
-        $push: {
-          [meals]: {
-            title,
-            calories,
-            carbohydrates,
-            protein,
-            fat,
-            date,
-          },
-        },
+  const result = await Meals.findOneAndUpdate(
+    { owner },
+    {
+      $push: {
+        [meals]: { $each: entries.map((entry) => ({ ...entry })) },
       },
-      { new: true }
-    ).exec();
-
-    results[meals] = results[meals] || [];
-    results[meals].push(result[meals][result[meals].length - 1]);
+    },
+    { new: true }
+  );
+  if (!result) {
+    throw HttpError(404);
   }
 
-  const sumNutrients = sumObjectProperties(req.body);
-  const { calories, carbohydrates, protein, fat } = sumNutrients;
+  const { calories, carbohydrates, protein, fat } =
+    sumObjectProperties(entries);
 
   await addCaloriesToday(owner, calories, carbohydrates, protein, fat);
 
-  const { caloriesAndDate } = await Calories.findOne({
+  const resultCaloriesToday = await Calories.findOne({
     owner,
     "caloriesAndDate.date": date,
   })
     .select("caloriesAndDate.$")
     .exec();
-  const newCaloriesAndDate = caloriesAndDate[0];
+  if (!resultCaloriesToday) {
+    throw HttpError(404);
+  }
+  const newCaloriesAndDate = resultCaloriesToday.caloriesAndDate[0];
 
-  const key = Object.keys(results)[0];
-  await addNutrientsPerDay(owner, key, calories, carbohydrates, protein, fat);
+  await addNutrientsPerDay(owner, meals, calories, carbohydrates, protein, fat);
 
-  const newNutrients = await NutrientsPerDay.findOne({
+  const nutrientsPerDay = await NutrientsPerDay.findOne({
     owner,
   }).exec();
-  const {
-    calories: caloriesPerDay,
-    carbohydrates: carbohydratesPerDay,
-    protein: proteinPerDay,
-    fat: fatPerDay,
-  } = newNutrients[key];
 
-  const newListMeals = await Meals.findOne({ owner }).exec();
+  if (!nutrientsPerDay) {
+    throw HttpError(404);
+  }
+
   res.status(201).json({
     newCaloriesAndDate,
-    [key]: {
-      calories: caloriesPerDay,
-      carbohydrates: carbohydratesPerDay,
-      protein: proteinPerDay,
-      fat: fatPerDay,
+    [meals]: result[meals],
+    newSumNutrientsPerDay: {
+      carbohydrates: nutrientsPerDay[meals].carbohydrates,
+      protein: nutrientsPerDay[meals].protein,
+      fat: nutrientsPerDay[meals].fat,
     },
-    newListMeals: newListMeals[key],
   });
 };
 

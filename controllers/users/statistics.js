@@ -2,6 +2,7 @@ const {
   getMonthNumber,
   perDayThisMonth,
   calculateAverage,
+  HttpError,
 } = require("../../helpers");
 const { Calories, Weight, Water } = require("../../models");
 
@@ -14,14 +15,24 @@ const statistics = async (req, res) => {
   const { caloriesAndDate } = await Calories.findOne({
     owner,
   }).exec();
+  if (!caloriesAndDate) {
+    throw HttpError(404);
+  }
 
   const { weightAndDate } = await Weight.findOne({
     owner,
   }).exec();
+  if (!weightAndDate) {
+    throw HttpError(404);
+  }
 
   const { waterAndDate } = await Water.findOne({
     owner,
   }).exec();
+
+  if (!waterAndDate) {
+    throw HttpError(404);
+  }
 
   const caloriesPerDayThisMonth = perDayThisMonth(caloriesAndDate, monthNumber);
   const weightPerDayThisMonth = perDayThisMonth(weightAndDate, monthNumber);

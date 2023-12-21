@@ -1,8 +1,12 @@
+const { HttpError } = require("../../helpers");
 const { User } = require("../../models");
 
 const logOut = async (req, res) => {
   const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: "" }).exec();
+  const result = await User.findByIdAndUpdate(_id, { token: "" }).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
   res.send({
     code: 204,
     message: "Logout success",
@@ -10,4 +14,3 @@ const logOut = async (req, res) => {
 };
 
 module.exports = logOut;
-

@@ -23,6 +23,9 @@ const getCurrent = async (req, res) => {
   const { recommendedCalories, caloriesAndDate } = await Calories.findOne({
     owner,
   }).exec();
+  if (!recommendedCalories || !caloriesAndDate) {
+    throw HttpError(404);
+  }
 
   const caloriesToday = caloriesAndDate.reduce((acc, item) => {
     if (item.date === today) {
@@ -41,6 +44,10 @@ const getCurrent = async (req, res) => {
     owner,
   }).exec();
 
+  if (!recommendedWater || !waterAndDate) {
+    throw HttpError(404);
+  }
+
   const waterToday = waterAndDate.reduce((acc, item) => {
     if (item.date === today) {
       acc = {
@@ -52,11 +59,19 @@ const getCurrent = async (req, res) => {
   }, {});
 
   const recommendedFood = await RecommendedFood.find();
+  if (!recommendedFood) {
+    throw HttpError(404);
+  }
+
   const recommendedFoodForMainPage = recommendedFood.slice(0, 4);
 
   const diary = await NutrientsPerDay.findOne({
     owner,
   }).exec();
+
+  if (!diary) {
+    throw HttpError(404);
+  }
 
   const { breakfast, lunch, dinner, snack } = diary;
 

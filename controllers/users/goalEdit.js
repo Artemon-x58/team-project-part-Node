@@ -1,4 +1,4 @@
-const { macronutrients } = require("../../calories");
+const { macronutrients } = require("../../nutrients");
 const { HttpError } = require("../../helpers");
 const { User, Calories } = require("../../models");
 
@@ -19,6 +19,9 @@ const goalEdit = async (req, res) => {
     yourGoal,
     recommendedCalories.calories
   );
+  if (!recommendedCalories) {
+    throw HttpError(404);
+  }
 
   const result = await Calories.findOneAndUpdate(
     { owner },
@@ -32,13 +35,13 @@ const goalEdit = async (req, res) => {
     },
     { new: true }
   ).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
 
   const newRecommended = result.recommendedCalories;
 
-  res.status(200).send({ code: 200, yourGoal, newRecommended });
+  res.status(200).send({ yourGoal, newRecommended });
 };
 
 module.exports = goalEdit;
-
-
-

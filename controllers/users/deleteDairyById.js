@@ -1,8 +1,7 @@
-const {
-  deleteCaloriesToday,
-  deleteNutrientsPerDay,
-} = require("../../calories");
+const { deleteCaloriesToday } = require("../../calories");
+const { HttpError } = require("../../helpers");
 const { Meals, NutrientsPerDay } = require("../../models");
+const { deleteNutrientsPerDay } = require("../../nutrients");
 
 const deleteDairyById = async (req, res) => {
   const { id: newId } = req.params;
@@ -13,6 +12,9 @@ const deleteDairyById = async (req, res) => {
     { owner },
     { $pull: { [meals]: { _id: newId } } }
   ).exec();
+  if (!result) {
+    throw HttpError(404);
+  }
 
   const filteredEntries = result[meals].filter(
     (item) => item._id.toString() === newId
@@ -34,11 +36,17 @@ const deleteDairyById = async (req, res) => {
     owner,
   }).exec();
 
+  if (!nutrientsPerDay) {
+    throw HttpError(404);
+  }
+
   const newListMeals = await Meals.findOne({ owner });
+  if (!newListMeals) {
+    throw HttpError(404);
+  }
 
   res.json({
     [meals]: {
-      calories: nutrientsPerDay[meals].calories,
       carbohydrates: nutrientsPerDay[meals].carbohydrates,
       protein: nutrientsPerDay[meals].protein,
       fat: nutrientsPerDay[meals].fat,
