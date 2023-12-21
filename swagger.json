@@ -19,7 +19,7 @@
   "tags": [
     { "name": "Auth", "description": "Authorization endpoints" },
     { "name": "User", "description": "User endpoints" },
-    { "name": "Food", "description": "recommended-food" }
+    { "name": "Food", "description": "Recommended food" }
   ],
 
   "paths": {
@@ -350,7 +350,6 @@
         }
       }
     },
-
     "/api/user/weight": {
       "post": {
         "tags": ["User"],
@@ -363,7 +362,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUserWeight"
+                "$ref": "#/components/schemas/CurrentUserWeight"
               }
             }
           }
@@ -374,7 +373,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SendNewUserWeight"
+                  "$ref": "#/components/schemas/SendCurrentUserWeightRecommendedCaloriesAndWater"
                 }
               }
             }
@@ -402,6 +401,7 @@
         }
       }
     },
+
     "/api/user/food-intake": {
       "get": {
         "tags": ["User"],
@@ -442,30 +442,20 @@
         }
       }
     },
-    "/api/user/food-intake/id": {
-      "put": {
-        "tags": ["User"],
-        "summary": "Information about the drunk water for the current date",
+
+    "/api/recommended-food": {
+      "get": {
+        "tags": ["Food"],
+        "summary": "List of recommended food",
         "parameters": [],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "description": "Description of request parameters:**weight** - integer, User`s new weight.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewUserWeight"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "Data for the HomePage",
+            "description": "List of recommended food. Part of the list is shown. The entire list is located at: https://drive.google.com/file/d/1JDlPii3E6CDOH6b_7TFJrSJ98z5yiM-e/view",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NewGoalAndNewRecommended"
+                  "$ref": "#/components/schemas/ListRecommendedFood"
                 }
               }
             }
@@ -667,6 +657,18 @@
           }
         }
       },
+      "CurrentUserWeight": {
+        "type": "object",
+        "required": ["weight"],
+        "properties": {
+          "weight": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 300,
+            "example": "80"
+          }
+        }
+      },
 
       "UserRegistration": {
         "type": "object",
@@ -865,119 +867,6 @@
               }
             }
           },
-          
-          "recommendedFood": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "id",
-                "name",
-                "amount",
-                "img",
-                "calories",
-                "nutrition"
-              ],
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "description": "Product id ('mongoose')",
-                  "example": "657d8520ab6cfb355180b1d6"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Product name",
-                  "example": "Apples"
-                },
-                "amount": {
-                  "type": "string",
-                  "description": "Product amount",
-                  "example": "100 g"
-                },
-                "img": {
-                  "type": "string",
-                  "description": "Product img",
-                  "example": "https://ftp.goit.study/img/you_health/Apples.png"
-                },
-                "calories": {
-                  "type": "integer",
-                  "description": "Product calories",
-                  "example": 52
-                },
-                "nutrition": {
-                  "type": "object",
-                  "required": ["carbohydrates", "protein", "fat"],
-                  "properties": {
-                    "carbohydrates": {
-                      "type": "number",
-                      "description": "Carbohydrates content in the product",
-                      "example": 14
-                    },
-                    "protein": {
-                      "type": "number",
-                      "description": "Protein content in the product",
-                      "example": 0.3
-                    },
-                    "fat": {
-                      "type": "number",
-                      "description": "Fat content in the product",
-                      "example": 0.2
-                    }
-                  }
-                }
-              }
-            },
-            "example": [
-              {
-                "_id": "657d8520ab6cfb355180b1d6",
-                "name": "Avocado",
-                "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Avocado.png",
-                "calories": 160,
-                "nutrition": {
-                  "carbohydrates": 8.5,
-                  "protein": 2,
-                  "fat": 14.7
-                }
-              },
-              {
-                "_id": "657d8520ab6cfb355180b1d7",
-                "name": "Beans",
-                "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Beans.png",
-                "calories": 123,
-                "nutrition": {
-                  "carbohydrates": 22.3,
-                  "protein": 8.7,
-                  "fat": 0.4
-                }
-              },
-              {
-                "_id": "657d8520ab6cfb355180b1d8",
-                "name": "Nuts",
-                "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Nuts.png",
-                "calories": 650,
-                "nutrition": {
-                  "carbohydrates": 15,
-                  "protein": 22,
-                  "fat": 55
-                }
-              },
-              {
-                "_id": "657d8520ab6cfb355180b1d9",
-                "name": "Broccoli",
-                "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Broccoli.png",
-                "calories": 34,
-                "nutrition": {
-                  "carbohydrates": 6.6,
-                  "protein": 2.8,
-                  "fat": 0.4
-                }
-              }
-            ]
-          },
           "breakfastSumNutrientsToday": {
             "type": "object",
             "required": ["calories", "carbohydrates", "protein", "fat"],
@@ -1081,6 +970,118 @@
                 "example": 0.2
               }
             }
+          },
+          "recommendedFood": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "amount",
+                "img",
+                "calories",
+                "nutrition"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Product id ('mongoose')",
+                  "example": "657d8520ab6cfb355180b1d6"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Product name",
+                  "example": "Apples"
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "Product amount",
+                  "example": "100 g"
+                },
+                "img": {
+                  "type": "string",
+                  "description": "Product img",
+                  "example": "https://ftp.goit.study/img/you_health/Apples.png"
+                },
+                "calories": {
+                  "type": "integer",
+                  "description": "Product calories",
+                  "example": 52
+                },
+                "nutrition": {
+                  "type": "object",
+                  "required": ["carbohydrates", "protein", "fat"],
+                  "properties": {
+                    "carbohydrates": {
+                      "type": "number",
+                      "description": "Carbohydrates content in the product",
+                      "example": 14
+                    },
+                    "protein": {
+                      "type": "number",
+                      "description": "Protein content in the product",
+                      "example": 0.3
+                    },
+                    "fat": {
+                      "type": "number",
+                      "description": "Fat content in the product",
+                      "example": 0.2
+                    }
+                  }
+                }
+              }
+            },
+            "example": [
+              {
+                "_id": "657d8520ab6cfb355180b1e8",
+                "name": "Avocado",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Avocado.png",
+                "calories": 160,
+                "nutrition": {
+                  "carbohydrates": 8.5,
+                  "protein": 2,
+                  "fat": 14.7
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1e9",
+                "name": "Beans",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Beans.png",
+                "calories": 123,
+                "nutrition": {
+                  "carbohydrates": 22.3,
+                  "protein": 8.7,
+                  "fat": 0.4
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1ea",
+                "name": "Nuts",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Nuts.png",
+                "calories": 650,
+                "nutrition": {
+                  "carbohydrates": 15,
+                  "protein": 22,
+                  "fat": 55
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1eb",
+                "name": "Broccoli",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Broccoli.png",
+                "calories": 34,
+                "nutrition": {
+                  "carbohydrates": 6.6,
+                  "protein": 2.8,
+                  "fat": 0.4
+                }
+              }
+            ]
           }
         }
       },
@@ -1135,6 +1136,153 @@
             }
           }
         }
+      },
+      "SendCurrentUserWeightRecommendedCaloriesAndWater": {
+        "type": "object",
+        "required": ["weight", "recommendedCalories", "recommendedWater"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "weight": {
+            "type": "integer",
+            "example": 80
+          },
+          "recommendedCalories": {
+            "type": "object",
+            "required": ["calories", "protein", "fat", "carbohydrates"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "example": 2200
+              },
+              "protein": {
+                "type": "integer",
+                "example": 550
+              },
+              "fat": {
+                "type": "integer",
+                "example": 440
+              },
+              "carbohydrates": {
+                "type": "integer",
+                "example": 1210
+              }
+            }
+          },
+          "recommendedWater": {
+            "type": "integer",
+            "example": 2400
+          }
+        }
+      },
+
+      "ListRecommendedFood": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "name", "amount", "img", "calories", "nutrition"],
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Product id ('mongoose')",
+              "example": "657d8520ab6cfb355180b1d6"
+            },
+            "name": {
+              "type": "string",
+              "description": "Product name",
+              "example": "Apples"
+            },
+            "amount": {
+              "type": "string",
+              "description": "Product amount",
+              "example": "100 g"
+            },
+            "img": {
+              "type": "string",
+              "description": "Product img",
+              "example": "https://ftp.goit.study/img/you_health/Apples.png"
+            },
+            "calories": {
+              "type": "integer",
+              "description": "Product calories",
+              "example": 52
+            },
+            "nutrition": {
+              "type": "object",
+              "required": ["carbohydrates", "protein", "fat"],
+              "properties": {
+                "carbohydrates": {
+                  "type": "number",
+                  "description": "Carbohydrates content in the product",
+                  "example": 14
+                },
+                "protein": {
+                  "type": "number",
+                  "description": "Protein content in the product",
+                  "example": 0.3
+                },
+                "fat": {
+                  "type": "number",
+                  "description": "Fat content in the product",
+                  "example": 0.2
+                }
+              }
+            }
+          }
+        },
+        "example": [
+          {
+            "_id": "657d8520ab6cfb355180b1e8",
+            "name": "Avocado",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Avocado.png",
+            "calories": 160,
+            "nutrition": {
+              "carbohydrates": 8.5,
+              "protein": 2,
+              "fat": 14.7
+            }
+          },
+          {
+            "_id": "657d8520ab6cfb355180b1e9",
+            "name": "Beans",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Beans.png",
+            "calories": 123,
+            "nutrition": {
+              "carbohydrates": 22.3,
+              "protein": 8.7,
+              "fat": 0.4
+            }
+          },
+          {
+            "_id": "657d8520ab6cfb355180b1ea",
+            "name": "Nuts",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Nuts.png",
+            "calories": 650,
+            "nutrition": {
+              "carbohydrates": 15,
+              "protein": 22,
+              "fat": 55
+            }
+          },
+          {
+            "_id": "657d8520ab6cfb355180b1eb",
+            "name": "Broccoli",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Broccoli.png",
+            "calories": 34,
+            "nutrition": {
+              "carbohydrates": 6.6,
+              "protein": 2.8,
+              "fat": 0.4
+            }
+          }
+        ]
       },
 
       "errorBadRequestResponse": {

@@ -51,3 +51,9 @@ const weightEdit = async (req, res) => {
 };
 
 module.exports = weightEdit;
+
+
+
+
+
+
