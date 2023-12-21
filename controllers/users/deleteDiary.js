@@ -47,7 +47,6 @@ const deleteDiary = async (req, res) => {
   res.json({
     newCaloriesAndDate,
     [meals]: {
-      calories: nutrientsPerDay[meals].calories,
       carbohydrates: nutrientsPerDay[meals].carbohydrates,
       protein: nutrientsPerDay[meals].protein,
       fat: nutrientsPerDay[meals].fat,

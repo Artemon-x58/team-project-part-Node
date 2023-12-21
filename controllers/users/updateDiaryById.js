@@ -59,7 +59,6 @@ const updateDiaryById = async (req, res) => {
 
   res.json({
     [meals]: {
-      calories: promise[meals].calories,
       carbohydrates: promise[meals].carbohydrates,
       protein: promise[meals].protein,
       fat: promise[meals].fat,

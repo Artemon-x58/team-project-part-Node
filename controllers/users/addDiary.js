@@ -54,7 +54,6 @@ const addDiary = async (req, res) => {
     newCaloriesAndDate,
     [meals]: result[meals],
     newSumNutrientsPerDay: {
-      calories: nutrientsPerDay[meals].calories,
       carbohydrates: nutrientsPerDay[meals].carbohydrates,
       protein: nutrientsPerDay[meals].protein,
       fat: nutrientsPerDay[meals].fat,

@@ -38,7 +38,6 @@ const deleteDairyById = async (req, res) => {
 
   res.json({
     [meals]: {
-      calories: nutrientsPerDay[meals].calories,
       carbohydrates: nutrientsPerDay[meals].carbohydrates,
       protein: nutrientsPerDay[meals].protein,
       fat: nutrientsPerDay[meals].fat,
