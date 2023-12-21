@@ -64,8 +64,9 @@ const taskEveryDayAtMidnight = (owner) => {
     ).exec();
   };
 
-  cron.schedule("0 0 * * *", taskEvery10Seconds);
+  cron.schedule("*/30 * * * * *", taskEvery10Seconds);
 };
 
 //  "*/10 * * * * *"
+// "0 0 * * *"
 module.exports = taskEveryDayAtMidnight;
