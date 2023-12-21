@@ -1,5 +1,5 @@
 const { User } = require("../../models");
-const { HttpError, taskEveryDayAtMidnight } = require("../../helpers");
+const { HttpError } = require("../../helpers");
 const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
@@ -57,7 +57,7 @@ const register = async (req, res) => {
     newUser.yourGoal
   );
 
-  taskEveryDayAtMidnight(newUser.id);
+  // taskEveryDayAtMidnight(newUser.id);
 
   res.status(201).json({
     code: 201,
