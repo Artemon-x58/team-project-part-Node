@@ -1,12 +1,12 @@
 const { User } = require("../../models");
-const { HttpError } = require("../../helpers");
+const { HttpError, taskEveryDayAtMidnight } = require("../../helpers");
 const gravatar = require("gravatar");
 const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
 const { initialWeightValue } = require("../../weight");
 const { initialCaloriesValue } = require("../../calories");
 const initialDiary = require("../../diary/initialDairy");
-const taskEveryDayAtMidnight = require("../../helpers/taskEveryDayAtMidnight");
+
 const { initialNutrientsPerDay } = require("../../nutrients");
 
 const register = async (req, res) => {
