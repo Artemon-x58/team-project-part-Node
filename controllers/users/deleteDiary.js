@@ -4,13 +4,12 @@ const {
 } = require("../../calories");
 const sumObjectProperties = require("../../calories/sumObjectProperties");
 const { currentDate } = require("../../helpers");
-const { Meals, NutrientsPerDay } = require("../../models");
+const { Meals, NutrientsPerDay, Calories } = require("../../models");
 
 const deleteDiary = async (req, res) => {
   const { id: owner } = req.user;
   const { meals } = req.body;
-
-  const today = currentDate();
+  const date = currentDate();
 
   const existingDiary = await Meals.findOneAndUpdate(
     { owner },
@@ -21,12 +20,9 @@ const deleteDiary = async (req, res) => {
     }
   ).exec();
 
-  const filteredEntries = existingDiary[meals].filter(
-    (item) => item.date === today
+  const { calories, carbohydrates, protein, fat } = sumObjectProperties(
+    existingDiary[meals]
   );
-
-  const { calories, carbohydrates, protein, fat } =
-    sumObjectProperties(filteredEntries);
   await deleteNutrientsPerDay(
     owner,
     meals,
@@ -36,34 +32,27 @@ const deleteDiary = async (req, res) => {
     fat
   );
 
-  deleteCaloriesToday(owner, calories, carbohydrates, protein, fat);
+  await deleteCaloriesToday(owner, calories, carbohydrates, protein, fat);
 
   const promise = await NutrientsPerDay.findOne({
     owner,
-    meals: {
-      $elemMatch: {
-        date: today,
-      },
-    },
   }).exec();
 
-  let caloriesPerDay, carbohydratesPerDay, proteinPerDay, fatPerDay;
-  promise[meals].map((item) => {
-    caloriesPerDay = item.calories;
-    carbohydratesPerDay = item.carbohydrates;
-    proteinPerDay = item.protein;
-    fatPerDay = item.fat;
-    return true;
-  });
-  const newListMeals = await Meals.findOne({ owner });
+  const { caloriesAndDate } = await Calories.findOne({
+    owner,
+    "caloriesAndDate.date": date,
+  }).exec();
+  const newCaloriesAndDate = caloriesAndDate[0];
+
   res.json({
+    newCaloriesAndDate,
     [meals]: {
-      calories: caloriesPerDay,
-      carbohydrates: carbohydratesPerDay,
-      protein: proteinPerDay,
-      fat: fatPerDay,
+      calories: promise[meals].calories,
+      carbohydrates: promise[meals].carbohydrates,
+      protein: promise[meals].protein,
+      fat: promise[meals].fat,
     },
-    newListMeals: newListMeals[meals],
+    newListMeals: [],
   });
 };
 
