@@ -350,10 +350,103 @@
         }
       }
     },
+
+
     "/api/user/weight": {
-      "put": {
+      "post": {
         "tags": ["User"],
         "summary": "Update user weight",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:**weight** - integer, User`s new weight.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUserWeight"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Information about the current weight of the User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendNewUserWeight"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/food-intake": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Information about the eat food for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Date for the HomePage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendingUserData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/food-intake/id": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Information about the drunk water for the current date",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -401,6 +494,7 @@
         }
       }
     }
+  
   },
 
   "components": {
@@ -837,26 +931,50 @@
             "example": [
               {
                 "_id": "657d8520ab6cfb355180b1d6",
-                "name": "Apples",
+                "name": "Avocado",
                 "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Apples.png",
-                "calories": 52,
+                "img": "https://ftp.goit.study/img/you_health/Avocado.png",
+                "calories": 160,
                 "nutrition": {
-                  "carbohydrates": 14,
-                  "protein": 0.3,
-                  "fat": 0.2
+                  "carbohydrates": 8.5,
+                  "protein": 2,
+                  "fat": 14.7
                 }
               },
               {
                 "_id": "657d8520ab6cfb355180b1d7",
-                "name": "Strawberries",
+                "name": "Beans",
                 "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Strawberries.png",
-                "calories": 32,
+                "img": "https://ftp.goit.study/img/you_health/Beans.png",
+                "calories": 123,
                 "nutrition": {
-                  "carbohydrates": 7.68,
-                  "protein": 0.67,
-                  "fat": 0.3
+                  "carbohydrates": 22.3,
+                  "protein": 8.7,
+                  "fat": 0.4
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1d8",
+                "name": "Nuts",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Nuts.png",
+                "calories": 650,
+                "nutrition": {
+                  "carbohydrates": 15,
+                  "protein": 22,
+                  "fat": 55
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1d9",
+                "name": "Broccoli",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Broccoli.png",
+                "calories": 34,
+                "nutrition": {
+                  "carbohydrates": 6.6,
+                  "protein": 2.8,
+                  "fat": 0.4
                 }
               }
             ]
