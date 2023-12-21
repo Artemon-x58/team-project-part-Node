@@ -9,7 +9,7 @@
     }
   },
   "consumes": ["application/json", "multipart/form-data"],
-  "produces": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
   "servers": [
     {
       "url": "http://localhost:5000",
@@ -216,7 +216,7 @@
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "Date for the HomePage",
+            "description": "Data for the HomePage",
             "content": {
               "application/json": {
                 "schema": {
@@ -405,16 +405,65 @@
     "/api/user/food-intake": {
       "get": {
         "tags": ["User"],
-        "summary": "Information about the eat food for the current date",
+        "summary": "Information for user diary",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "Date for the HomePage",
+            "description": "Date for the DiaryPage",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SendingUserData"
+                  "$ref": "#/components/schemas/SendUserDiary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["User"],
+        "summary": "Save information about the food consumed by the user for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:**meals** - string, meal time,\n\n**entries** - array, which includes:\n\n**title** - string, name of food,\n\n**calories** - integer, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformUserFood"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the DiaryPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveInformInUserDiary"
                 }
               }
             }
@@ -666,6 +715,81 @@
             "minimum": 5,
             "maximum": 300,
             "example": "80"
+          }
+        }
+      },
+      "InformUserFood": {
+        "type": "object",
+        "required": ["meals", "entries"],
+        "properties": {
+          "meals": {
+            "type": "string",
+            "enum": ["breakfast", "dinner", "lunch", "snack"],
+            "example": "breakfast"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "carbohydrates",
+                "protein",
+                "fat"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Name of food",
+                  "example": "Greek Yogurt"
+                },
+                "calories": {
+                  "type": "integer",
+                  "description": "Product calories",
+                  "example": 171
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "description": "Number of carbohydrates",
+                  "example": 10.44
+                },
+                "protein": {
+                  "type": "number",
+                  "description": "Number of protein",
+                  "example": 29
+                },
+                "fat": {
+                  "type": "number",
+                  "description": "Number of fat",
+                  "example": 1.16
+                }
+              }
+            },
+
+            "example": [
+              {
+                "title": "Greek Yogurt",
+                "calories": 171,
+                "carbohydrates": 10.44,
+                "protein": 29,
+                "fat": 1.16
+              },
+              {
+                "title": "Eggs",
+                "calories": 155,
+                "carbohydrates": 1,
+                "protein": 13,
+                "fat": 11
+              },
+              {
+                "title": "Bread",
+                "calories": 1331,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65
+              }
+            ]
           }
         }
       },
@@ -1177,6 +1301,9 @@
             "example": 2400
           }
         }
+      },
+      "SaveInformInUserDiary" : {
+        
       },
 
       "ListRecommendedFood": {
