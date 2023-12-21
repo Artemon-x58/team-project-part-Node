@@ -27,7 +27,7 @@ const login = async (req, res) => {
 
   const result = await User.findByIdAndUpdate(user._id, { token }).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "User not found");
   }
 
   res.status(200).json({

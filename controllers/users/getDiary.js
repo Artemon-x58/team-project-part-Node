@@ -9,7 +9,7 @@ const getDiary = async (req, res) => {
   }).exec();
 
   if (!diary) {
-    throw HttpError(404);
+    throw HttpError(404, "Meals not found");
   }
 
   const breakfast = diary.breakfast;

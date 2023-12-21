@@ -36,7 +36,7 @@ const weightEdit = async (req, res) => {
   }).exec();
 
   if (!existingWeight) {
-    throw HttpError(404);
+    throw HttpError(404, "Weight not found");
   }
 
   const result = await Weight.findOneAndUpdate(
@@ -45,18 +45,18 @@ const weightEdit = async (req, res) => {
     { new: true }
   ).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Weight not found");
   }
 
   const { recommendedWater } = await Water.findOne({ owner }).exec();
   if (!recommendedWater) {
-    throw HttpError(404);
+    throw HttpError(404, "Water not found");
   }
 
   const { recommendedCalories } = await Calories.findOne({ owner }).exec();
 
   if (!recommendedCalories) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
   res.status(200).json({ weight, recommendedCalories, recommendedWater });
 };

@@ -13,7 +13,7 @@ const deleteDairyById = async (req, res) => {
     { $pull: { [meals]: { _id: newId } } }
   ).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Meals not found");
   }
 
   const filteredEntries = result[meals].filter(
@@ -37,12 +37,12 @@ const deleteDairyById = async (req, res) => {
   }).exec();
 
   if (!nutrientsPerDay) {
-    throw HttpError(404);
+    throw HttpError(404, "Nutrients not found");
   }
 
   const newListMeals = await Meals.findOne({ owner });
   if (!newListMeals) {
-    throw HttpError(404);
+    throw HttpError(404, "Meals not found");
   }
 
   res.json({

@@ -11,7 +11,7 @@ const goalEdit = async (req, res) => {
     { new: true }
   ).exec();
   if (!yourGoal) {
-    throw HttpError(404);
+    throw HttpError(404, "User not found");
   }
 
   const { recommendedCalories } = await Calories.findOne({ owner }).exec();
@@ -20,7 +20,7 @@ const goalEdit = async (req, res) => {
     recommendedCalories.calories
   );
   if (!recommendedCalories) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 
   const result = await Calories.findOneAndUpdate(
@@ -36,7 +36,7 @@ const goalEdit = async (req, res) => {
     { new: true }
   ).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 
   const newRecommended = result.recommendedCalories;

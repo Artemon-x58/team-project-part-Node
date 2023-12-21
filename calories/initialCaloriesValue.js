@@ -29,7 +29,7 @@ const initialCaloriesValue = async (
     recommendedCalories: { calories, ...objectMacronutrients },
   });
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 };
 

@@ -16,14 +16,14 @@ const statistics = async (req, res) => {
     owner,
   }).exec();
   if (!caloriesAndDate) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 
   const { weightAndDate } = await Weight.findOne({
     owner,
   }).exec();
   if (!weightAndDate) {
-    throw HttpError(404);
+    throw HttpError(404, "Weight not found");
   }
 
   const { waterAndDate } = await Water.findOne({
@@ -31,7 +31,7 @@ const statistics = async (req, res) => {
   }).exec();
 
   if (!waterAndDate) {
-    throw HttpError(404);
+    throw HttpError(404, "Water not found");
   }
 
   const caloriesPerDayThisMonth = perDayThisMonth(caloriesAndDate, monthNumber);

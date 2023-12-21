@@ -5,7 +5,7 @@ const recommendedFood = async (req, res) => {
   const allRecommendedFood = await RecommendedFood.find().exec();
 
   if (!recommendedFood) {
-    throw HttpError(404);
+    throw HttpError(404, "RecommendedFood not found");
   }
 
   res.status(200).json({ code: 200, allRecommendedFood });

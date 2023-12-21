@@ -40,7 +40,7 @@ const register = async (req, res) => {
   });
 
   if (!newUser) {
-    throw HttpError(404);
+    throw HttpError(404, "User not found");
   }
 
   initialDiary(newUser.id);

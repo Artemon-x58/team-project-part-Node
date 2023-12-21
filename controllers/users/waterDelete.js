@@ -12,7 +12,7 @@ const waterDelete = async (req, res) => {
     { new: true }
   ).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Water not found");
   }
 
   res.json({ water: 0 });

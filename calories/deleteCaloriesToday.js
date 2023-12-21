@@ -23,7 +23,7 @@ const deleteCaloriesToday = async (
     { new: true }
   ).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 };
 
