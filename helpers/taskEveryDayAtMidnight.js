@@ -12,7 +12,6 @@ const currentDate = require("./currentDate");
 const taskEveryDayAtMidnight = (owner) => {
   const taskEvery10Seconds = async () => {
     const today = currentDate();
-    console.log("Функция выполняется каждые 10 секунд");
     await Water.findOneAndUpdate(
       { owner },
       { $push: { waterAndDate: { water: 0, date: today } } },

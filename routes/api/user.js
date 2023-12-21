@@ -1,5 +1,5 @@
 const express = require("express");
-const { authenticate, validateUsers } = require("../../middlewares");
+const { authenticate, validateBody } = require("../../middlewares");
 const schemas = require("../../schemas");
 const ctrl = require("../../controllers");
 const router = express.Router();
@@ -9,14 +9,14 @@ router.get("/current", authenticate, ctrl.users.getCurrent);
 router.put(
   "/update",
   authenticate,
-  validateUsers(schemas.updateUserSchema),
+  validateBody(schemas.updateUserSchema),
   ctrl.users.updateUserSetting
 );
 
 router.put(
   "/goal",
   authenticate,
-  validateUsers(schemas.goalSchema),
+  validateBody(schemas.goalSchema),
   ctrl.users.goalEdit
 );
 
@@ -25,35 +25,35 @@ router.get("/food-intake", authenticate, ctrl.users.getDiary);
 router.post(
   "/food-intake",
   authenticate,
-  validateUsers(schemas.addDairySchema),
+  validateBody(schemas.addDairySchema),
   ctrl.users.addDiary
 );
 
 router.put(
   "/food-intake/:id",
   authenticate,
-  validateUsers(schemas.dairyUpdateSchema),
+  validateBody(schemas.dairyUpdateSchema),
   ctrl.users.updateDiaryById
 );
 
 router.delete(
   "/food-intake",
   authenticate,
-  validateUsers(schemas.deleteDairySchema),
+  validateBody(schemas.deleteDairySchema),
   ctrl.users.deleteDiary
 );
 
 router.delete(
   "/food-intake/:id",
   authenticate,
-  validateUsers(schemas.deleteDairySchema),
+  validateBody(schemas.deleteDairySchema),
   ctrl.users.deleteDairyById
 );
 
 router.post(
   "/water-intake",
   authenticate,
-  validateUsers(schemas.waterSchema),
+  validateBody(schemas.waterSchema),
   ctrl.users.waterEdit
 );
 router.delete("/water-intake", authenticate, ctrl.users.waterDelete);
@@ -61,14 +61,14 @@ router.delete("/water-intake", authenticate, ctrl.users.waterDelete);
 router.get(
   "/statistics",
   authenticate,
-  validateUsers(schemas.statisticsSchema),
+  validateBody(schemas.statisticsSchema),
   ctrl.users.statistics
 );
 
 router.post(
   "/weight",
   authenticate,
-  validateUsers(schemas.weightSchema),
+  validateBody(schemas.weightSchema),
   ctrl.users.weightEdit
 );
 
