@@ -3,7 +3,7 @@ const Water = require("./water");
 const Weight = require("./weightUser");
 const RecommendedFood = require("./recommendedFood");
 const Calories = require("./calories");
-const Diary = require("./diary");
+const Meals = require("./meals");
 const NutrientsPerDay = require("./nutrientsPerDay");
 
 module.exports = {
@@ -12,6 +12,6 @@ module.exports = {
   Weight,
   RecommendedFood,
   Calories,
-  Diary,
+  Meals,
   NutrientsPerDay,
 };

@@ -5,7 +5,7 @@ const {
   User,
   Weight,
   NutrientsPerDay,
-  Diary,
+  Meals,
 } = require("../models");
 const currentDate = require("./currentDate");
 
@@ -58,7 +58,7 @@ const taskEveryDayAtMidnight = (owner) => {
       { new: true }
     ).exec();
 
-    await Diary.findOneAndUpdate(
+    await Meals.findOneAndUpdate(
       { owner },
       { $set: { breakfast: [], dinner: [], lunch: [], snack: [] } },
       { new: true }

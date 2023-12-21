@@ -4,7 +4,7 @@ const {
 } = require("../../calories");
 const sumObjectProperties = require("../../calories/sumObjectProperties");
 const { currentDate } = require("../../helpers");
-const { Diary, NutrientsPerDay } = require("../../models");
+const { Meals, NutrientsPerDay } = require("../../models");
 
 const deleteDiary = async (req, res) => {
   const { id: owner } = req.user;
@@ -12,7 +12,7 @@ const deleteDiary = async (req, res) => {
 
   const today = currentDate();
 
-  const existingDiary = await Diary.findOneAndUpdate(
+  const existingDiary = await Meals.findOneAndUpdate(
     { owner },
     {
       $set: {
@@ -55,7 +55,7 @@ const deleteDiary = async (req, res) => {
     fatPerDay = item.fat;
     return true;
   });
-  const newListMeals = await Diary.findOne({ owner });
+  const newListMeals = await Meals.findOne({ owner });
   res.json({
     [meals]: {
       calories: caloriesPerDay,

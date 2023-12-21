@@ -1,7 +1,7 @@
-const { Diary } = require("../models");
+const { Meals } = require("../models");
 
 const initialDiary = async (userId) => {
-  await Diary.create({
+  await Meals.create({
     breakfast: [],
     dinner: [],
     lunch: [],

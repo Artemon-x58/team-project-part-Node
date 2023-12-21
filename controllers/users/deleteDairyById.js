@@ -4,7 +4,7 @@ const {
   deleteNutrientsPerDay,
 } = require("../../calories");
 const { currentDate } = require("../../helpers");
-const { Diary, NutrientsPerDay } = require("../../models");
+const { Meals, NutrientsPerDay } = require("../../models");
 
 const deleteDairyById = async (req, res) => {
   const { id: newId } = req.params;
@@ -13,7 +13,7 @@ const deleteDairyById = async (req, res) => {
 
   const today = currentDate();
 
-  const result = await Diary.findOneAndUpdate(
+  const result = await Meals.findOneAndUpdate(
     { owner },
     { $pull: { [meals]: { _id: newId } } }
   ).exec();
@@ -47,7 +47,7 @@ const deleteDairyById = async (req, res) => {
     fat: fatPerDay,
   } = nutrientsPerDay && nutrientsPerDay[meals][0];
 
-  const newListMeals = await Diary.findOne({ owner });
+  const newListMeals = await Meals.findOne({ owner });
 
   res.json({
     [meals]: {

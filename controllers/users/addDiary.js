@@ -4,7 +4,7 @@ const {
   addNutrientsPerDay,
 } = require("../../calories");
 const { currentDate } = require("../../helpers");
-const { Diary, Calories, NutrientsPerDay } = require("../../models");
+const { Meals, Calories, NutrientsPerDay } = require("../../models");
 
 const addDiary = async (req, res) => {
   const { id: owner } = req.user;
@@ -15,7 +15,7 @@ const addDiary = async (req, res) => {
 
   for (const entry of entries) {
     const { meals, title, calories, carbohydrates, protein, fat } = entry;
-    const result = await Diary.findOneAndUpdate(
+    const result = await Meals.findOneAndUpdate(
       { owner },
       {
         $push: {
@@ -62,7 +62,7 @@ const addDiary = async (req, res) => {
     fat: fatPerDay,
   } = newNutrients[key];
 
-  const newListMeals = await Diary.findOne({ owner }).exec();
+  const newListMeals = await Meals.findOne({ owner }).exec();
   res.status(201).json({
     newCaloriesAndDate,
     [key]: {

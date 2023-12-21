@@ -1,10 +1,10 @@
 const { HttpError } = require("../../helpers");
-const { Diary } = require("../../models");
+const { Meals } = require("../../models");
 
 const getDiary = async (req, res) => {
   const { id: owner } = req.user;
 
-  const diary = await Diary.findOne({
+  const diary = await Meals.findOne({
     owner,
   }).exec();
 
