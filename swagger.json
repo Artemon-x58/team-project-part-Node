@@ -45,7 +45,7 @@
         ],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - integer, User`s age,\n\n**weight** - integer, User`s weight,\n\n**height** - integer, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
           "content": {
             "application/json": {
               "schema": {
@@ -256,7 +256,7 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - integer, User`s age,\n\n**weight** - integer, User`s weight,\n\n**height** - integer, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender.",
           "content": {
             "application/json": {
               "schema": {
@@ -312,6 +312,57 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/NewUserGoal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the HomePage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewGoalAndNewRecommended"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/weight": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update user weight",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:**weight** - integer, User`s new weight.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUserWeight"
               }
             }
           }
