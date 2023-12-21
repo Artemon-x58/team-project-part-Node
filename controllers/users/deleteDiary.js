@@ -34,7 +34,7 @@ const deleteDiary = async (req, res) => {
 
   await deleteCaloriesToday(owner, calories, carbohydrates, protein, fat);
 
-  const promise = await NutrientsPerDay.findOne({
+  const nutrientsPerDay = await NutrientsPerDay.findOne({
     owner,
   }).exec();
 
@@ -47,10 +47,10 @@ const deleteDiary = async (req, res) => {
   res.json({
     newCaloriesAndDate,
     [meals]: {
-      calories: promise[meals].calories,
-      carbohydrates: promise[meals].carbohydrates,
-      protein: promise[meals].protein,
-      fat: promise[meals].fat,
+      calories: nutrientsPerDay[meals].calories,
+      carbohydrates: nutrientsPerDay[meals].carbohydrates,
+      protein: nutrientsPerDay[meals].protein,
+      fat: nutrientsPerDay[meals].fat,
     },
     newListMeals: [],
   });
