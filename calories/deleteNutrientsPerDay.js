@@ -1,4 +1,3 @@
-const { currentDate } = require("../helpers");
 const { NutrientsPerDay } = require("../models");
 
 const deleteNutrientsPerDay = async (
@@ -9,16 +8,14 @@ const deleteNutrientsPerDay = async (
   protein,
   fat
 ) => {
-  const today = currentDate();
-
   await NutrientsPerDay.findOneAndUpdate(
-    { owner, [`${meals}.date`]: today },
+    { owner },
     {
       $inc: {
-        [`${meals}.$.calories`]: -calories,
-        [`${meals}.$.carbohydrates`]: -carbohydrates,
-        [`${meals}.$.protein`]: -protein,
-        [`${meals}.$.fat`]: -fat,
+        [`${meals}.calories`]: -calories,
+        [`${meals}.carbohydrates`]: -carbohydrates,
+        [`${meals}.protein`]: -protein,
+        [`${meals}.fat`]: -fat,
       },
     },
     { new: true }

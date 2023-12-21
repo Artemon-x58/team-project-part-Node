@@ -1,11 +1,10 @@
-const { sumObjectProperties } = require("../../calories");
 const { currentDate, HttpError } = require("../../helpers");
 const {
   User,
   Calories,
   Water,
   RecommendedFood,
-  Diary,
+  NutrientsPerDay,
 } = require("../../models");
 
 const getCurrent = async (req, res) => {
@@ -53,24 +52,13 @@ const getCurrent = async (req, res) => {
   }, {});
 
   const recommendedFood = await RecommendedFood.find();
+  const recommendedFoodForMainPage = recommendedFood.slice(0, 4);
 
-  const diary = await Diary.findOne({
+  const diary = await NutrientsPerDay.findOne({
     owner,
   }).exec();
 
-  const findEntryByDate = (arr) => {
-    return arr.filter((item) => item.date === today);
-  };
-
-  const breakfast = findEntryByDate(diary.breakfast);
-  const lunch = findEntryByDate(diary.lunch);
-  const dinner = findEntryByDate(diary.dinner);
-  const snack = findEntryByDate(diary.snack);
-
-  const breakfastSumNutrientsToday = sumObjectProperties(breakfast);
-  const lunchtSumNutrientsToday = sumObjectProperties(lunch);
-  const dinnerSumNutrientsToday = sumObjectProperties(dinner);
-  const snackSumNutrientsToday = sumObjectProperties(snack);
+  const { breakfast, lunch, dinner, snack } = diary;
 
   res.json({
     user: { name, avatarURL, age, weight, height, kef, gender, yourGoal },
@@ -78,20 +66,12 @@ const getCurrent = async (req, res) => {
     waterToday,
     recommendedCalories,
     caloriesToday,
-    breakfastSumNutrientsToday,
-    lunchtSumNutrientsToday,
-    dinnerSumNutrientsToday,
-    snackSumNutrientsToday,
-    recommendedFood,
+    breakfastSumNutrientsToday: breakfast,
+    lunchtSumNutrientsToday: lunch,
+    dinnerSumNutrientsToday: dinner,
+    snackSumNutrientsToday: snack,
+    recommendedFoodForMainPage,
   });
 };
 
 module.exports = getCurrent;
-
-
-
-
-// "breakfastSumNutrientsToday",
-//           "lunchtSumNutrientsToday",
-//           "dinnerSumNutrientsToday",
-//           "snackSumNutrientsToday"

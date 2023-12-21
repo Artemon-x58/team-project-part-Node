@@ -14,22 +14,21 @@ const deleteCaloriesToday = async (
     owner,
     "caloriesAndDate.date": today,
   });
-  if (existingCalories) {
-    await Calories.findOneAndUpdate(
-      { owner, "caloriesAndDate.date": today },
-      {
-        $inc: {
-          "caloriesAndDate.$.calories": -calories,
-          "caloriesAndDate.$.carbohydrates": -carbohydrates,
-          "caloriesAndDate.$.protein": -protein,
-          "caloriesAndDate.$.fat": -fat,
-        },
-      },
-      { new: true }
-    ).exec();
-  } else {
+  if (!existingCalories) {
     throw HttpError(404);
   }
+  await Calories.findOneAndUpdate(
+    { owner, "caloriesAndDate.date": today },
+    {
+      $inc: {
+        "caloriesAndDate.$.calories": -calories,
+        "caloriesAndDate.$.carbohydrates": -carbohydrates,
+        "caloriesAndDate.$.protein": -protein,
+        "caloriesAndDate.$.fat": -fat,
+      },
+    },
+    { new: true }
+  ).exec();
 };
 
 module.exports = deleteCaloriesToday;

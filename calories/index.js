@@ -8,7 +8,6 @@ const sumObjectProperties = require("./sumObjectProperties");
 const initialNutrientsPerDay = require("./initialNutrientsPerDay");
 const addNutrientsPerDay = require("./addNutrientsPerDay");
 const deleteNutrientsPerDay = require("./deleteNutrientsPerDay");
-const updateNutrientsPerDay = require("./updateNutrientsPerDay");
 
 module.exports = {
   macronutrients,
@@ -21,5 +20,4 @@ module.exports = {
   initialNutrientsPerDay,
   addNutrientsPerDay,
   deleteNutrientsPerDay,
-  updateNutrientsPerDay,
 };

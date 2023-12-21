@@ -22,13 +22,9 @@ const macronutrientsSchema = {
     type: Number,
     required: [true, "enter a fat"],
   },
-  date: {
-    type: String,
-    required: true,
-  },
 };
 
-const diarySchema = new Schema(
+const mealsSchema = new Schema(
   {
     breakfast: [macronutrientsSchema],
     dinner: [macronutrientsSchema],
@@ -43,8 +39,8 @@ const diarySchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-diarySchema.post("save", handleMongooseError);
+mealsSchema.post("save", handleMongooseError);
 
-const Diary = model("diary", diarySchema);
+const Meals = model("meal", mealsSchema);
 
-module.exports = Diary;
+module.exports = Meals;

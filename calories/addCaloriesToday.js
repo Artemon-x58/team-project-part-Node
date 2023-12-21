@@ -6,45 +6,22 @@ const addCaloriesToday = async (
   calories,
   carbohydrates,
   protein,
-  fat,
-  date
+  fat
 ) => {
   const today = currentDate();
 
-  const existingCalories = await Calories.findOne({
-    owner,
-    "caloriesAndDate.date": today,
-  });
-  if (existingCalories && date === today) {
-    await Calories.findOneAndUpdate(
-      { owner, "caloriesAndDate.date": today },
-      {
-        $inc: {
-          "caloriesAndDate.$.calories": calories,
-          "caloriesAndDate.$.carbohydrates": carbohydrates,
-          "caloriesAndDate.$.protein": protein,
-          "caloriesAndDate.$.fat": fat,
-        },
+  await Calories.findOneAndUpdate(
+    { owner, "caloriesAndDate.date": today },
+    {
+      $inc: {
+        "caloriesAndDate.$.calories": calories,
+        "caloriesAndDate.$.carbohydrates": carbohydrates,
+        "caloriesAndDate.$.protein": protein,
+        "caloriesAndDate.$.fat": fat,
       },
-      { new: true }
-    ).exec();
-  } else {
-    await Calories.findOneAndUpdate(
-      { owner },
-      {
-        $push: {
-          caloriesAndDate: {
-            calories,
-            carbohydrates,
-            protein,
-            fat,
-            date: date,
-          },
-        },
-      },
-      { new: true, upsert: true }
-    ).exec();
-  }
+    },
+    { new: true }
+  ).exec();
 };
 
 module.exports = addCaloriesToday;

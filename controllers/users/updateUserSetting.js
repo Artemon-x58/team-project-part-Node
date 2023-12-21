@@ -11,11 +11,12 @@ const updateUserSetting = async (req, res) => {
   if (!user) {
     throw HttpError(404);
   }
-  const { id, weight, kef, gender, height, age, yourGoal } = user;
+  const { id, name, weight, kef, gender, height, age, yourGoal } = user;
   updateWaterValue(id, weight, kef);
   updateWeightValue(id, weight);
   updateCalories(id, gender, weight, height, kef, age, yourGoal);
-  res.status(200).send({ code: 200, message: 'Settings were successfully updated'});
+  console.log(user);
+  res.status(200).json({ data: { name, weight, kef, gender, height, age } });
 };
 
 module.exports = updateUserSetting;
