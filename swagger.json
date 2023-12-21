@@ -351,7 +351,6 @@
       }
     },
 
-
     "/api/user/weight": {
       "post": {
         "tags": ["User"],
@@ -494,7 +493,6 @@
         }
       }
     }
-  
   },
 
   "components": {
@@ -571,7 +569,7 @@
           },
           "avatarURL": {
             "type": "string",
-            "example": "//www.gravatar.com/avatar/2eea8cfac156ef8898796b1dcd1a84e7"
+            "example": "//www.gravatar.com/avatar/b2e1e89c9ca5c379490250f163e402b8"
           },
           "token": {
             "type": "string",
@@ -696,7 +694,7 @@
           },
           "token": {
             "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2YyZmQ2MjAyNGNkMzFjYTNhZDYzNyIsImlhdCI6MTcwMjgzNDMwMCwiZXhwIjoxNzAzNjYyMzAwfQ.Ch5pvle9Oon-r1eErOkd4J7qYY8yAcyhHyhdongUTy4"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODQ0MDk5ZjgyZTc1ZDMwODcxNWEwMiIsImlhdCI6MTcwMzE3MTIyNywiZXhwIjoxNzAzOTk5MjI3fQ.z1OaNW9U46dDKQM7rZ7aOqnoDhXdLMztlCAExd3K4xI"
           }
         }
       },
@@ -715,7 +713,7 @@
           },
           "password": {
             "type": "string",
-            "example": "Uakgb_J5m9g-0JDMbcJqLJ"
+            "example": "$2b$10$PRg4La5DiFnUA8C9xB02Z.0XSHmG.H4T1Z91koCTdeNzkV3yhjrFi"
           }
         }
       },
@@ -738,15 +736,15 @@
         "type": "object",
         "required": [
           "user",
-          "recommendedCalories",
-          "caloriesToday",
           "recommendedWater",
           "waterToday",
-          "recommendedFood",
+          "recommendedCalories",
+          "caloriesToday",
           "breakfastSumNutrientsToday",
           "lunchtSumNutrientsToday",
           "dinnerSumNutrientsToday",
-          "snackSumNutrientsToday"
+          "snackSumNutrientsToday",
+          "recommendedFood"
         ],
         "properties": {
           "code": {
@@ -773,7 +771,7 @@
               },
               "avatarURL": {
                 "type": "string",
-                "example": "//www.gravatar.com/avatar/2eea8cfac156ef8898796b1dcd1a84e7"
+                "example": "https://res.cloudinary.com/dz0edwubh/image/upload/v1703167535/avatars/bok1n6coe1idlcjzkei6.jpg"
               },
               "age": {
                 "type": "integer",
@@ -798,6 +796,24 @@
               "yourGoal": {
                 "type": "string",
                 "example": "lose fat"
+              }
+            }
+          },
+          "recommendedWater": {
+            "type": "integer",
+            "example": 2500
+          },
+          "waterToday": {
+            "type": "object",
+            "required": ["water", "date"],
+            "properties": {
+              "water": {
+                "type": "integer",
+                "example": 2400
+              },
+              "date": {
+                "type": "string",
+                "example": "2023.12.19"
               }
             }
           },
@@ -849,24 +865,7 @@
               }
             }
           },
-          "recommendedWater": {
-            "type": "integer",
-            "example": 2500
-          },
-          "waterToday": {
-            "type": "object",
-            "required": ["water", "date"],
-            "properties": {
-              "water": {
-                "type": "integer",
-                "example": 2400
-              },
-              "date": {
-                "type": "string",
-                "example": "2023.12.19"
-              }
-            }
-          },
+          
           "recommendedFood": {
             "type": "array",
             "items": {
