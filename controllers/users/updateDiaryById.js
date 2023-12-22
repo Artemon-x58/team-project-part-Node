@@ -55,10 +55,10 @@ const updateDiaryById = async (req, res) => {
     date
   );
 
-  const promise = await NutrientsPerDay.findOne({
+  const nutrientsPerDay = await NutrientsPerDay.findOne({
     owner,
   }).exec();
-  if (!promise) {
+  if (!nutrientsPerDay) {
     throw HttpError(404, "Nutrients not found");
   }
 
@@ -69,9 +69,11 @@ const updateDiaryById = async (req, res) => {
 
   res.json({
     [meals]: {
-      carbohydrates: promise[meals].carbohydrates,
-      protein: promise[meals].protein,
-      fat: promise[meals].fat,
+      carbohydrates: parseFloat(
+        nutrientsPerDay[meals].carbohydrates.toFixed(2)
+      ),
+      protein: parseFloat(nutrientsPerDay[meals].protein.toFixed(2)),
+      fat: parseFloat(nutrientsPerDay[meals].fat.toFixed(2)),
     },
     newListMeals: newListMeals[meals],
   });

@@ -15,7 +15,7 @@ const updateUserSetting = async (req, res) => {
   updateWaterValue(id, weight, kef);
   updateWeightValue(id, weight);
   updateCalories(id, gender, weight, height, kef, age, yourGoal);
-  res.status(200).json({ data: { name, weight, kef, gender, height, age } });
+  res.status(200).json({ name, weight, kef, gender, height, age });
 };
 
 module.exports = updateUserSetting;

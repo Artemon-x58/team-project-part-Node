@@ -8,7 +8,7 @@ const recommendedFood = async (req, res) => {
     throw HttpError(404, "RecommendedFood not found");
   }
 
-  res.status(200).json({ code: 200, allRecommendedFood });
+  res.status(200).json({ allRecommendedFood });
 };
 
 module.exports = recommendedFood;

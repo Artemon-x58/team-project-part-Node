@@ -68,7 +68,6 @@ const deleteDiary = async (req, res) => {
       protein: parseFloat(nutrientsPerDay[meals].protein.toFixed(2)),
       fat: parseFloat(nutrientsPerDay[meals].fat.toFixed(2)),
     },
-    newListMeals: [],
   });
 };
 
