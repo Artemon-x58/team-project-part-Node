@@ -34,21 +34,28 @@ const statistics = async (req, res) => {
     throw HttpError(404, "Water not found");
   }
 
-  const caloriesPerDayThisMonth = perDayThisMonth(caloriesAndDate, monthNumber);
-  const weightPerDayThisMonth = perDayThisMonth(weightAndDate, monthNumber);
-  const waterPerDayThisMonth = perDayThisMonth(waterAndDate, monthNumber);
+  const caloriesPerDayThisMonth = perDayThisMonth(
+    caloriesAndDate,
+    monthNumber
+  ).map((item) => parseFloat(item.calories.toFixed(2)));
+  const weightPerDayThisMonth = perDayThisMonth(weightAndDate, monthNumber).map(
+    (item) => parseFloat(item.weight.toFixed(2))
+  );
+  const waterPerDayThisMonth = perDayThisMonth(waterAndDate, monthNumber).map(
+    (item) => parseFloat(item.water.toFixed(2))
+  );
 
-  const averageCalories = calculateAverage(caloriesPerDayThisMonth, "calories");
-  const averageWeight = calculateAverage(weightPerDayThisMonth, "weight");
-  const averageWater = calculateAverage(waterPerDayThisMonth, "water");
+  const averageCalories = calculateAverage(caloriesPerDayThisMonth);
+  const averageWeight = calculateAverage(weightPerDayThisMonth);
+  const averageWater = calculateAverage(waterPerDayThisMonth);
 
   res.json({
-    averageCalories,
-    averageWeight,
-    averageWater,
-    caloriesPerDayThisMonth,
-    weightPerDayThisMonth,
-    waterPerDayThisMonth,
+    averageCalories: parseFloat(averageCalories.toFixed(2)),
+    averageWeight: parseFloat(averageWeight.toFixed(2)),
+    averageWater: parseFloat(averageWater.toFixed(2)),
+    caloriesPerDayThisMonth: caloriesPerDayThisMonth,
+    weightPerDayThisMonth: weightPerDayThisMonth,
+    waterPerDayThisMonth: waterPerDayThisMonth,
   });
 };
 module.exports = statistics;
