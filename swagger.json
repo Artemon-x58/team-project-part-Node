@@ -45,7 +45,7 @@
         ],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - integer, User`s age,\n\n**weight** - integer, User`s weight,\n\n**height** - integer, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - integer, User`s age,\n\n**weight** - number, User`s weight,\n\n**height** - number, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
           "content": {
             "application/json": {
               "schema": {
@@ -251,16 +251,27 @@
     "/api/user/avatars": {
       "patch": {
         "tags": ["User"],
-        "summary": "Change avatar on photo",
+        "summary": "Uploading a new avata",
         "parameters": [],
         "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**avatar** - string, User`s photo.",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeAvatar"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Data for the HomePage",
+            "description": "Sending a new avatar",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SendingUserData"
+                  "$ref": "#/components/schemas/NewAvatar"
                 }
               }
             }
@@ -296,7 +307,7 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - integer, User`s age,\n\n**weight** - integer, User`s weight,\n\n**height** - integer, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - integer, User`s age,\n\n**weight** - number, User`s weight,\n\n**height** - number, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender.",
           "content": {
             "application/json": {
               "schema": {
@@ -398,7 +409,7 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:**weight** - integer, User`s new weight.",
+          "description": "Description of request parameters:**weight** - number, User`s new weight.",
           "content": {
             "application/json": {
               "schema": {
@@ -487,7 +498,7 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:**meals** - string, meal time,\n\n**entries** - array, which includes:\n\n**title** - string, name of food,\n\n**calories** - integer, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
+          "description": "Description of request parameters:**meals** - string, meal time,\n\n**entries** - array, which includes:\n\n**title** - string, name of food,\n\n**calories** - number, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
           "content": {
             "application/json": {
               "schema": {
@@ -596,7 +607,7 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**meals** - string, meal time,\n\n**title** - string, name of food,\n\n**calories** - integer, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
+          "description": "Description of request parameters:\n\n**meals** - string, meal time,\n\n**title** - string, name of food,\n\n**calories** - number, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
           "content": {
             "application/json": {
               "schema": {
@@ -925,13 +936,13 @@
             "example": "30"
           },
           "weight": {
-            "type": "integer",
+            "type": "number",
             "minimum": 5,
             "maximum": 300,
             "example": "82"
           },
           "height": {
-            "type": "integer",
+            "type": "number",
             "minimum": 50,
             "maximum": 240,
             "example": "180"
@@ -1004,13 +1015,13 @@
             "example": "30"
           },
           "weight": {
-            "type": "integer",
+            "type": "number",
             "minimum": 5,
             "maximum": 300,
             "example": "80"
           },
           "height": {
-            "type": "integer",
+            "type": "number",
             "minimum": 50,
             "maximum": 240,
             "example": "180"
@@ -1043,7 +1054,7 @@
         "required": ["weight"],
         "properties": {
           "weight": {
-            "type": "integer",
+            "type": "number",
             "minimum": 5,
             "maximum": 300,
             "example": "81"
@@ -1077,7 +1088,7 @@
                   "example": "Greek Yogurt"
                 },
                 "calories": {
-                  "type": "integer",
+                  "type": "number",
                   "description": "Product calories",
                   "example": 171
                 },
@@ -1195,7 +1206,7 @@
         "required": ["water"],
         "properties": {
           "water": {
-            "type": "integer",
+            "type": "number",
             "example": 1000
           }
         }
@@ -1207,6 +1218,16 @@
           "meals": {
             "type": "string",
             "example": "december"
+          }
+        }
+      },
+      "ChangeAvatar": {
+        "type": "object",
+        "required": ["avatar"],
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "format": "binary"     
           }
         }
       },
@@ -1321,11 +1342,11 @@
                 "example": 30
               },
               "weight": {
-                "type": "integer",
+                "type": "number",
                 "example": 82
               },
               "height": {
-                "type": "integer",
+                "type": "number",
                 "example": 180
               },
               "kef": {
@@ -1369,15 +1390,15 @@
                 "example": 2300
               },
               "protein": {
-                "type": "integer",
+                "type": "number",
                 "example": 575
               },
               "fat": {
-                "type": "integer",
+                "type": "number",
                 "example": 460
               },
               "carbohydrates": {
-                "type": "integer",
+                "type": "number",
                 "example": 1265
               }
             }
@@ -1387,19 +1408,19 @@
             "required": ["calories", "date", "protein", "fat", "carbohydrates"],
             "properties": {
               "calories": {
-                "type": "integer",
+                "type": "number",
                 "example": 0
               },
               "protein": {
-                "type": "integer",
+                "type": "number",
                 "example": 0
               },
               "fat": {
-                "type": "integer",
+                "type": "number",
                 "example": 0
               },
               "carbohydrates": {
-                "type": "integer",
+                "type": "number",
                 "example": 0
               },
               "date": {
@@ -1413,7 +1434,7 @@
             "required": ["calories", "carbohydrates", "protein", "fat"],
             "properties": {
               "calories": {
-                "type": "integer",
+                "type": "number",
                 "description": "Calories consumed during the day",
                 "example": 0
               },
@@ -1439,7 +1460,7 @@
             "required": ["calories", "carbohydrates", "protein", "fat"],
             "properties": {
               "calories": {
-                "type": "integer",
+                "type": "number",
                 "description": "Calories consumed during the day",
                 "example": 0
               },
@@ -1465,7 +1486,7 @@
             "required": ["calories", "carbohydrates", "protein", "fat"],
             "properties": {
               "calories": {
-                "type": "integer",
+                "type": "number",
                 "description": "Calories consumed during the day",
                 "example": 0
               },
@@ -1491,7 +1512,7 @@
             "required": ["calories", "carbohydrates", "protein", "fat"],
             "properties": {
               "calories": {
-                "type": "integer",
+                "type": "number",
                 "description": "Calories consumed during the day",
                 "example": 0
               },
@@ -1546,7 +1567,7 @@
                   "example": "https://ftp.goit.study/img/you_health/Apples.png"
                 },
                 "calories": {
-                  "type": "integer",
+                  "type": "number",
                   "description": "Product calories",
                   "example": 52
                 },
@@ -1663,15 +1684,15 @@
                 "example": 2200
               },
               "protein": {
-                "type": "integer",
+                "type": "number",
                 "example": 440
               },
               "fat": {
-                "type": "integer",
+                "type": "number",
                 "example": 550
               },
               "carbohydrates": {
-                "type": "integer",
+                "type": "number",
                 "example": 1210
               }
             }
@@ -1688,7 +1709,7 @@
             "example": 200
           },
           "weight": {
-            "type": "integer",
+            "type": "number",
             "example": 81
           },
           "recommendedCalories": {
@@ -1700,15 +1721,15 @@
                 "example": 2200
               },
               "protein": {
-                "type": "integer",
+                "type": "number",
                 "example": 440
               },
               "fat": {
-                "type": "integer",
+                "type": "number",
                 "example": 550
               },
               "carbohydrates": {
-                "type": "integer",
+                "type": "number",
                 "example": 1210
               }
             }
@@ -2184,7 +2205,7 @@
             "example": 200
           },
           "averageCalories": {
-            "type": "integer",
+            "type": "number",
             "example": 2300
           },
           "averageWeight": {
@@ -2234,8 +2255,8 @@
               "type": "object",
               "required": ["weight", "date"],
               "properties": {
-                "calories": {
-                  "type": "integer",
+                "weight": {
+                  "type": "number",
                   "description": "Daily weight consumption",
                   "example": 80.7
                 },
@@ -2323,7 +2344,7 @@
               "example": "https://ftp.goit.study/img/you_health/Apples.png"
             },
             "calories": {
-              "type": "integer",
+              "type": "number",
               "description": "Product calories",
               "example": 52
             },
@@ -2400,6 +2421,21 @@
             }
           }
         ]
+      },
+      "NewAvatar": {
+        "type": "object",
+        "required": ["updateAvatar"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "updateAvatar": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/dz0edwubh/image/upload/v1703286739/avatars/pzuneox9ej9y4ckv9n7l.jpg"
+          }
+        }
       },
 
       "errorBadRequestResponse": {
@@ -2497,7 +2533,7 @@
               "example": "Greek Yogurt"
             },
             "calories": {
-              "type": "integer",
+              "type": "number",
               "description": "Product calories",
               "example": 171
             },
