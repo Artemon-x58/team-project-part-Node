@@ -9,10 +9,10 @@ const DairySchema = Joi.object({
   entries: Joi.array().items(
     Joi.object({
       title: Joi.string().required(),
-      calories: Joi.number().min(1).max(10000).required(),
-      carbohydrates: Joi.number().min(1).max(6000).required(),
-      protein: Joi.number().min(1).max(2000).required(),
-      fat: Joi.number().min(1).max(2000).required(),
+      calories: Joi.number().min(0).max(10000).required(),
+      carbohydrates: Joi.number().min(0).max(6000).required(),
+      protein: Joi.number().min(0).max(2000).required(),
+      fat: Joi.number().min(0).max(2000).required(),
     })
   ),
 });

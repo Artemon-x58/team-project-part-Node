@@ -53,11 +53,20 @@ const deleteDiary = async (req, res) => {
   const newCaloriesAndDate = caloriesAndDate[0];
 
   res.json({
-    newCaloriesAndDate,
+    newCaloriesAndDate: {
+      newCaloriesAndDate: {
+        calories: parseFloat(newCaloriesAndDate.calories.toFixed(2)),
+        carbohydrates: parseFloat(newCaloriesAndDate.carbohydrates.toFixed(2)),
+        protein: parseFloat(newCaloriesAndDate.protein.toFixed(2)),
+        fat: parseFloat(newCaloriesAndDate.fat.toFixed(2)),
+      },
+    },
     [meals]: {
-      carbohydrates: nutrientsPerDay[meals].carbohydrates,
-      protein: nutrientsPerDay[meals].protein,
-      fat: nutrientsPerDay[meals].fat,
+      carbohydrates: parseFloat(
+        nutrientsPerDay[meals].carbohydrates.toFixed(2)
+      ),
+      protein: parseFloat(nutrientsPerDay[meals].protein.toFixed(2)),
+      fat: parseFloat(nutrientsPerDay[meals].fat.toFixed(2)),
     },
     newListMeals: [],
   });
