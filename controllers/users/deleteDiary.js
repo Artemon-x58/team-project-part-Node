@@ -1,6 +1,6 @@
 const { deleteCaloriesToday } = require("../../calories");
 const sumObjectProperties = require("../../calories/sumObjectProperties");
-const { currentDate, HttpError } = require("../../helpers");
+const { currentDate, HttpError, funcToFixed } = require("../../helpers");
 const { Meals, NutrientsPerDay, Calories } = require("../../models");
 const { deleteNutrientsPerDay } = require("../../nutrients");
 
@@ -53,21 +53,8 @@ const deleteDiary = async (req, res) => {
   const newCaloriesAndDate = caloriesAndDate[0];
 
   res.json({
-    newCaloriesAndDate: {
-      newCaloriesAndDate: {
-        calories: parseFloat(newCaloriesAndDate.calories.toFixed(2)),
-        carbohydrates: parseFloat(newCaloriesAndDate.carbohydrates.toFixed(2)),
-        protein: parseFloat(newCaloriesAndDate.protein.toFixed(2)),
-        fat: parseFloat(newCaloriesAndDate.fat.toFixed(2)),
-      },
-    },
-    [meals]: {
-      carbohydrates: parseFloat(
-        nutrientsPerDay[meals].carbohydrates.toFixed(2)
-      ),
-      protein: parseFloat(nutrientsPerDay[meals].protein.toFixed(2)),
-      fat: parseFloat(nutrientsPerDay[meals].fat.toFixed(2)),
-    },
+    newCaloriesAndDate: funcToFixed(newCaloriesAndDate),
+    [meals]: funcToFixed(nutrientsPerDay[meals], true),
   });
 };
 

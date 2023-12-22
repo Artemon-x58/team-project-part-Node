@@ -6,6 +6,7 @@ const getMonthNumber = require("./getMonthNumber");
 const getMonthFromDate = require("./getMonthFromDate");
 const perDayThisMonth = require("./perDayThisMonth");
 const calculateAverage = require("./calculateAverage");
+const funcToFixed = require("./funcToFixed");
 
 module.exports = {
   HttpError,
@@ -16,4 +17,5 @@ module.exports = {
   getMonthFromDate,
   perDayThisMonth,
   calculateAverage,
+  funcToFixed,
 };
