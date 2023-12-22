@@ -1194,7 +1194,7 @@
         "type": "object",
         "required": ["water"],
         "properties": {
-          "meals": {
+          "water": {
             "type": "integer",
             "example": 1000
           }
