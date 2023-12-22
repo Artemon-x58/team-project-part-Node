@@ -1,5 +1,5 @@
 const { sumObjectProperties, addCaloriesToday } = require("../../calories");
-const { currentDate, HttpError } = require("../../helpers");
+const { currentDate, HttpError, funcToFixed } = require("../../helpers");
 const { Meals, Calories, NutrientsPerDay } = require("../../models");
 const { addNutrientsPerDay } = require("../../nutrients");
 
@@ -46,24 +46,12 @@ const addDiary = async (req, res) => {
   if (!nutrientsPerDay) {
     throw HttpError(404, "Nutrients not found");
   }
-
   res.status(201).json({
     newCaloriesAndDate: {
-      newCaloriesAndDate: {
-        calories: parseFloat(newCaloriesAndDate.calories.toFixed(2)),
-        carbohydrates: parseFloat(newCaloriesAndDate.carbohydrates.toFixed(2)),
-        protein: parseFloat(newCaloriesAndDate.protein.toFixed(2)),
-        fat: parseFloat(newCaloriesAndDate.fat.toFixed(2)),
-      },
+      newCaloriesAndDate: funcToFixed(newCaloriesAndDate),
     },
     [meals]: result[meals],
-    newSumNutrientsPerDay: {
-      carbohydrates: parseFloat(
-        nutrientsPerDay[meals].carbohydrates.toFixed(2)
-      ),
-      protein: parseFloat(nutrientsPerDay[meals].protein.toFixed(2)),
-      fat: parseFloat(nutrientsPerDay[meals].fat.toFixed(2)),
-    },
+    newSumNutrientsPerDay: funcToFixed(nutrientsPerDay[meals], true),
   });
 };
 
