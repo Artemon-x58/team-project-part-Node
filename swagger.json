@@ -9,7 +9,7 @@
     }
   },
   "consumes": ["application/json", "multipart/form-data"],
-  "produces": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
   "servers": [
     {
       "url": "http://localhost:5000",
@@ -19,7 +19,7 @@
   "tags": [
     { "name": "Auth", "description": "Authorization endpoints" },
     { "name": "User", "description": "User endpoints" },
-    { "name": "Food", "description": "recommended-food" }
+    { "name": "Food", "description": "Recommended food" }
   ],
 
   "paths": {
@@ -45,7 +45,7 @@
         ],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - integer, User`s age,\n\n**weight** - integer, User`s weight,\n\n**height** - integer, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
           "content": {
             "application/json": {
               "schema": {
@@ -55,7 +55,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Created session for existing user",
             "content": {
               "application/json": {
@@ -216,7 +216,7 @@
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "Date for the HomePage",
+            "description": "Data for the HomePage",
             "content": {
               "application/json": {
                 "schema": {
@@ -256,7 +256,7 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - string, User`s age,\n\n**weight** - string, User`s weight,\n\n**height** - string, User`s height,\n\n**kef** - string, User`s kef,\n\n**gender** - string, User`s gender.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - integer, User`s age,\n\n**weight** - integer, User`s weight,\n\n**height** - integer, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender.",
           "content": {
             "application/json": {
               "schema": {
@@ -323,6 +323,493 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NewGoalAndNewRecommended"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/weight": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Update user weight",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:**weight** - integer, User`s new weight.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CurrentUserWeight"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Information about the current weight of the User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendCurrentUserWeightRecommendedCaloriesAndWater"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/food-intake": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Information for user diary",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Date for the DiaryPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendUserDiary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["User"],
+        "summary": "Save information about the food consumed by the user for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:**meals** - string, meal time,\n\n**entries** - array, which includes:\n\n**title** - string, name of food,\n\n**calories** - integer, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformUserFood"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Data for the DiaryPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveInformInUserDiary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete information about the food consumed by the user for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:**meals** - string, meal time.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformDeleteUserFood"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the DiaryPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteInformInUserDiary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/food-intake/:id": {
+      "put": {
+        "tags": ["User"],
+        "operationId": "TransactionsController_updateTransaction",
+        "summary": "Update information about consumed food for a specific food by its identifier (id)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "id specific food"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**meals** - string, meal time,\n\n**title** - string, name of food,\n\n**calories** - integer, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformUserFoodById"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the DiaryPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateInformInUserDiaryById"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "operationId": "TransactionsController_deleteTransaction",
+        "summary": "Delete information about the food consumed by the user for the current date",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "id specific food"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:**meals** - string, meal time.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformDeleteUserFoodById"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the DiaryPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteInformInUserDiaryById"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/water-intake": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Save information about the user's water consumption for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**water** - integer, number of water (ml).",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformUserWater"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the HomePage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveInformUserWater"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete information about the user's water consumption for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "information about the user's water consumption has been removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteInformUserWater"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/statistics": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Save information about the user's water consumption for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**water** - integer, number of water (ml).",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformUserWater"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the HomePage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveInformUserWater"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }     
+    },
+    "/api/recommended-food": {
+      "get": {
+        "tags": ["Food"],
+        "summary": "List of recommended food",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "List of recommended food. Part of the list is shown. The entire list is located at: https://drive.google.com/file/d/1JDlPii3E6CDOH6b_7TFJrSJ98z5yiM-e/view",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListRecommendedFood"
                 }
               }
             }
@@ -426,7 +913,7 @@
           },
           "avatarURL": {
             "type": "string",
-            "example": "//www.gravatar.com/avatar/2eea8cfac156ef8898796b1dcd1a84e7"
+            "example": "//www.gravatar.com/avatar/b2e1e89c9ca5c379490250f163e402b8"
           },
           "token": {
             "type": "string",
@@ -463,15 +950,7 @@
       },
       "UserInformation": {
         "type": "object",
-        "required": [
-          "name",
-          "age",
-          "weight",
-          "height",
-          "kef",
-          "gender",
-          "yourGoal"
-        ],
+        "required": ["name", "age", "weight", "height", "kef", "gender"],
         "properties": {
           "name": {
             "type": "string",
@@ -505,11 +984,6 @@
             "type": "string",
             "enum": ["male", "female"],
             "example": "male"
-          },
-          "yourGoal": {
-            "type": "string",
-            "enum": ["lose fat", "maintain", "gain muscle"],
-            "example": "lose fat"
           }
         }
       },
@@ -524,6 +998,168 @@
           }
         }
       },
+      "CurrentUserWeight": {
+        "type": "object",
+        "required": ["weight"],
+        "properties": {
+          "weight": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 300,
+            "example": "81"
+          }
+        }
+      },
+      "InformUserFood": {
+        "type": "object",
+        "required": ["meals", "entries"],
+        "properties": {
+          "meals": {
+            "type": "string",
+            "enum": ["breakfast", "dinner", "lunch", "snack"],
+            "example": "breakfast"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "carbohydrates",
+                "protein",
+                "fat"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Name of food",
+                  "example": "Greek Yogurt"
+                },
+                "calories": {
+                  "type": "integer",
+                  "description": "Product calories",
+                  "example": 171
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "description": "Number of carbohydrates",
+                  "example": 10.44
+                },
+                "protein": {
+                  "type": "number",
+                  "description": "Number of protein",
+                  "example": 29
+                },
+                "fat": {
+                  "type": "number",
+                  "description": "Number of fat",
+                  "example": 1.16
+                }
+              }
+            },
+
+            "example": [
+              {
+                "title": "Greek Yogurt",
+                "calories": 171,
+                "carbohydrates": 10.44,
+                "protein": 29,
+                "fat": 1.16
+              },
+              {
+                "title": "Eggs",
+                "calories": 155,
+                "carbohydrates": 1,
+                "protein": 13,
+                "fat": 11
+              },
+              {
+                "title": "Bread",
+                "calories": 1331,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65
+              }
+            ]
+          }
+        }
+      },
+      "InformDeleteUserFood": {
+        "type": "object",
+        "required": ["meals"],
+        "properties": {
+          "meals": {
+            "type": "string",
+            "enum": ["breakfast", "dinner", "lunch", "snack"],
+            "example": "lunch"
+          }
+        }
+      },
+      "InformUserFoodById": {
+        "type": "object",
+        "required": [
+          "meals",
+          "title",
+          "calories",
+          "carbohydrates",
+          "protein",
+          "fat"
+        ],
+        "properties": {
+          "meals": {
+            "type": "string",
+            "enum": ["breakfast", "dinner", "lunch", "snack"],
+            "example": "snack"
+          },
+          "title": {
+            "type": "string",
+            "description": "Name of food",
+            "example": "Potatoes"
+          },
+          "calories": {
+            "type": "number",
+            "description": "Product calories",
+            "example": 231
+          },
+          "carbohydrates": {
+            "type": "number",
+            "description": "Number of carbohydrates",
+            "example": 48.9
+          },
+          "protein": {
+            "type": "number",
+            "description": "Number of protein",
+            "example": 6
+          },
+          "fat": {
+            "type": "number",
+            "description": "Number of fat",
+            "example": 1.2
+          }
+        }
+      },
+      "InformDeleteUserFoodById": {
+        "type": "object",
+        "required": ["meals"],
+        "properties": {
+          "meals": {
+            "type": "string",
+            "enum": ["breakfast", "dinner", "lunch", "snack"],
+            "example": "snack"
+          }
+        }
+      },
+      "InformUserWater": {
+        "type": "object",
+        "required": ["water"],
+        "properties": {
+          "meals": {
+            "type": "integer",
+            "example": 1000
+          }
+        }
+      },
 
       "UserRegistration": {
         "type": "object",
@@ -532,7 +1168,7 @@
           "code": {
             "type": "integer",
             "description": "Positive status code",
-            "example": 200
+            "example": 201
           },
           "message": {
             "type": "string",
@@ -551,7 +1187,7 @@
           },
           "token": {
             "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2YyZmQ2MjAyNGNkMzFjYTNhZDYzNyIsImlhdCI6MTcwMjgzNDMwMCwiZXhwIjoxNzAzNjYyMzAwfQ.Ch5pvle9Oon-r1eErOkd4J7qYY8yAcyhHyhdongUTy4"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODRjOWRkZWU1ZjM0NzU4MGNiZDQ2NiIsImlhdCI6MTcwMzIwMTg0NCwiZXhwIjoxNzA0MDI5ODQ0fQ.w4Cdc-jG9C7mA0l47v-iHRk8Z7a_BvlEFDVMOg8VLtA"
           }
         }
       },
@@ -570,7 +1206,7 @@
           },
           "password": {
             "type": "string",
-            "example": "Uakgb_J5m9g-0JDMbcJqLJ"
+            "example": "$2b$10$nEY72GRp4lbObt32LASiHuxZh81zkjkEa9Q3YzkshoihJmbQF2oSu"
           }
         }
       },
@@ -593,15 +1229,15 @@
         "type": "object",
         "required": [
           "user",
-          "recommendedCalories",
-          "caloriesToday",
           "recommendedWater",
           "waterToday",
-          "recommendedFood",
+          "recommendedCalories",
+          "caloriesToday",
           "breakfastSumNutrientsToday",
           "lunchtSumNutrientsToday",
           "dinnerSumNutrientsToday",
-          "snackSumNutrientsToday"
+          "snackSumNutrientsToday",
+          "recommendedFood"
         ],
         "properties": {
           "code": {
@@ -628,7 +1264,7 @@
               },
               "avatarURL": {
                 "type": "string",
-                "example": "//www.gravatar.com/avatar/2eea8cfac156ef8898796b1dcd1a84e7"
+                "example": "//www.gravatar.com/avatar/c67aaad38e88dc0904689dcb7bee4df3"
               },
               "age": {
                 "type": "integer",
@@ -656,54 +1292,6 @@
               }
             }
           },
-          "recommendedCalories": {
-            "type": "object",
-            "required": ["calories", "protein", "fat", "carbohydrates"],
-            "properties": {
-              "calories": {
-                "type": "integer",
-                "example": 2260
-              },
-              "protein": {
-                "type": "integer",
-                "example": 560
-              },
-              "fat": {
-                "type": "integer",
-                "example": 450
-              },
-              "carbohydrates": {
-                "type": "integer",
-                "example": 1250
-              }
-            }
-          },
-          "caloriesToday": {
-            "type": "object",
-            "required": ["calories", "date", "protein", "fat", "carbohydrates"],
-            "properties": {
-              "calories": {
-                "type": "integer",
-                "example": 2250
-              },
-              "protein": {
-                "type": "integer",
-                "example": 560
-              },
-              "fat": {
-                "type": "integer",
-                "example": 450
-              },
-              "carbohydrates": {
-                "type": "integer",
-                "example": 1240
-              },
-              "date": {
-                "type": "string",
-                "example": "2023.12.19"
-              }
-            }
-          },
           "recommendedWater": {
             "type": "integer",
             "example": 2500
@@ -714,11 +1302,163 @@
             "properties": {
               "water": {
                 "type": "integer",
-                "example": 2400
+                "example": 0
               },
               "date": {
                 "type": "string",
                 "example": "2023.12.19"
+              }
+            }
+          },
+          "recommendedCalories": {
+            "type": "object",
+            "required": ["calories", "protein", "fat", "carbohydrates"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "example": 2300
+              },
+              "protein": {
+                "type": "integer",
+                "example": 575
+              },
+              "fat": {
+                "type": "integer",
+                "example": 460
+              },
+              "carbohydrates": {
+                "type": "integer",
+                "example": 1265
+              }
+            }
+          },
+          "caloriesToday": {
+            "type": "object",
+            "required": ["calories", "date", "protein", "fat", "carbohydrates"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "example": 0
+              },
+              "protein": {
+                "type": "integer",
+                "example": 0
+              },
+              "fat": {
+                "type": "integer",
+                "example": 0
+              },
+              "carbohydrates": {
+                "type": "integer",
+                "example": 0
+              },
+              "date": {
+                "type": "string",
+                "example": "2023.12.19"
+              }
+            }
+          },
+          "breakfastSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 0
+              },
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 0
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0
+              }
+            }
+          },
+          "lunchtSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 0
+              },
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 0
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0
+              }
+            }
+          },
+          "dinnerSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 0
+              },
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 0
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0
+              }
+            }
+          },
+          "snackSumNutrientsToday": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "description": "Calories consumed during the day",
+                "example": 0
+              },
+              "carbohydrates": {
+                "type": "number",
+                "description": "Carbohydrates content in the product",
+                "example": 0
+              },
+              "protein": {
+                "type": "number",
+                "description": "Protein content in the product",
+                "example": 0
+              },
+              "fat": {
+                "type": "number",
+                "description": "Fat content in the product",
+                "example": 0
               }
             }
           },
@@ -785,134 +1525,54 @@
             },
             "example": [
               {
-                "_id": "657d8520ab6cfb355180b1d6",
-                "name": "Apples",
+                "_id": "657d8520ab6cfb355180b1e8",
+                "name": "Avocado",
                 "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Apples.png",
-                "calories": 52,
+                "img": "https://ftp.goit.study/img/you_health/Avocado.png",
+                "calories": 160,
                 "nutrition": {
-                  "carbohydrates": 14,
-                  "protein": 0.3,
-                  "fat": 0.2
+                  "carbohydrates": 8.5,
+                  "protein": 2,
+                  "fat": 14.7
                 }
               },
               {
-                "_id": "657d8520ab6cfb355180b1d7",
-                "name": "Strawberries",
+                "_id": "657d8520ab6cfb355180b1e9",
+                "name": "Beans",
                 "amount": "100 g",
-                "img": "https://ftp.goit.study/img/you_health/Strawberries.png",
-                "calories": 32,
+                "img": "https://ftp.goit.study/img/you_health/Beans.png",
+                "calories": 123,
                 "nutrition": {
-                  "carbohydrates": 7.68,
-                  "protein": 0.67,
-                  "fat": 0.3
+                  "carbohydrates": 22.3,
+                  "protein": 8.7,
+                  "fat": 0.4
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1ea",
+                "name": "Nuts",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Nuts.png",
+                "calories": 650,
+                "nutrition": {
+                  "carbohydrates": 15,
+                  "protein": 22,
+                  "fat": 55
+                }
+              },
+              {
+                "_id": "657d8520ab6cfb355180b1eb",
+                "name": "Broccoli",
+                "amount": "100 g",
+                "img": "https://ftp.goit.study/img/you_health/Broccoli.png",
+                "calories": 34,
+                "nutrition": {
+                  "carbohydrates": 6.6,
+                  "protein": 2.8,
+                  "fat": 0.4
                 }
               }
             ]
-          },
-          "breakfastSumNutrientsToday": {
-            "type": "object",
-            "required": ["calories", "carbohydrates", "protein", "fat"],
-            "properties": {
-              "calories": {
-                "type": "integer",
-                "description": "Calories consumed during the day",
-                "example": 52
-              },
-              "carbohydrates": {
-                "type": "number",
-                "description": "Carbohydrates content in the product",
-                "example": 14
-              },
-              "protein": {
-                "type": "number",
-                "description": "Protein content in the product",
-                "example": 0.3
-              },
-              "fat": {
-                "type": "number",
-                "description": "Fat content in the product",
-                "example": 0.2
-              }
-            }
-          },
-          "lunchtSumNutrientsToday": {
-            "type": "object",
-            "required": ["calories", "carbohydrates", "protein", "fat"],
-            "properties": {
-              "calories": {
-                "type": "integer",
-                "description": "Calories consumed during the day",
-                "example": 52
-              },
-              "carbohydrates": {
-                "type": "number",
-                "description": "Carbohydrates content in the product",
-                "example": 14
-              },
-              "protein": {
-                "type": "number",
-                "description": "Protein content in the product",
-                "example": 0.3
-              },
-              "fat": {
-                "type": "number",
-                "description": "Fat content in the product",
-                "example": 0.2
-              }
-            }
-          },
-          "dinnerSumNutrientsToday": {
-            "type": "object",
-            "required": ["calories", "carbohydrates", "protein", "fat"],
-            "properties": {
-              "calories": {
-                "type": "integer",
-                "description": "Calories consumed during the day",
-                "example": 52
-              },
-              "carbohydrates": {
-                "type": "number",
-                "description": "Carbohydrates content in the product",
-                "example": 14
-              },
-              "protein": {
-                "type": "number",
-                "description": "Protein content in the product",
-                "example": 0.3
-              },
-              "fat": {
-                "type": "number",
-                "description": "Fat content in the product",
-                "example": 0.2
-              }
-            }
-          },
-          "snackSumNutrientsToday": {
-            "type": "object",
-            "required": ["calories", "carbohydrates", "protein", "fat"],
-            "properties": {
-              "calories": {
-                "type": "integer",
-                "description": "Calories consumed during the day",
-                "example": 52
-              },
-              "carbohydrates": {
-                "type": "number",
-                "description": "Carbohydrates content in the product",
-                "example": 14
-              },
-              "protein": {
-                "type": "number",
-                "description": "Protein content in the product",
-                "example": 0.3
-              },
-              "fat": {
-                "type": "number",
-                "description": "Fat content in the product",
-                "example": 0.2
-              }
-            }
           }
         }
       },
@@ -950,23 +1610,618 @@
             "properties": {
               "calories": {
                 "type": "integer",
-                "example": 2260
+                "example": 2200
               },
               "protein": {
                 "type": "integer",
-                "example": 680
+                "example": 440
               },
               "fat": {
                 "type": "integer",
-                "example": 450
+                "example": 550
               },
               "carbohydrates": {
                 "type": "integer",
-                "example": 1130
+                "example": 1210
               }
             }
           }
         }
+      },
+      "SendCurrentUserWeightRecommendedCaloriesAndWater": {
+        "type": "object",
+        "required": ["weight", "recommendedCalories", "recommendedWater"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "weight": {
+            "type": "integer",
+            "example": 81
+          },
+          "recommendedCalories": {
+            "type": "object",
+            "required": ["calories", "protein", "fat", "carbohydrates"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "example": 2200
+              },
+              "protein": {
+                "type": "integer",
+                "example": 440
+              },
+              "fat": {
+                "type": "integer",
+                "example": 550
+              },
+              "carbohydrates": {
+                "type": "integer",
+                "example": 1210
+              }
+            }
+          },
+          "recommendedWater": {
+            "type": "integer",
+            "example": 2400
+          }
+        }
+      },
+      "SendUserDiary": {
+        "type": "object",
+        "required": ["breakfast", "lunch", "dinner", "snack"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "breakfast": {
+            "schema": {
+              "$ref": "#/components/schemas/helperUserDiary"
+            },
+            "example": [
+              {
+                "title": "Greek Yogurt",
+                "calories": 171,
+                "carbohydrates": 10.44,
+                "protein": 29,
+                "fat": 1.16,
+                "_id": "6584dc0975aea1d71ea0c70a"
+              },
+              {
+                "title": "Eggs",
+                "calories": 155,
+                "carbohydrates": 1,
+                "protein": 13,
+                "fat": 11,
+                "_id": "6584dc0975aea1d71ea0c70b"
+              },
+              {
+                "title": "Bread",
+                "calories": 1331,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "6584dc0975aea1d71ea0c70c"
+              }
+            ]
+          },
+          "lunch": {
+            "schema": {
+              "$ref": "#/components/schemas/helperUserDiary"
+            },
+            "example": [
+              {
+                "title": "Apples",
+                "calories": 104,
+                "carbohydrates": 28,
+                "protein": 0.6,
+                "fat": 0.4,
+                "_id": "6585878abdeb519917cce7ef"
+              },
+              {
+                "title": "Strawberries",
+                "calories": 32,
+                "carbohydrates": 6,
+                "protein": 8.8,
+                "fat": 22,
+                "_id": "6585878abdeb519917cce7f0"
+              },
+              {
+                "title": "Nuts",
+                "calories": 130,
+                "carbohydrates": 3.84,
+                "protein": 0.34,
+                "fat": 0.15,
+                "_id": "6585878abdeb519917cce7f1"
+              }
+            ]
+          },
+          "dinner": {
+            "schema": {
+              "$ref": "#/components/schemas/helperUserDiary"
+            },
+            "example": [
+              {
+                "title": "Vegetable Soup",
+                "calories": 100,
+                "carbohydrates": 20,
+                "protein": 6,
+                "fat": 4,
+                "_id": "65857ad626d9770e434896cf"
+              },
+              {
+                "title": "Chicken Breast",
+                "calories": 248,
+                "carbohydrates": 1,
+                "protein": 46.5,
+                "fat": 5.4,
+                "_id": "65857ad626d9770e434896d0"
+              },
+              {
+                "title": "bread",
+                "calories": 133,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "65857ad626d9770e434896d1"
+              }
+            ]
+          },
+          "snack": {
+            "schema": {
+              "$ref": "#/components/schemas/helperUserDiary"
+            },
+            "example": [
+              {
+                "title": "Pock Chop",
+                "calories": 587.5,
+                "carbohydrates": 47,
+                "protein": 32,
+                "fat": 30.75,
+                "_id": "6585858fbdeb519917cce787"
+              },
+              {
+                "title": "Sweet Potatoes",
+                "calories": 258,
+                "carbohydrates": 60,
+                "protein": 4.8,
+                "fat": 0.3,
+                "_id": "6585858fbdeb519917cce788"
+              },
+              {
+                "title": "Tomatoes",
+                "calories": 44,
+                "carbohydrates": 8,
+                "protein": 2,
+                "fat": 0.4,
+                "_id": "6585858fbdeb519917cce789"
+              },
+              {
+                "title": "bread",
+                "calories": 133,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "6585858fbdeb519917cce78a"
+              }
+            ]
+          }
+        }
+      },
+      "SaveInformInUserDiary": {
+        "type": "object",
+        "required": [
+          "newCaloriesAndDate",
+          "breakfast",
+          "newSumNutrientsPerDay"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 201
+          },
+          "newCaloriesAndDate": {
+            "type": "object",
+            "required": ["calories", "protein", "fat", "carbohydrates", "date"],
+            "properties": {
+              "calories": {
+                "type": "integer",
+                "example": 459
+              },
+              "protein": {
+                "type": "number",
+                "example": 46.45
+              },
+              "fat": {
+                "type": "number",
+                "example": 13.81
+              },
+              "carbohydrates": {
+                "type": "number",
+                "example": 34.79
+              }
+            }
+          },
+          "breakfast": {
+            "schema": {
+              "$ref": "#/components/schemas/helperUserDiary"
+            },
+            "example": [
+              {
+                "title": "Greek Yogurt",
+                "calories": 171,
+                "carbohydrates": 10.44,
+                "protein": 29,
+                "fat": 1.16,
+                "_id": "6584dc0975aea1d71ea0c70a"
+              },
+              {
+                "title": "Eggs",
+                "calories": 155,
+                "carbohydrates": 1,
+                "protein": 13,
+                "fat": 11,
+                "_id": "6584dc0975aea1d71ea0c70b"
+              },
+              {
+                "title": "Bread",
+                "calories": 1331,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "6584dc0975aea1d71ea0c70c"
+              }
+            ]
+          },
+          "newSumNutrientsPerDay": {
+            "type": "object",
+            "required": ["protein", "fat", "carbohydrates"],
+            "properties": {
+              "protein": {
+                "type": "number",
+                "example": 46.45
+              },
+              "fat": {
+                "type": "number",
+                "example": 13.81
+              },
+              "carbohydrates": {
+                "type": "number",
+                "example": 34.79
+              }
+            }
+          }
+        }
+      },
+      "DeleteInformInUserDiary": {
+        "type": "object",
+        "required": ["newCaloriesAndDate", "lunch"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "newCaloriesAndDate": {
+            "type": "object",
+            "required": ["calories", "protein", "fat", "carbohydrates"],
+            "properties": {
+              "calories": {
+                "type": "number",
+                "example": 1962.5
+              },
+              "protein": {
+                "type": "number",
+                "example": 146.65
+              },
+              "fat": {
+                "type": "number",
+                "example": 57.96
+              },
+              "carbohydrates": {
+                "type": "number",
+                "example": 217.49
+              }
+            }
+          },
+          "lunch": {
+            "type": "object",
+            "required": ["protein", "fat", "carbohydrates"],
+            "properties": {
+              "protein": {
+                "type": "number",
+                "example": 0
+              },
+              "fat": {
+                "type": "number",
+                "example": 0
+              },
+              "carbohydrates": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          }
+        }
+      },
+      "UpdateInformInUserDiaryById": {
+        "type": "object",
+        "required": ["snack", "newListMeals"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "snack": {
+            "type": "object",
+            "required": ["protein", "fat", "carbohydrates"],
+            "properties": {
+              "protein": {
+                "type": "number",
+                "example": 44.45
+              },
+              "fat": {
+                "type": "number",
+                "example": 34
+              },
+              "carbohydrates": {
+                "type": "number",
+                "example": 127.25
+              }
+            }
+          },
+          "newListMeals": {
+            "schema": {
+              "$ref": "#/components/schemas/helperUserDiary"
+            },
+            "example": [
+              {
+                "title": "Pock Chop",
+                "calories": 587.5,
+                "carbohydrates": 47,
+                "protein": 32,
+                "fat": 30.75,
+                "_id": "6585858fbdeb519917cce787"
+              },
+              {
+                "title": "Potatoes",
+                "calories": 231,
+                "carbohydrates": 48.9,
+                "protein": 6,
+                "fat": 1.2,
+                "_id": "6585858fbdeb519917cce788"
+              },
+              {
+                "title": "Tomatoes",
+                "calories": 44,
+                "carbohydrates": 8,
+                "protein": 2,
+                "fat": 0.4,
+                "_id": "6585858fbdeb519917cce789"
+              },
+              {
+                "title": "bread",
+                "calories": 133,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "6585858fbdeb519917cce78a"
+              }
+            ]
+          }
+        }
+      },
+      "DeleteInformInUserDiaryById": {
+        "type": "object",
+        "required": ["snack", "newListMeals"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "snack": {
+            "type": "object",
+            "required": ["protein", "fat", "carbohydrates"],
+            "properties": {
+              "protein": {
+                "type": "number",
+                "example": 40
+              },
+              "fat": {
+                "type": "number",
+                "example": 32.35
+              },
+              "carbohydrates": {
+                "type": "number",
+                "example": 103.9
+              }
+            }
+          },
+          "newListMeals": {
+            "schema": {
+              "$ref": "#/components/schemas/helperUserDiary"
+            },
+            "example": [
+              {
+                "title": "Pock Chop",
+                "calories": 587.5,
+                "carbohydrates": 47,
+                "protein": 32,
+                "fat": 30.75,
+                "_id": "6585858fbdeb519917cce787"
+              },
+              {
+                "title": "Potatoes",
+                "calories": 231,
+                "carbohydrates": 48.9,
+                "protein": 6,
+                "fat": 1.2,
+                "_id": "6585858fbdeb519917cce788"
+              },
+              {
+                "title": "Tomatoes",
+                "calories": 44,
+                "carbohydrates": 8,
+                "protein": 2,
+                "fat": 0.4,
+                "_id": "6585858fbdeb519917cce789"
+              }
+            ]
+          }
+        }
+      },
+      "SaveInformUserWater": {
+        "type": "object",
+        "required": ["addedWater"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "addedWater": {
+            "type": "object",
+            "required": ["water", "date"],
+            "properties": {
+              "water": {
+                "type": "integer",
+                "example": 1000
+              },
+              "date": {
+                "type": "string",
+                "example": "2023.12.19"
+              }
+            }
+          }
+        }
+      },
+      "DeleteInformUserWater": {
+        "type": "object",
+        "required": ["water"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
+          },
+          "water": {
+            "type": "integer",
+            "example": 0
+          }
+        }
+      },
+
+      "ListRecommendedFood": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "name", "amount", "img", "calories", "nutrition"],
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Product id ('mongoose')",
+              "example": "657d8520ab6cfb355180b1d6"
+            },
+            "name": {
+              "type": "string",
+              "description": "Product name",
+              "example": "Apples"
+            },
+            "amount": {
+              "type": "string",
+              "description": "Product amount",
+              "example": "100 g"
+            },
+            "img": {
+              "type": "string",
+              "description": "Product img",
+              "example": "https://ftp.goit.study/img/you_health/Apples.png"
+            },
+            "calories": {
+              "type": "integer",
+              "description": "Product calories",
+              "example": 52
+            },
+            "nutrition": {
+              "type": "object",
+              "required": ["carbohydrates", "protein", "fat"],
+              "properties": {
+                "carbohydrates": {
+                  "type": "number",
+                  "description": "Carbohydrates content in the product",
+                  "example": 14
+                },
+                "protein": {
+                  "type": "number",
+                  "description": "Protein content in the product",
+                  "example": 0.3
+                },
+                "fat": {
+                  "type": "number",
+                  "description": "Fat content in the product",
+                  "example": 0.2
+                }
+              }
+            }
+          }
+        },
+        "example": [
+          {
+            "_id": "657d8520ab6cfb355180b1e8",
+            "name": "Avocado",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Avocado.png",
+            "calories": 160,
+            "nutrition": {
+              "carbohydrates": 8.5,
+              "protein": 2,
+              "fat": 14.7
+            }
+          },
+          {
+            "_id": "657d8520ab6cfb355180b1e9",
+            "name": "Beans",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Beans.png",
+            "calories": 123,
+            "nutrition": {
+              "carbohydrates": 22.3,
+              "protein": 8.7,
+              "fat": 0.4
+            }
+          },
+          {
+            "_id": "657d8520ab6cfb355180b1ea",
+            "name": "Nuts",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Nuts.png",
+            "calories": 650,
+            "nutrition": {
+              "carbohydrates": 15,
+              "protein": 22,
+              "fat": 55
+            }
+          },
+          {
+            "_id": "657d8520ab6cfb355180b1eb",
+            "name": "Broccoli",
+            "amount": "100 g",
+            "img": "https://ftp.goit.study/img/you_health/Broccoli.png",
+            "calories": 34,
+            "nutrition": {
+              "carbohydrates": 6.6,
+              "protein": 2.8,
+              "fat": 0.4
+            }
+          }
+        ]
       },
 
       "errorBadRequestResponse": {
@@ -1041,6 +2296,53 @@
             "type": "string",
             "description": "Error message",
             "example": "Email already in us"
+          }
+        }
+      },
+
+      "helperUserDiary": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "title",
+            "calories",
+            "carbohydrates",
+            "protein",
+            "fat",
+            "_id"
+          ],
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Name of food",
+              "example": "Greek Yogurt"
+            },
+            "calories": {
+              "type": "integer",
+              "description": "Product calories",
+              "example": 171
+            },
+            "carbohydrates": {
+              "type": "number",
+              "description": "Number of carbohydrates",
+              "example": 10.44
+            },
+            "protein": {
+              "type": "number",
+              "description": "Number of protein",
+              "example": 29
+            },
+            "fat": {
+              "type": "number",
+              "description": "Number of fat",
+              "example": 1.16
+            },
+            "_id": {
+              "type": "string",
+              "description": "id (mongodb) of fat ",
+              "example": "6584dc0975aea1d71ea0c70a"
+            }
           }
         }
       }
