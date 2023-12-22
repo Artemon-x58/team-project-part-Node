@@ -676,7 +676,7 @@
         },
         "responses": {
           "200": {
-            "description": "Data for the DiaryPage",
+            "description": "Data for the HomePage",
             "content": {
               "application/json": {
                 "schema": {
@@ -709,35 +709,16 @@
       },
       "delete": {
         "tags": ["User"],
-        "summary": "Delete information about the food consumed by the user for the current date",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "type": "string",
-            "description": "id specific food"
-          }
-        ],
+        "summary": "Delete information about the user's water consumption for the current date",
+        "parameters": [],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "description": "Description of request parameters:**meals** - string, meal time.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InformDeleteUserFoodById"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "Data for the DiaryPage",
+            "description": "information about the user's water consumption has been removed",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteInformInUserDiaryById"
+                  "$ref": "#/components/schemas/DeleteInformUserWater"
                 }
               }
             }
@@ -765,7 +746,57 @@
         }
       }
     },
-
+    "/api/user/statistics": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Save information about the user's water consumption for the current date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**water** - integer, number of water (ml).",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformUserWater"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data for the HomePage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveInformUserWater"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      }     
+    },
     "/api/recommended-food": {
       "get": {
         "tags": ["Food"],
@@ -1110,9 +1141,7 @@
       },
       "InformDeleteUserFoodById": {
         "type": "object",
-        "required": [
-          "meals"
-        ],
+        "required": ["meals"],
         "properties": {
           "meals": {
             "type": "string",
@@ -1123,12 +1152,10 @@
       },
       "InformUserWater": {
         "type": "object",
-        "required": [
-          "water"
-        ],
+        "required": ["water"],
         "properties": {
           "meals": {
-            "type": "integer",           
+            "type": "integer",
             "example": 1000
           }
         }
@@ -2052,69 +2079,41 @@
       },
       "SaveInformUserWater": {
         "type": "object",
-        "required": ["snack", "newListMeals"],
+        "required": ["addedWater"],
         "properties": {
           "code": {
             "type": "integer",
             "description": "Positive status code",
             "example": 200
           },
-          "snack": {
+          "addedWater": {
             "type": "object",
-            "required": ["protein", "fat", "carbohydrates"],
+            "required": ["water", "date"],
             "properties": {
-              "protein": {
-                "type": "number",
-                "example": 44.45
+              "water": {
+                "type": "integer",
+                "example": 1000
               },
-              "fat": {
-                "type": "number",
-                "example": 34
-              },
-              "carbohydrates": {
-                "type": "number",
-                "example": 127.25
+              "date": {
+                "type": "string",
+                "example": "2023.12.19"
               }
             }
+          }
+        }
+      },
+      "DeleteInformUserWater": {
+        "type": "object",
+        "required": ["water"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
           },
-          "newListMeals": {
-            "schema": {
-              "$ref": "#/components/schemas/helperUserDiary"
-            },
-            "example": [
-              {
-                "title": "Pock Chop",
-                "calories": 587.5,
-                "carbohydrates": 47,
-                "protein": 32,
-                "fat": 30.75,
-                "_id": "6585858fbdeb519917cce787"
-              },
-              {
-                "title": "Potatoes",
-                "calories": 231,
-                "carbohydrates": 48.9,
-                "protein": 6,
-                "fat": 1.2,
-                "_id": "6585858fbdeb519917cce788"
-              },
-              {
-                "title": "Tomatoes",
-                "calories": 44,
-                "carbohydrates": 8,
-                "protein": 2,
-                "fat": 0.4,
-                "_id": "6585858fbdeb519917cce789"
-              },
-              {
-                "title": "bread",
-                "calories": 133,
-                "carbohydrates": 23.35,
-                "protein": 4.45,
-                "fat": 1.65,
-                "_id": "6585858fbdeb519917cce78a"
-              }
-            ]
+          "water": {
+            "type": "integer",
+            "example": 0
           }
         }
       },
