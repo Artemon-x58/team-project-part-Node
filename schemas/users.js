@@ -15,7 +15,7 @@ const registerAndLoginSchema = Joi.object({
     ),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
-  age: Joi.number().min(1).max(110).required(),
+  age: Joi.number().integer().min(1).max(110).required(),
   weight: Joi.number().min(5).max(300).required(),
   height: Joi.number().min(50).max(240).required(),
   kef: Joi.number()
