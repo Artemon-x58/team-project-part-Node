@@ -65,7 +65,7 @@ const taskEveryDayAtMidnight = (owner) => {
     ).exec();
   };
 
-  cron.schedule("*/10 * * * * *", taskEvery10Seconds);
+  cron.schedule("0 0 * * *", taskEvery10Seconds);
 };
 
 //  "*/10 * * * * *"
