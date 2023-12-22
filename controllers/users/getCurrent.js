@@ -80,7 +80,12 @@ const getCurrent = async (req, res) => {
     recommendedWater,
     waterToday,
     recommendedCalories,
-    caloriesToday,
+    caloriesToday: {
+      calories: parseFloat(caloriesToday.calories.toFixed(2)),
+      carbohydrates: parseFloat(caloriesToday.carbohydrates.toFixed(2)),
+      protein: parseFloat(caloriesToday.protein.toFixed(2)),
+      fat: parseFloat(caloriesToday.fat.toFixed(2)),
+    },
     breakfastSumNutrientsToday: breakfast,
     lunchtSumNutrientsToday: lunch,
     dinnerSumNutrientsToday: dinner,

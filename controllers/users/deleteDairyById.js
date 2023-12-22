@@ -47,9 +47,11 @@ const deleteDairyById = async (req, res) => {
 
   res.json({
     [meals]: {
-      carbohydrates: nutrientsPerDay[meals].carbohydrates,
-      protein: nutrientsPerDay[meals].protein,
-      fat: nutrientsPerDay[meals].fat,
+      carbohydrates: parseFloat(
+        nutrientsPerDay[meals].carbohydrates.toFixed(2)
+      ),
+      protein: parseFloat(nutrientsPerDay[meals].protein.toFixed(2)),
+      fat: parseFloat(nutrientsPerDay[meals].fat.toFixed(2)),
     },
     newListMeals: newListMeals[meals],
   });
