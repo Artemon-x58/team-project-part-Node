@@ -11,6 +11,7 @@ const statistics = require("./statistics");
 const getCurrent = require("./getCurrent");
 const deleteDairyById = require("./deleteDairyById");
 const getDiary = require("./getDiary");
+const updateAvatar = require("./updateAvatar");
 
 module.exports = {
   waterEdit: ctrlWrapper(waterEdit),
@@ -25,4 +26,5 @@ module.exports = {
   getCurrent: ctrlWrapper(getCurrent),
   deleteDairyById: ctrlWrapper(deleteDairyById),
   getDiary: ctrlWrapper(getDiary),
+  updateAvatar: ctrlWrapper(updateAvatar),
 };
