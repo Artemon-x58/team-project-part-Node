@@ -16,7 +16,7 @@ const updateAvatar = async (req, res) => {
   const avatarURL = cloudinaryResult.secure_url;
   const result = await User.findByIdAndUpdate(_id, { avatarURL });
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "User not found");
   }
   res.json({
     avatarURL,

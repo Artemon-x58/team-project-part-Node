@@ -24,7 +24,7 @@ const addCaloriesToday = async (
   ).exec();
 
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 };
 

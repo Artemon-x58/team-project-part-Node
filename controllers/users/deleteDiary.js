@@ -18,7 +18,7 @@ const deleteDiary = async (req, res) => {
     }
   ).exec();
   if (!existingDiary) {
-    throw HttpError(404);
+    throw HttpError(404, "Meals not found");
   }
 
   const { calories, carbohydrates, protein, fat } = sumObjectProperties(
@@ -39,7 +39,7 @@ const deleteDiary = async (req, res) => {
     owner,
   }).exec();
   if (!nutrientsPerDay) {
-    throw HttpError(404);
+    throw HttpError(404, "Nutrients not found");
   }
 
   const { caloriesAndDate } = await Calories.findOne({
@@ -47,7 +47,7 @@ const deleteDiary = async (req, res) => {
     "caloriesAndDate.date": date,
   }).exec();
   if (!caloriesAndDate) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 
   const newCaloriesAndDate = caloriesAndDate[0];

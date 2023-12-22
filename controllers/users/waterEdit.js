@@ -14,7 +14,7 @@ const waterEdit = async (req, res) => {
     { new: true }
   );
   if (!updatedWater) {
-    throw HttpError(404);
+    throw HttpError(404, "Water not found");
   }
 
   const addedWater = updatedWater.waterAndDate.find(

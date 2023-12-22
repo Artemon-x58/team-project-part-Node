@@ -24,7 +24,7 @@ const getCurrent = async (req, res) => {
     owner,
   }).exec();
   if (!recommendedCalories || !caloriesAndDate) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
 
   const caloriesToday = caloriesAndDate.reduce((acc, item) => {
@@ -45,7 +45,7 @@ const getCurrent = async (req, res) => {
   }).exec();
 
   if (!recommendedWater || !waterAndDate) {
-    throw HttpError(404);
+    throw HttpError(404, "Water not found");
   }
 
   const waterToday = waterAndDate.reduce((acc, item) => {
@@ -60,7 +60,7 @@ const getCurrent = async (req, res) => {
 
   const recommendedFood = await RecommendedFood.find();
   if (!recommendedFood) {
-    throw HttpError(404);
+    throw HttpError(404, "RecommendedFood not found");
   }
 
   const recommendedFoodForMainPage = recommendedFood.slice(0, 4);
@@ -70,7 +70,7 @@ const getCurrent = async (req, res) => {
   }).exec();
 
   if (!diary) {
-    throw HttpError(404);
+    throw HttpError(404, "Nutrients not found");
   }
 
   const { breakfast, lunch, dinner, snack } = diary;

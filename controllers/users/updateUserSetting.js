@@ -9,7 +9,7 @@ const updateUserSetting = async (req, res) => {
     new: true,
   }).exec();
   if (!user) {
-    throw HttpError(404);
+    throw HttpError(404, "User not found");
   }
   const { id, name, weight, kef, gender, height, age, yourGoal } = user;
   updateWaterValue(id, weight, kef);

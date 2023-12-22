@@ -21,7 +21,7 @@ const updateDiaryById = async (req, res) => {
     }
   ).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Meals not found");
   }
 
   const oldProduct = result[meals].find(
@@ -59,12 +59,12 @@ const updateDiaryById = async (req, res) => {
     owner,
   }).exec();
   if (!promise) {
-    throw HttpError(404);
+    throw HttpError(404, "Nutrients not found");
   }
 
   const newListMeals = await Meals.findOne({ owner });
   if (!newListMeals) {
-    throw HttpError(404);
+    throw HttpError(404, "Meals not found");
   }
 
   res.json({

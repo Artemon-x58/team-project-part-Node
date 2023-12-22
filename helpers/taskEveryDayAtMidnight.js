@@ -10,7 +10,7 @@ const {
 const currentDate = require("./currentDate");
 
 const taskEveryDayAtMidnight = (owner) => {
-  const taskEvery10Seconds = async () => {
+  const taskEveryDay = async () => {
     const today = currentDate();
     await Water.findOneAndUpdate(
       { owner },
@@ -64,8 +64,8 @@ const taskEveryDayAtMidnight = (owner) => {
     ).exec();
   };
 
-  cron.schedule("0 0 * * *", taskEvery10Seconds);
+  cron.schedule("0 0 * * *", taskEveryDay);
 };
-
 //  "*/10 * * * * *"
+// "0 0 * * *"
 module.exports = taskEveryDayAtMidnight;

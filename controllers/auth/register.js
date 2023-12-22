@@ -5,8 +5,9 @@ const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
 const { initialWeightValue } = require("../../weight");
 const { initialCaloriesValue } = require("../../calories");
-const initialDiary = require("../../diary/initialDairy");
 const taskEveryDayAtMidnight = require("../../helpers/taskEveryDayAtMidnight");
+const initialDiary = require("../../diary/initialDairy");
+
 const { initialNutrientsPerDay } = require("../../nutrients");
 
 const register = async (req, res) => {
@@ -40,7 +41,7 @@ const register = async (req, res) => {
   });
 
   if (!newUser) {
-    throw HttpError(404);
+    throw HttpError(404, "User not found");
   }
 
   initialDiary(newUser.id);

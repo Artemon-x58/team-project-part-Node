@@ -5,7 +5,7 @@ const logOut = async (req, res) => {
   const { _id } = req.user;
   const result = await User.findByIdAndUpdate(_id, { token: "" }).exec();
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "User not found");
   }
   res.send({
     code: 204,

@@ -18,7 +18,7 @@ const addDiary = async (req, res) => {
     { new: true }
   );
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(404, "Meals not found");
   }
 
   const { calories, carbohydrates, protein, fat } =
@@ -33,7 +33,7 @@ const addDiary = async (req, res) => {
     .select("caloriesAndDate.$")
     .exec();
   if (!resultCaloriesToday) {
-    throw HttpError(404);
+    throw HttpError(404, "Calories not found");
   }
   const newCaloriesAndDate = resultCaloriesToday.caloriesAndDate[0];
 
@@ -44,7 +44,7 @@ const addDiary = async (req, res) => {
   }).exec();
 
   if (!nutrientsPerDay) {
-    throw HttpError(404);
+    throw HttpError(404, "Nutrients not found");
   }
 
   res.status(201).json({
