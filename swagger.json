@@ -1420,37 +1420,16 @@
       "SendUserDiary": {
         "type": "object",
         "required": [
-          "newCaloriesAndDate",
           "breakfast",
-          "newSumNutrientsPerDay"
+          "lunch",
+          "dinner",
+          "snack"
         ],
         "properties": {
           "code": {
             "type": "integer",
             "description": "Positive status code",
-            "example": 201
-          },
-          "newCaloriesAndDate": {
-            "type": "object",
-            "required": ["calories", "protein", "fat", "carbohydrates", "date"],
-            "properties": {
-              "calories": {
-                "type": "integer",
-                "example": 459
-              },
-              "protein": {
-                "type": "number",
-                "example": 46.45
-              },
-              "fat": {
-                "type": "number",
-                "example": 13.81
-              },
-              "carbohydrates": {
-                "type": "number",
-                "example": 34.79
-              }
-            }
+            "example": 200
           },
           "breakfast": {
             "type": "array",
@@ -1497,7 +1476,6 @@
                 }
               }
             },
-
             "example": [
               {
                 "title": "Greek Yogurt",
@@ -1525,23 +1503,221 @@
               }
             ]
           },
-          "newSumNutrientsPerDay": {
-            "type": "object",
-            "required": ["protein", "fat", "carbohydrates"],
-            "properties": {
-              "protein": {
-                "type": "number",
-                "example": 46.45
-              },
-              "fat": {
-                "type": "number",
-                "example": 13.81
-              },
-              "carbohydrates": {
-                "type": "number",
-                "example": 34.79
+          "lunch": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "carbohydrates",
+                "protein",
+                "fat",
+                "_id"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Name of food",
+                  "example": "Greek Yogurt"
+                },
+                "calories": {
+                  "type": "integer",
+                  "description": "Product calories",
+                  "example": 171
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "description": "Number of carbohydrates",
+                  "example": 10.44
+                },
+                "protein": {
+                  "type": "number",
+                  "description": "Number of protein",
+                  "example": 29
+                },
+                "fat": {
+                  "type": "number",
+                  "description": "Number of fat",
+                  "example": 1.16
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "id (mongodb) of fat ",
+                  "example": "6584dc0975aea1d71ea0c70a"
+                }
               }
-            }
+            },
+            "example": [
+              {
+                "title": "Greek Yogurt",
+                "calories": 171,
+                "carbohydrates": 10.44,
+                "protein": 29,
+                "fat": 1.16,
+                "_id": "6584dc0975aea1d71ea0c70a"
+              },
+              {
+                "title": "Eggs",
+                "calories": 155,
+                "carbohydrates": 1,
+                "protein": 13,
+                "fat": 11,
+                "_id": "6584dc0975aea1d71ea0c70b"
+              },
+              {
+                "title": "Bread",
+                "calories": 1331,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "6584dc0975aea1d71ea0c70c"
+              }
+            ]
+          },
+          "dinner": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "carbohydrates",
+                "protein",
+                "fat",
+                "_id"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Name of food",
+                  "example": "Greek Yogurt"
+                },
+                "calories": {
+                  "type": "integer",
+                  "description": "Product calories",
+                  "example": 171
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "description": "Number of carbohydrates",
+                  "example": 10.44
+                },
+                "protein": {
+                  "type": "number",
+                  "description": "Number of protein",
+                  "example": 29
+                },
+                "fat": {
+                  "type": "number",
+                  "description": "Number of fat",
+                  "example": 1.16
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "id (mongodb) of fat ",
+                  "example": "6584dc0975aea1d71ea0c70a"
+                }
+              }
+            },
+            "example": [
+              {
+                "title": "Greek Yogurt",
+                "calories": 171,
+                "carbohydrates": 10.44,
+                "protein": 29,
+                "fat": 1.16,
+                "_id": "6584dc0975aea1d71ea0c70a"
+              },
+              {
+                "title": "Eggs",
+                "calories": 155,
+                "carbohydrates": 1,
+                "protein": 13,
+                "fat": 11,
+                "_id": "6584dc0975aea1d71ea0c70b"
+              },
+              {
+                "title": "Bread",
+                "calories": 1331,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "6584dc0975aea1d71ea0c70c"
+              }
+            ]
+          },
+          "snack": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "title",
+                "calories",
+                "carbohydrates",
+                "protein",
+                "fat",
+                "_id"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Name of food",
+                  "example": "Greek Yogurt"
+                },
+                "calories": {
+                  "type": "integer",
+                  "description": "Product calories",
+                  "example": 171
+                },
+                "carbohydrates": {
+                  "type": "number",
+                  "description": "Number of carbohydrates",
+                  "example": 10.44
+                },
+                "protein": {
+                  "type": "number",
+                  "description": "Number of protein",
+                  "example": 29
+                },
+                "fat": {
+                  "type": "number",
+                  "description": "Number of fat",
+                  "example": 1.16
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "id (mongodb) of fat ",
+                  "example": "6584dc0975aea1d71ea0c70a"
+                }
+              }
+            },
+            "example": [
+              {
+                "title": "Greek Yogurt",
+                "calories": 171,
+                "carbohydrates": 10.44,
+                "protein": 29,
+                "fat": 1.16,
+                "_id": "6584dc0975aea1d71ea0c70a"
+              },
+              {
+                "title": "Eggs",
+                "calories": 155,
+                "carbohydrates": 1,
+                "protein": 13,
+                "fat": 11,
+                "_id": "6584dc0975aea1d71ea0c70b"
+              },
+              {
+                "title": "Bread",
+                "calories": 1331,
+                "carbohydrates": 23.35,
+                "protein": 4.45,
+                "fat": 1.65,
+                "_id": "6584dc0975aea1d71ea0c70c"
+              }
+            ]
           }
         }
       },
