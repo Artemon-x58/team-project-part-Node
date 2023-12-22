@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const { initialWaterValue } = require("../../water");
 const { initialWeightValue } = require("../../weight");
 const { initialCaloriesValue } = require("../../calories");
+const taskEveryDayAtMidnight = require("../../helpers/taskEveryDayAtMidnight");
 const initialDiary = require("../../diary/initialDairy");
 
 const { initialNutrientsPerDay } = require("../../nutrients");
@@ -57,7 +58,7 @@ const register = async (req, res) => {
     newUser.yourGoal
   );
 
-  // taskEveryDayAtMidnight(newUser.id);
+  taskEveryDayAtMidnight(newUser.id);
 
   res.status(201).json({
     code: 201,
