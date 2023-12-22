@@ -21,7 +21,7 @@ const waterEdit = async (req, res) => {
     (item) => item.date === today
   );
 
-  res.status(200).json({ data: addedWater });
+  res.status(200).json({ addedWater });
 };
 
 module.exports = waterEdit;
