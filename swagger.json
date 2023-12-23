@@ -27,22 +27,7 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User registration",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "avatarURL",
-            "required": true,
-            "type": "string",
-            "description": "Get an avatar from 'gravatar'"
-          },
-          {
-            "in": "query",
-            "name": "token",
-            "required": false,
-            "type": "string",
-            "description": "Default value is an empty string"
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "required": true,
           "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - integer, User`s age,\n\n**weight** - number, User`s weight,\n\n**height** - number, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
@@ -801,7 +786,15 @@
       "get": {
         "tags": ["User"],
         "summary": "Get the user's calorie, water and weight consumption statistics for the selected period",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "qwer",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "id specific food"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
@@ -910,8 +903,7 @@
           "height",
           "kef",
           "gender",
-          "yourGoal",
-          "avatarURL"
+          "yourGoal"
         ],
         "properties": {
           "name": {
@@ -961,14 +953,6 @@
             "type": "string",
             "enum": ["lose fat", "maintain", "gain muscle"],
             "example": "lose fat"
-          },
-          "avatarURL": {
-            "type": "string",
-            "example": "//www.gravatar.com/avatar/b2e1e89c9ca5c379490250f163e402b8"
-          },
-          "token": {
-            "type": "string",
-            "default": ""
           }
         }
       },
@@ -1227,7 +1211,7 @@
         "properties": {
           "avatar": {
             "type": "string",
-            "format": "binary"     
+            "format": "binary"
           }
         }
       },
