@@ -6,7 +6,7 @@ const { deleteNutrientsPerDay } = require("../../nutrients");
 
 const deleteDiary = async (req, res) => {
   const { id: owner } = req.user;
-  const { meals } = req.body;
+  const meals = req.query.meals;
   const date = currentDate();
 
   const existingDiary = await Meals.findOneAndUpdate(
