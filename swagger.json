@@ -236,7 +236,7 @@
     "/api/user/avatars": {
       "patch": {
         "tags": ["User"],
-        "summary": "Uploading a new avata",
+        "summary": "Uploading a new avatare",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -788,25 +788,15 @@
         "summary": "Get the user's calorie, water and weight consumption statistics for the selected period",
         "parameters": [
           {
-            "in": "qwer",
-            "name": "id",
+            "in": "query",
+            "name": "month",
             "required": true,
             "type": "string",
-            "description": "id specific food"
+            "description": "Selected month",
+            "example": "december"
           }
         ],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "description": "Description of request parameters:\n\n**month** - string, selected month.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SelectedMonth"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Data for the HomePage",
@@ -1192,16 +1182,6 @@
           "water": {
             "type": "number",
             "example": 1000
-          }
-        }
-      },
-      "SelectedMonth": {
-        "type": "object",
-        "required": ["month"],
-        "properties": {
-          "meals": {
-            "type": "string",
-            "example": "december"
           }
         }
       },
