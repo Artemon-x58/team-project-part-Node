@@ -58,12 +58,7 @@ router.post(
 );
 router.delete("/water-intake", authenticate, ctrl.users.waterDelete);
 
-router.get(
-  "/statistics",
-  authenticate,
-  validateBody(schemas.statisticsSchema),
-  ctrl.users.statistics
-);
+router.get("/statistics", authenticate, ctrl.users.statistics);
 
 router.post(
   "/weight",

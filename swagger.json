@@ -12,7 +12,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "http://localhost:5000",
+      "url": "https://team-project-part-node.onrender.com",
       "description": "Development server"
     }
   ],

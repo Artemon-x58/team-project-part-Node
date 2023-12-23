@@ -7,7 +7,7 @@ const {
 const { Calories, Weight, Water } = require("../../models");
 
 const statistics = async (req, res) => {
-  const { month } = req.body;
+  const month = req.query.month;
   const { id: owner } = req.user;
 
   const monthNumber = getMonthNumber(month);
