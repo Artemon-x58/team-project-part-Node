@@ -61,7 +61,7 @@ router.delete("/water-intake", authenticate, ctrl.users.waterDelete);
 router.get(
   "/statistics",
   authenticate,
-  validateBody(schemas.statisticsSchema),
+  // validateBody(schemas.statisticsSchema),
   ctrl.users.statistics
 );
 
