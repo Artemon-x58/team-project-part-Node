@@ -528,19 +528,17 @@
       "delete": {
         "tags": ["User"],
         "summary": "Delete information about the food consumed by the user for the current date",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "description": "Description of request parameters:**meals** - string, meal time.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InformDeleteUserFood"
-              }
-            }
+        "parameters": [
+          {
+            "in": "query",
+            "name": "meals",
+            "required": true,
+            "type": "string",
+            "description": "Meal time",
+            "example": "lunch"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "description": "Data for the DiaryPage",
@@ -645,20 +643,18 @@
             "required": true,
             "type": "string",
             "description": "id specific food"
+          },
+          {
+            "in": "query",
+            "name": "meals",
+            "required": true,
+            "type": "string",
+            "description": "Meal time",
+            "enum": ["breakfast", "dinner", "lunch", "snack"],
+            "example": "snack"
           }
         ],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "description": "Description of request parameters:**meals** - string, meal time.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InformDeleteUserFoodById"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Data for the DiaryPage",
@@ -1110,17 +1106,6 @@
           }
         }
       },
-      "InformDeleteUserFood": {
-        "type": "object",
-        "required": ["meals"],
-        "properties": {
-          "meals": {
-            "type": "string",
-            "enum": ["breakfast", "dinner", "lunch", "snack"],
-            "example": "lunch"
-          }
-        }
-      },
       "InformUserFoodById": {
         "type": "object",
         "required": [
@@ -1161,17 +1146,6 @@
             "type": "number",
             "description": "Number of fat",
             "example": 1.2
-          }
-        }
-      },
-      "InformDeleteUserFoodById": {
-        "type": "object",
-        "required": ["meals"],
-        "properties": {
-          "meals": {
-            "type": "string",
-            "enum": ["breakfast", "dinner", "lunch", "snack"],
-            "example": "snack"
           }
         }
       },
