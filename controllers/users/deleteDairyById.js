@@ -6,7 +6,7 @@ const { deleteNutrientsPerDay } = require("../../nutrients");
 const deleteDairyById = async (req, res) => {
   const { id: newId } = req.params;
   const { id: owner } = req.user;
-  const { meals } = req.body;
+  const meals = req.query.meals;
 
   const result = await Meals.findOneAndUpdate(
     { owner },
@@ -46,8 +46,8 @@ const deleteDairyById = async (req, res) => {
   }
 
   res.json({
-    [meals]: funcToFixed(nutrientsPerDay[meals], true),
-    newListMeals: newListMeals[meals],
+    [meals]: newListMeals[meals],
+    newSumNutrientsPerDay: funcToFixed(nutrientsPerDay[meals], true),
   });
 };
 
