@@ -43,12 +43,7 @@ router.delete(
   ctrl.users.deleteDiary
 );
 
-router.delete(
-  "/food-intake/:id",
-  authenticate,
-  validateBody(schemas.deleteDairySchema),
-  ctrl.users.deleteDairyById
-);
+router.delete("/food-intake/:id", authenticate, ctrl.users.deleteDairyById);
 
 router.post(
   "/water-intake",
