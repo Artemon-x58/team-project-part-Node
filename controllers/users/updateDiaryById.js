@@ -68,8 +68,8 @@ const updateDiaryById = async (req, res) => {
   }
 
   res.json({
-    [meals]: funcToFixed(nutrientsPerDay[meals], true),
-    newListMeals: newListMeals[meals],
+    [meals]: newListMeals[meals],
+    newSumNutrientsPerDay: funcToFixed(nutrientsPerDay[meals], true),
   });
 };
 
