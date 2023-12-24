@@ -7,7 +7,7 @@ const dairyUpdateSchema = Joi.object({
     .valid(...validMeals)
     .required(),
   title: Joi.string().required(),
-  calories: Joi.number().min(0).max(10000).required(),
+  // calories: Joi.number().min(0).max(10000).required(),
   carbohydrates: Joi.number().min(0).max(6000).required(),
   protein: Joi.number().min(0).max(2000).required(),
   fat: Joi.number().min(0).max(2000).required(),
