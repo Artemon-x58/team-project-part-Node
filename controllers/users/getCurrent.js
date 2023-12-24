@@ -81,10 +81,10 @@ const getCurrent = async (req, res) => {
     waterToday,
     recommendedCalories,
     caloriesToday: funcToFixed(caloriesToday),
-    breakfastSumNutrientsToday: funcToFixed(breakfast),
-    lunchtSumNutrientsToday: funcToFixed(lunch),
-    dinnerSumNutrientsToday: funcToFixed(dinner),
-    snackSumNutrientsToday: funcToFixed(snack),
+    breakfastSumNutrientsToday: funcToFixed(breakfast, true),
+    lunchtSumNutrientsToday: funcToFixed(lunch, true),
+    dinnerSumNutrientsToday: funcToFixed(dinner, true),
+    snackSumNutrientsToday: funcToFixed(snack, true),
     recommendedFoodForMainPage,
   });
 };
