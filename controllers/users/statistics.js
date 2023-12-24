@@ -38,14 +38,14 @@ const statistics = async (req, res) => {
     caloriesAndDate,
     monthNumber
   ).map((item) => ({
-    calories: parseFloat(item.calories.toFixed(2)),
+    calories: parseFloat(item.calories.toFixed(0)),
     date: item.date,
   }));
   const weightPerDayThisMonth = perDayThisMonth(weightAndDate, monthNumber).map(
-    (item) => ({ weight: parseFloat(item.weight.toFixed(2)), date: item.date })
+    (item) => ({ weight: parseFloat(item.weight.toFixed(0)), date: item.date })
   );
   const waterPerDayThisMonth = perDayThisMonth(waterAndDate, monthNumber).map(
-    (item) => ({ water: parseFloat(item.water.toFixed(2)), date: item.date })
+    (item) => ({ water: parseFloat(item.water.toFixed(0)), date: item.date })
   );
 
   const averageCalories = calculateAverage(caloriesPerDayThisMonth, "calories");
