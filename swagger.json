@@ -347,7 +347,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUserGoal"
+                "$ref": "#/components/schemas/NewUserGoal",
+                "x-expandable": true
               }
             }
           }
@@ -534,6 +535,7 @@
             "name": "meals",
             "required": true,
             "type": "string",
+            "enum": ["lose fat", "maintain", "gain muscle"],
             "description": "Meal time",
             "example": "lunch"
           }
