@@ -1,7 +1,10 @@
-const { sumObjectProperties, addCaloriesToday } = require("../../calories");
-const { currentDate, HttpError, funcToFixed } = require("../../helpers");
+const {
+  currentDate,
+  HttpError,
+  funcToFixed,
+  sumObjectProperties,
+} = require("../../helpers");
 const { Meals, Calories, NutrientsPerDay } = require("../../models");
-const { addNutrientsPerDay } = require("../../nutrients");
 
 const addDiary = async (req, res) => {
   const { id: owner } = req.user;
@@ -24,8 +27,23 @@ const addDiary = async (req, res) => {
 
   const { calories, carbohydrates, protein, fat } =
     sumObjectProperties(entries);
-  console.log(calories, carbohydrates, protein, fat);
-  await addCaloriesToday(owner, calories, carbohydrates, protein, fat);
+
+  const resultCalories = await Calories.findOneAndUpdate(
+    { owner, "caloriesAndDate.date": date },
+    {
+      $inc: {
+        "caloriesAndDate.$.calories": calories,
+        "caloriesAndDate.$.carbohydrates": carbohydrates,
+        "caloriesAndDate.$.protein": protein,
+        "caloriesAndDate.$.fat": fat,
+      },
+    },
+    { new: true }
+  ).exec();
+
+  if (!resultCalories) {
+    throw HttpError(404, "Calories not found");
+  }
 
   const resultCaloriesToday = await Calories.findOne({
     owner,
@@ -38,7 +56,21 @@ const addDiary = async (req, res) => {
   }
   const newCaloriesAndDate = resultCaloriesToday.caloriesAndDate[0];
 
-  await addNutrientsPerDay(owner, meals, calories, carbohydrates, protein, fat);
+  const resultNutrients = await NutrientsPerDay.findOneAndUpdate(
+    { owner },
+    {
+      $inc: {
+        [`${meals}.calories`]: calories,
+        [`${meals}.carbohydrates`]: carbohydrates,
+        [`${meals}.protein`]: protein,
+        [`${meals}.fat`]: fat,
+      },
+    },
+    { new: true }
+  ).exec();
+  if (!resultNutrients) {
+    throw HttpError(404);
+  }
 
   const nutrientsPerDay = await NutrientsPerDay.findOne({
     owner,

@@ -1,6 +1,5 @@
 const { currentDate, HttpError } = require("../../helpers");
 const { Water } = require("../../models");
-require("dotenv").config();
 
 const waterEdit = async (req, res) => {
   const { id: owner } = req.user;

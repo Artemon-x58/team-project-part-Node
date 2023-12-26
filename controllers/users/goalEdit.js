@@ -1,5 +1,4 @@
-const { macronutrients } = require("../../nutrients");
-const { HttpError } = require("../../helpers");
+const { HttpError, macronutrients } = require("../../helpers");
 const { User, Calories } = require("../../models");
 
 const goalEdit = async (req, res) => {

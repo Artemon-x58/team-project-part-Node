@@ -1,12 +1,11 @@
-const { deleteCaloriesToday } = require("../../calories");
-const { HttpError, funcToFixed } = require("../../helpers");
-const { Meals, NutrientsPerDay } = require("../../models");
-const { deleteNutrientsPerDay } = require("../../nutrients");
+const { HttpError, funcToFixed, currentDate } = require("../../helpers");
+const { Meals, NutrientsPerDay, Calories } = require("../../models");
 
 const deleteDairyById = async (req, res) => {
   const { id: newId } = req.params;
   const { id: owner } = req.user;
   const meals = req.query.meals;
+  const date = currentDate();
 
   const result = await Meals.findOneAndUpdate(
     { owner },
@@ -22,15 +21,36 @@ const deleteDairyById = async (req, res) => {
 
   const { calories, carbohydrates, protein, fat } = filteredEntries[0];
 
-  await deleteCaloriesToday(owner, calories, carbohydrates, protein, fat);
-  await deleteNutrientsPerDay(
-    owner,
-    meals,
-    calories,
-    carbohydrates,
-    protein,
-    fat
-  );
+  const resultCalories = await Calories.findOneAndUpdate(
+    { owner, "caloriesAndDate.date": date },
+    {
+      $inc: {
+        "caloriesAndDate.$.calories": -calories,
+        "caloriesAndDate.$.carbohydrates": -carbohydrates,
+        "caloriesAndDate.$.protein": -protein,
+        "caloriesAndDate.$.fat": -fat,
+      },
+    },
+    { new: true }
+  ).exec();
+  if (!resultCalories) {
+    throw HttpError(404, "Calories not found");
+  }
+  const resultNutrients = await NutrientsPerDay.findOneAndUpdate(
+    { owner },
+    {
+      $inc: {
+        [`${meals}.calories`]: -calories,
+        [`${meals}.carbohydrates`]: -carbohydrates,
+        [`${meals}.protein`]: -protein,
+        [`${meals}.fat`]: -fat,
+      },
+    },
+    { new: true }
+  ).exec();
+  if (!resultNutrients) {
+    throw HttpError(404);
+  }
 
   const nutrientsPerDay = await NutrientsPerDay.findOne({
     owner,

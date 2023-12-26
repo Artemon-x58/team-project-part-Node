@@ -1,4 +1,4 @@
-const recommendedCalories = (gender, weight, height, kef, age) => {
+const recommendedCaloriesHelper = (gender, weight, height, kef, age) => {
   if (gender === "male") {
     const result =
       Math.round(
@@ -14,4 +14,4 @@ const recommendedCalories = (gender, weight, height, kef, age) => {
   return result;
 };
 
-module.exports = recommendedCalories;
+module.exports = recommendedCaloriesHelper;

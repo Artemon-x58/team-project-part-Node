@@ -1,4 +1,4 @@
-const recommendedWater = (weight, kef) => {
+const recommendedWaterHelper = (weight, kef) => {
   let additionalWater = 0;
 
   if (kef === 1.2) {
@@ -14,4 +14,4 @@ const recommendedWater = (weight, kef) => {
   return result;
 };
 
-module.exports = recommendedWater;
+module.exports = recommendedWaterHelper;
