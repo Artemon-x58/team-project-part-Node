@@ -1,7 +1,11 @@
-const { currentDate, HttpError } = require("../../helpers");
+const {
+  currentDate,
+  HttpError,
+  recommendedCaloriesHelper,
+  recommendedWaterHelper,
+  macronutrients,
+} = require("../../helpers");
 const { Weight, User, Water, Calories } = require("../../models");
-const { updateWaterValue } = require("../../water");
-const { updateCalories } = require("../../calories");
 
 const weightEdit = async (req, res) => {
   const { id: owner } = req.user;
@@ -19,16 +23,34 @@ const weightEdit = async (req, res) => {
   if (!user) {
     throw HttpError(404);
   }
-  updateCalories(
-    user.id,
+  const calories = recommendedCaloriesHelper(
     user.gender,
     user.weight,
     user.height,
     user.kef,
-    user.age,
-    user.yourGoal
+    user.age
   );
-  updateWaterValue(user.id, user.weight, user.kef);
+  const objectMacronutrients = macronutrients(user.yourGoal, calories);
+
+  const resultCalories = await Calories.findOneAndUpdate(
+    { owner },
+    { $set: { recommendedCalories: { calories, ...objectMacronutrients } } },
+    { new: true }
+  ).exec();
+  if (!resultCalories) {
+    throw HttpError(404, "Calories not found");
+  }
+
+  const water = recommendedWaterHelper(user.weight, user.kef);
+
+  const resultWater = await Water.findOneAndUpdate(
+    { owner },
+    { $set: { recommendedWater: water } },
+    { new: true }
+  );
+  if (!resultWater) {
+    throw HttpError(404, "Water not found");
+  }
 
   const existingWeight = await Weight.findOne({
     owner,
@@ -62,9 +84,3 @@ const weightEdit = async (req, res) => {
 };
 
 module.exports = weightEdit;
-
-
-
-
-
-

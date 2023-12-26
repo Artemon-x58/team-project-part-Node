@@ -1,6 +1,5 @@
 const { currentDate, HttpError, funcToFixed } = require("../../helpers");
 const {
-  User,
   Calories,
   Water,
   RecommendedFood,
@@ -8,17 +7,19 @@ const {
 } = require("../../models");
 
 const getCurrent = async (req, res) => {
-  const { id: owner } = req.user;
+  const {
+    id: owner,
+    name,
+    avatarURL,
+    age,
+    weight,
+    height,
+    kef,
+    gender,
+    yourGoal,
+  } = req.user;
 
   const today = currentDate();
-
-  const user = await User.findOne({ _id: owner }).exec();
-
-  if (!user) {
-    throw HttpError(404, "User not found");
-  }
-
-  const { name, avatarURL, age, weight, height, kef, gender, yourGoal } = user;
 
   const { recommendedCalories, caloriesAndDate } = await Calories.findOne({
     owner,

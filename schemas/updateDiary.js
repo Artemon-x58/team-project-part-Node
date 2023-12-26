@@ -1,6 +1,5 @@
 const Joi = require("joi");
-
-const validMeals = ["breakfast", "dinner", "lunch", "snack"];
+const { validMeals } = require("./regexpList");
 
 const dairyUpdateSchema = Joi.object({
   meals: Joi.string()

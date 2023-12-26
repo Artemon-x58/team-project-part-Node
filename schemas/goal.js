@@ -1,6 +1,5 @@
 const Joi = require("joi");
-
-const validGoals = ["lose fat", "maintain", "gain muscle"];
+const { validGoals } = require("./regexpList");
 
 const goalSchema = Joi.object({
   yourGoal: Joi.string()

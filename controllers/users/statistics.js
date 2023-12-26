@@ -9,8 +9,18 @@ const { Calories, Weight, Water } = require("../../models");
 const statistics = async (req, res) => {
   const month = req.query.month;
   const { id: owner } = req.user;
-
   const monthNumber = getMonthNumber(month);
+
+  const accountCreationDate = new Date(req.user.createdAt);
+  const currentDate = new Date();
+  const startMonth = accountCreationDate.getMonth();
+  const endMonth = currentDate.getMonth();
+  const months = [];
+  for (let i = startMonth; i <= endMonth; i++) {
+    const date = new Date(0);
+    date.setUTCMonth(i);
+    months.push(date.toLocaleString("en", { month: "long" }));
+  }
 
   const { caloriesAndDate } = await Calories.findOne({
     owner,
@@ -53,6 +63,7 @@ const statistics = async (req, res) => {
   const averageWater = calculateAverage(waterPerDayThisMonth, "water");
 
   res.json({
+    months: months,
     averageCalories: parseFloat(averageCalories.toFixed(2)),
     averageWeight: parseFloat(averageWeight.toFixed(2)),
     averageWater: parseFloat(averageWater.toFixed(2)),
