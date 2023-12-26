@@ -1,19 +1,5 @@
 const Joi = require("joi");
-
-const monthsArray = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
+const { monthsArray } = require("./regexpList");
 
 const statisticsSchema = Joi.object({
   month: Joi.string()
