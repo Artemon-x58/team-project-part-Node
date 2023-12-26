@@ -2138,6 +2138,7 @@
       "InformsStatisticPage": {
         "type": "object",
         "required": [
+          "months",
           "averageCalories",
           "averageWeight",
           "averageWater",
@@ -2150,6 +2151,10 @@
             "type": "integer",
             "description": "Positive status code",
             "example": 200
+          },
+          "months": {
+            "type": "string",
+            "example": "december"
           },
           "averageCalories": {
             "type": "number",
