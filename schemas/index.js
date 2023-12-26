@@ -3,6 +3,7 @@ const {
   loginSchema,
   emailSchema,
   updateUserSchema,
+  newPasswordSchema,
 } = require("./users");
 const waterSchema = require("./water");
 const weightSchema = require("./weight");
@@ -22,4 +23,5 @@ module.exports = {
   addDairySchema,
   statisticsSchema,
   dairyUpdateSchema,
+  newPasswordSchema,
 };

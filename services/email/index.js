@@ -1,8 +1,10 @@
 const sendEmail = require("./sendEmail");
-const resendVerifyEmail = require("./resendVerifyEmail");
+const sendPasswordResetEmail = require("./sendPasswordResetEmail ");
 const { ctrlWrapper } = require("../../helpers");
+const createNewPassword = require("./createNewPassword");
 
 module.exports = {
   sendEmail,
-  resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
+  sendPasswordResetEmail: ctrlWrapper(sendPasswordResetEmail),
+  createNewPassword: ctrlWrapper(createNewPassword),
 };

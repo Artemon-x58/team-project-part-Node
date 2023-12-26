@@ -7,7 +7,10 @@ const ctrl = require("../../controllers");
 const { authenticate, validateBody } = require("../../middlewares");
 
 const schemas = require("../../schemas");
-const { resendVerifyEmail } = require("../../services/email");
+const {
+  sendPasswordResetEmail,
+  createNewPassword,
+} = require("../../services/email");
 
 router.post(
   "/signup",
@@ -18,7 +21,13 @@ router.post(
 router.post(
   "/forgot-password",
   validateBody(schemas.emailSchema),
-  resendVerifyEmail
+  sendPasswordResetEmail
+);
+
+router.post(
+  "/create-new-password",
+  validateBody(schemas.newPasswordSchema),
+  createNewPassword
 );
 
 router.post("/signin", validateBody(schemas.loginSchema), ctrl.auth.login);

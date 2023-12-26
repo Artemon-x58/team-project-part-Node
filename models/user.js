@@ -56,6 +56,10 @@ const userSchema = new Schema(
       enum: ["lose fat", "maintain", "gain muscle"],
       required: [true, "Set your goal for user"],
     },
+    resetToken: {
+      type: String,
+      default: "",
+    },
   },
   { versionKey: false, timestamps: true }
 );
