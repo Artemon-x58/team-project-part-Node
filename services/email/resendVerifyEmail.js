@@ -18,10 +18,6 @@ const resendVerifyEmail = async (req, res) => {
     throw HttpError(400, "missing required field email");
   }
 
-  // if (user.verify) {
-  //   throw HttpError(400, "Verification has already been passed");
-  // }
-
   const createNewPassword = {
     to: email,
     subject: "Your New Password",
@@ -83,5 +79,3 @@ const resendVerifyEmail = async (req, res) => {
 };
 
 module.exports = resendVerifyEmail;
-
-// <a target="_blank" href="${BASE_URL}/users/verify/${user.verificationToken}">Click verify email</a>
