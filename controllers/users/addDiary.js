@@ -17,13 +17,14 @@ const addDiary = async (req, res) => {
     },
     { new: true }
   );
+
   if (!result) {
     throw HttpError(404, "Meals not found");
   }
 
   const { calories, carbohydrates, protein, fat } =
     sumObjectProperties(entries);
-
+  console.log(calories, carbohydrates, protein, fat);
   await addCaloriesToday(owner, calories, carbohydrates, protein, fat);
 
   const resultCaloriesToday = await Calories.findOne({
