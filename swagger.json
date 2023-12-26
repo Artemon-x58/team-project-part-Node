@@ -438,44 +438,6 @@
       }
     },
     "/api/user/food-intake": {
-      "get": {
-        "tags": ["User"],
-        "summary": "Information for user diary",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "responses": {
-          "200": {
-            "description": "Date for the DiaryPage",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendUserDiary"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token has expired",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errorNotfound"
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": ["User"],
         "summary": "Save information about the food consumed by the user for the current date",
@@ -525,6 +487,44 @@
           }
         }
       },
+      "get": {
+        "tags": ["User"],
+        "summary": "Information for user diary",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Date for the DiaryPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendUserDiary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorUserTokenExpiredResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotfound"
+                }
+              }
+            }
+          }
+        }
+      },      
       "delete": {
         "tags": ["User"],
         "summary": "Delete information about the food consumed by the user for the current date",
@@ -2138,6 +2138,7 @@
       "InformsStatisticPage": {
         "type": "object",
         "required": [
+          "months",
           "averageCalories",
           "averageWeight",
           "averageWater",
@@ -2150,6 +2151,10 @@
             "type": "integer",
             "description": "Positive status code",
             "example": 200
+          },
+          "months": {
+            "type": "string",
+            "example": "december"
           },
           "averageCalories": {
             "type": "number",
