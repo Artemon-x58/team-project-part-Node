@@ -343,12 +343,11 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:**yourGoal** - string, User`s new goal.",
+          "description": "Description of request parameters:**yourGoal** - string, User`s new goal you must select from the following list:  [lose fat, maintain, gain muscle].",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUserGoal",
-                "x-expandable": true
+                "$ref": "#/components/schemas/NewUserGoal"
               }
             }
           }
@@ -575,7 +574,7 @@
         }
       }
     },
-    "/api/user/food-intake/:id": {
+    "/api/user/food-intake/{id}": {
       "put": {
         "tags": ["User"],
         "operationId": "TransactionsController_updateTransaction",
@@ -651,9 +650,13 @@
             "name": "meals",
             "required": true,
             "type": "string",
-            "description": "Meal time",
+            "description": "Select a meal time from the following list: [breakfast, dinner, lunch, snack].",
             "enum": ["breakfast", "dinner", "lunch", "snack"],
-            "example": "snack"
+            "example": "snack",
+            "x-ms-enum": {
+              "name": "Meal",
+              "modelAsString": true
+            }
           }
         ],
         "security": [{ "Bearer": [] }],
@@ -1017,7 +1020,11 @@
           "yourGoal": {
             "type": "string",
             "enum": ["lose fat", "maintain", "gain muscle"],
-            "example": "maintain"
+            "example": "maintain",
+            "x-ms-enum": {
+              "name": "Goal",
+              "modelAsString": true
+            }
           }
         }
       },
