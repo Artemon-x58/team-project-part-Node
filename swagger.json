@@ -1072,11 +1072,7 @@
           "yourGoal": {
             "type": "string",
             "enum": ["lose fat", "maintain", "gain muscle"],
-            "example": "maintain",
-            "x-ms-enum": {
-              "name": "Goal",
-              "modelAsString": true
-            }
+            "example": "maintain"
           }
         }
       },
@@ -2228,12 +2224,25 @@
                 "month": {
                   "type": "string",
                   "description": "Сhosen month",
-                  "enum": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                  "example": "December"               
-              }
-            },
-            "example": "december"
-          }
+                  "enum": [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December"
+                  ],
+                  "example": "December"
+                }
+              },
+              "example": "december"
+            }
           },
           "averageCalories": {
             "type": "number",
