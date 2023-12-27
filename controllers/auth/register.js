@@ -100,10 +100,7 @@ const register = async (req, res) => {
   taskEveryDayAtMidnight(newUser.id);
 
   res.status(201).json({
-    code: 201,
-    user: {
-      email: newUser.email,
-    },
+    message: "Registration success",
   });
 };
 
