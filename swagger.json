@@ -241,7 +241,7 @@
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "Data for the HomePage", 
+            "description": "Data for the HomePage",
             "content": {
               "application/json": {
                 "schema": {
@@ -564,7 +564,7 @@
             }
           }
         }
-      },      
+      },
       "delete": {
         "tags": ["User"],
         "summary": "Delete meal information for mealtimes by user on current date. Returns an object containing information about the newCaloriesAndDate (calories, protein, fat, carbohydrates), mealtimes with a list of food",
@@ -617,8 +617,8 @@
     "/api/user/food-intake/{id}": {
       "put": {
         "tags": ["User"],
-        "operationId": "TransactionsController_updateTransaction",
-        "summary": "Update of food consumption information for a specific food by means of its identifier (id). Returns an object containing information about the mealtimes, title of food, calories, carbohydrates, protein and fat",
+        "operationId": "Food_IntakeController_updateFood_Intake",
+        "summary": "Update of food consumption information for a specific food by means of its identifier (id). Receives information on meal times and meal changes. Returns an object containing information about the mealtimes, list of  meals (title,calories,carbohydrates,protein,fat,_id), newSumNutrientsPerDay(calories, carbohydrates, protein,fat)",
         "parameters": [
           {
             "in": "path",
@@ -626,7 +626,7 @@
             "required": true,
             "type": "string",
             "description": "id specific food",
-            "example": "658b7defab1c7e08f16c5e9a"
+            "example": "658bfba85d26b6155e4ec519"
           }
         ],
         "security": [{ "Bearer": [] }],
@@ -676,8 +676,8 @@
       },
       "delete": {
         "tags": ["User"],
-        "operationId": "TransactionsController_deleteTransaction",
-        "summary": "Delete information about the food consumed by the user for the current date. Returns an object containing information about the mealtimes with a list of nutrients (protein, fat, carbohydrates  and newListMeal with a list of food",
+        "operationId": "Food_IntakeControllerController_deleteFood_IntakeController",
+        "summary": "Deletes user's nutritional meal information for the current date. Returns an object containing information about the mealtimes, list of  meals (title,calories,carbohydrates,protein,fat,_id), newSumNutrientsPerDay(carbohydrates, protein,fat)",
         "parameters": [
           {
             "in": "path",
@@ -685,7 +685,7 @@
             "required": true,
             "type": "string",
             "description": "id specific food",
-            "example": "658b893bd871da3c03f48198"
+            "example": "658bf9135d26b6155e4ec4ce"
           },
           {
             "in": "query",
@@ -734,7 +734,7 @@
     "/api/user/water-intake": {
       "post": {
         "tags": ["User"],
-        "summary": "Save information about the user's water consumption for the current date",
+        "summary": "Save information about the user's water consumption for the current date. Returns information about the total amount of water consumed for the current date.",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -830,8 +830,8 @@
             "name": "month",
             "required": true,
             "type": "string",
-            "description": "Selected month",
-            "example": "december"
+            "description": "Selected month, chosen from: [January, February, March, April, May, June, July, August, September, October, November, December]. Returns information for the current month, including the name of the month, averageCalories, averageWater, caloriesPerDayThisMonth (record for each day of the month), weightPerDayThisMonth (record for each day of the month) and waterPerDayThisMonth (record for each day of the month).",
+            "example": "December"
           }
         ],
         "security": [{ "Bearer": [] }],
@@ -1016,7 +1016,7 @@
         "required": ["token", "password"],
         "properties": {
           "token": {
-            "type": "string",           
+            "type": "string",
             "example": "b7aWtZ4f1kITnxlSieY6X"
           },
           "password": {
@@ -1256,7 +1256,7 @@
             "example": 200
           },
           "token": {
-            "type": "string",            
+            "type": "string",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODRjOWRkZWU1ZjM0NzU4MGNiZDQ2NiIsImlhdCI6MTcwMzIwMTg0NCwiZXhwIjoxNzA0MDI5ODQ0fQ.w4Cdc-jG9C7mA0l47v-iHRk8Z7a_BvlEFDVMOg8VLtA"
           }
         }
@@ -1770,7 +1770,7 @@
                 "carbohydrates": 10.44,
                 "protein": 29,
                 "fat": 1.16,
-                "_id": "6584dc0975aea1d71ea0c70a"
+                "_id": "658bf3595d26b6155e4ec479"
               },
               {
                 "title": "Eggs",
@@ -1778,7 +1778,7 @@
                 "carbohydrates": 1,
                 "protein": 13,
                 "fat": 11,
-                "_id": "6584dc0975aea1d71ea0c70b"
+                "_id": "658bf3595d26b6155e4ec47a"
               },
               {
                 "title": "Bread",
@@ -1786,7 +1786,7 @@
                 "carbohydrates": 23.35,
                 "protein": 4.45,
                 "fat": 1.65,
-                "_id": "6584dc0975aea1d71ea0c70c"
+                "_id": "658bf3595d26b6155e4ec47b"
               }
             ]
           },
@@ -1801,7 +1801,7 @@
                 "carbohydrates": 28,
                 "protein": 0.6,
                 "fat": 0.4,
-                "_id": "6585878abdeb519917cce7ef"
+                "_id": "658bf7a05d26b6155e4ec496"
               },
               {
                 "title": "Strawberries",
@@ -1809,7 +1809,7 @@
                 "carbohydrates": 6,
                 "protein": 8.8,
                 "fat": 22,
-                "_id": "6585878abdeb519917cce7f0"
+                "_id": "658bf7a05d26b6155e4ec497"
               },
               {
                 "title": "Nuts",
@@ -1817,7 +1817,7 @@
                 "carbohydrates": 3.84,
                 "protein": 0.34,
                 "fat": 0.15,
-                "_id": "6585878abdeb519917cce7f1"
+                "_id": "658bf7a05d26b6155e4ec498"
               }
             ]
           },
@@ -1832,7 +1832,7 @@
                 "carbohydrates": 20,
                 "protein": 6,
                 "fat": 4,
-                "_id": "65857ad626d9770e434896cf"
+                "_id": "658bf7c45d26b6155e4ec4a8"
               },
               {
                 "title": "Chicken Breast",
@@ -1840,7 +1840,7 @@
                 "carbohydrates": 1,
                 "protein": 46.5,
                 "fat": 5.4,
-                "_id": "65857ad626d9770e434896d0"
+                "_id": "658bf7c45d26b6155e4ec4a9"
               },
               {
                 "title": "bread",
@@ -1848,7 +1848,7 @@
                 "carbohydrates": 23.35,
                 "protein": 4.45,
                 "fat": 1.65,
-                "_id": "65857ad626d9770e434896d1"
+                "_id": "658bf7c45d26b6155e4ec4aa"
               }
             ]
           },
@@ -1863,7 +1863,7 @@
                 "carbohydrates": 47,
                 "protein": 32,
                 "fat": 30.75,
-                "_id": "6585858fbdeb519917cce787"
+                "_id": "658bf9135d26b6155e4ec4cb"
               },
               {
                 "title": "Sweet Potatoes",
@@ -1871,7 +1871,7 @@
                 "carbohydrates": 60,
                 "protein": 4.8,
                 "fat": 0.3,
-                "_id": "6585858fbdeb519917cce788"
+                "_id": "658bf9135d26b6155e4ec4cc"
               },
               {
                 "title": "Tomatoes",
@@ -1879,7 +1879,7 @@
                 "carbohydrates": 8,
                 "protein": 2,
                 "fat": 0.4,
-                "_id": "6585858fbdeb519917cce789"
+                "_id": "658bf9135d26b6155e4ec4cd"
               },
               {
                 "title": "bread",
@@ -1887,7 +1887,7 @@
                 "carbohydrates": 23.35,
                 "protein": 4.45,
                 "fat": 1.65,
-                "_id": "6585858fbdeb519917cce78a"
+                "_id": "658bf9135d26b6155e4ec4ce"
               }
             ]
           }
@@ -1939,7 +1939,7 @@
                 "carbohydrates": 10.44,
                 "protein": 29,
                 "fat": 1.16,
-                "_id": "6584dc0975aea1d71ea0c70a"
+                "_id": "658bf3595d26b6155e4ec479"
               },
               {
                 "title": "Eggs",
@@ -1947,7 +1947,7 @@
                 "carbohydrates": 1,
                 "protein": 13,
                 "fat": 11,
-                "_id": "6584dc0975aea1d71ea0c70b"
+                "_id": "658bf3595d26b6155e4ec47a"
               },
               {
                 "title": "Bread",
@@ -1955,7 +1955,7 @@
                 "carbohydrates": 23.35,
                 "protein": 4.45,
                 "fat": 1.65,
-                "_id": "6584dc0975aea1d71ea0c70c"
+                "_id": "658bf3595d26b6155e4ec47b"
               }
             ]
           },
@@ -2032,7 +2032,7 @@
       },
       "UpdateInformInUserDiaryById": {
         "type": "object",
-        "required": ["snack", "newListMeals"],
+        "required": ["snack", "newSumNutrientsPerDay"],
         "properties": {
           "code": {
             "type": "integer",
@@ -2040,24 +2040,6 @@
             "example": 200
           },
           "snack": {
-            "type": "object",
-            "required": ["protein", "fat", "carbohydrates"],
-            "properties": {
-              "protein": {
-                "type": "number",
-                "example": 44.45
-              },
-              "fat": {
-                "type": "number",
-                "example": 34
-              },
-              "carbohydrates": {
-                "type": "number",
-                "example": 127.25
-              }
-            }
-          },
-          "newListMeals": {
             "schema": {
               "$ref": "#/components/schemas/helperUserDiary"
             },
@@ -2068,7 +2050,7 @@
                 "carbohydrates": 47,
                 "protein": 32,
                 "fat": 30.75,
-                "_id": "6585858fbdeb519917cce787"
+                "_id": "658bf9135d26b6155e4ec4cb"
               },
               {
                 "title": "Potatoes",
@@ -2076,7 +2058,7 @@
                 "carbohydrates": 48.9,
                 "protein": 6,
                 "fat": 1.2,
-                "_id": "6585858fbdeb519917cce788"
+                "_id": "658bfba85d26b6155e4ec519"
               },
               {
                 "title": "Tomatoes",
@@ -2084,7 +2066,7 @@
                 "carbohydrates": 8,
                 "protein": 2,
                 "fat": 0.4,
-                "_id": "6585858fbdeb519917cce789"
+                "_id": "658bf9135d26b6155e4ec4cd"
               },
               {
                 "title": "bread",
@@ -2092,15 +2074,37 @@
                 "carbohydrates": 23.35,
                 "protein": 4.45,
                 "fat": 1.65,
-                "_id": "6585858fbdeb519917cce78a"
+                "_id": "658bf9135d26b6155e4ec4ce"
               }
             ]
+          },
+          "newSumNutrientsPerDay": {
+            "type": "object",
+            "required": ["calories", "carbohydrates", "protein", "fat"],
+            "properties": {
+              "calories": {
+                "type": "number",
+                "example": 995.5
+              },
+              "carbohydrates": {
+                "type": "number",
+                "example": 127.25
+              },
+              "protein": {
+                "type": "number",
+                "example": 44.45
+              },
+              "fat": {
+                "type": "number",
+                "example": 34
+              }
+            }
           }
         }
       },
       "DeleteInformInUserDiaryById": {
         "type": "object",
-        "required": ["snack", "newListMeals"],
+        "required": ["snack", "newSumNutrientsPerDay"],
         "properties": {
           "code": {
             "type": "integer",
@@ -2108,24 +2112,6 @@
             "example": 200
           },
           "snack": {
-            "type": "object",
-            "required": ["protein", "fat", "carbohydrates"],
-            "properties": {
-              "protein": {
-                "type": "number",
-                "example": 40
-              },
-              "fat": {
-                "type": "number",
-                "example": 32.35
-              },
-              "carbohydrates": {
-                "type": "number",
-                "example": 103.9
-              }
-            }
-          },
-          "newListMeals": {
             "schema": {
               "$ref": "#/components/schemas/helperUserDiary"
             },
@@ -2136,7 +2122,7 @@
                 "carbohydrates": 47,
                 "protein": 32,
                 "fat": 30.75,
-                "_id": "6585858fbdeb519917cce787"
+                "_id": "658bf9135d26b6155e4ec4cb"
               },
               {
                 "title": "Potatoes",
@@ -2144,7 +2130,7 @@
                 "carbohydrates": 48.9,
                 "protein": 6,
                 "fat": 1.2,
-                "_id": "6585858fbdeb519917cce788"
+                "_id": "658bfba85d26b6155e4ec519"
               },
               {
                 "title": "Tomatoes",
@@ -2152,9 +2138,27 @@
                 "carbohydrates": 8,
                 "protein": 2,
                 "fat": 0.4,
-                "_id": "6585858fbdeb519917cce789"
+                "_id": "658bf9135d26b6155e4ec4cd"
               }
             ]
+          },
+          "newSumNutrientsPerDay": {
+            "type": "object",
+            "required": ["carbohydrates", "protein", "fat"],
+            "properties": {
+              "carbohydrates": {
+                "type": "number",
+                "example": 103.9
+              },
+              "protein": {
+                "type": "number",
+                "example": 40
+              },
+              "fat": {
+                "type": "number",
+                "example": 32.35
+              }
+            }
           }
         }
       },
@@ -2216,8 +2220,20 @@
             "example": 200
           },
           "months": {
-            "type": "string",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "required": ["month"],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "description": "Сhosen month",
+                  "enum": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                  "example": "December"               
+              }
+            },
             "example": "december"
+          }
           },
           "averageCalories": {
             "type": "number",
