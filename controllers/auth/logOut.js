@@ -8,7 +8,6 @@ const logOut = async (req, res) => {
     throw HttpError(404, "User not found");
   }
   res.send({
-    code: 204,
     message: "Logout success",
   });
 };
