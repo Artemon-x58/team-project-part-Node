@@ -16,7 +16,7 @@ const updateUserSetting = async (req, res) => {
   if (!user) {
     throw HttpError(404, "User not found");
   }
-  const { id: owner, name, weight, kef, gender, height, age, yourGoal } = user;
+  const { id: owner, weight, kef, gender, height, age, yourGoal } = user;
   const water = recommendedWaterHelper(weight, kef);
 
   const resultWater = await Water.findOneAndUpdate(
@@ -49,7 +49,7 @@ const updateUserSetting = async (req, res) => {
     throw HttpError(404, "Calories not found");
   }
 
-  res.status(200).json({ name, weight, kef, gender, height, age });
+  res.status(200).json({ message: "Settings were successfully updated" });
 };
 
 module.exports = updateUserSetting;

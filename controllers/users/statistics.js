@@ -64,9 +64,9 @@ const statistics = async (req, res) => {
 
   res.json({
     months: months,
-    averageCalories: parseFloat(averageCalories.toFixed(2)),
-    averageWeight: parseFloat(averageWeight.toFixed(2)),
-    averageWater: parseFloat(averageWater.toFixed(2)),
+    averageCalories: parseFloat(averageCalories.toFixed(0)),
+    averageWeight: parseFloat(averageWeight.toFixed(0)),
+    averageWater: parseFloat(averageWater.toFixed(0)),
     caloriesPerDayThisMonth: caloriesPerDayThisMonth,
     weightPerDayThisMonth: weightPerDayThisMonth,
     waterPerDayThisMonth: waterPerDayThisMonth,

@@ -71,7 +71,6 @@ const deleteDiary = async (req, res) => {
   if (!caloriesAndDate) {
     throw HttpError(404, "Calories not found");
   }
-
   const newCaloriesAndDate = caloriesAndDate[0];
 
   res.json({
