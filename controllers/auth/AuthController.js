@@ -1,91 +1,105 @@
-const Contact = require("../models/contact");
+const {
+  User,
+  Meals,
+  NutrientsPerDay,
+  Water,
+  Weight,
+  Calories,
+} = require("../../models");
 
-const { HttpError, ctrlWrap } = require("../helpers");
+const { HttpError, ctrlWrapper, macronutrients,
+  recommendedWaterHelper,
+  recommendedCaloriesHelper, } = require("../../helpers");
 
 class AuthController {
-  register = ctrlWrap(async (req, res) => {
-    const { _id: owner } = req.user;
-    const { favorite, page = 1, limit = 20 } = req.query;
-    const skip = (page - 1) * limit;
-
-    const contactList = { owner };
-    if (favorite) {
-      contactList.favorite = favorite;
+  register = ctrlWrapper(async (req, res) => {
+    const { name, email, password, age, weight, height, kef, gender, yourGoal } = req.body;
+    const user = await User.findOne({ email }).exec();
+    if (user) {
+      throw HttpError(409, "Email already in use");
     }
-
-    const contacts = await Contact.find(
-      contactList,
-      "-createdAt -updatedAt",
-      {
-        skip,
-        limit,
-      }
-    ).exec();
-    res.status(200).send({ code: 200, contacts, qty: contacts.length });
-  });
-
-  getById = ctrlWrap(async (req, res) => {
-    const contact = await Contact.findById(
-      req.params.contactId,
-      "-createdAt -updatedAt"
-    ).exec();
-    if (!contact) {
-      throw HttpError(404);
-    }
-    res.send(contact);
-  });
-
-  add = ctrlWrap(async (req, res) => {
-    const { name, email, phone } = req.body;
-
-    if (!name || !email || !phone) {
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !age ||
+      !weight ||
+      !height ||
+      !kef ||
+      !gender ||
+      !yourGoal
+    ) {
       throw HttpError(400);
     }
-
-    const result = await Contact.findOne({ name }).exec();
-    if (result) {
-      throw HttpError(409, `Contact ${name} already exists`);
+  
+    const hashPassword = await bcrypt.hash(password, 10);
+    const avatarURL = gravatar.url(email);
+  
+    const newUser = await User.create({
+      ...req.body,
+      password: hashPassword,
+      avatarURL,
+    });
+  
+    if (!newUser) {
+      throw HttpError(404, "User not found");
     }
-
-    const { _id: owner } = req.user;
-    const contact = await Contact.create({ ...req.body, owner });
-
-    res.status(201).send({ code: 201, contact });
+  
+    await Meals.create({
+      breakfast: [],
+      dinner: [],
+      lunch: [],
+      snack: [],
+      owner: newUser.id,
+    });
+  
+    const initialState = { calories: 0, carbohydrates: 0, protein: 0, fat: 0 };
+    await NutrientsPerDay.create({
+      breakfast: initialState,
+      dinner: initialState,
+      lunch: initialState,
+      snack: initialState,
+      owner: newUser.id,
+    });
+  
+    const water = recommendedWaterHelper(weight, kef);
+    const date = currentDate();
+  
+    await Water.create({
+      waterAndDate: { water: 0, date },
+      owner: newUser.id,
+      recommendedWater: water,
+    });
+  
+    await Weight.create({
+      weightAndDate: { weight, date },
+      owner: newUser.id,
+    });
+  
+    const calories = recommendedCaloriesHelper(gender, weight, height, kef, age);
+    const objectMacronutrients = macronutrients(yourGoal, calories);
+    await Calories.create({
+      caloriesAndDate: {
+        calories: 0,
+        date,
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+      },
+      owner: newUser.id,
+      recommendedCalories: { calories, ...objectMacronutrients },
+    });
+  
+    taskEveryDayAtMidnight(newUser.id);
+  
+    res.status(201).json({
+      code: 201,
+      user: {
+        email: newUser.email,
+      },
+    });
   });
 
-  remove = ctrlWrap(async (req, res) => {
-    const contact = await Contact.findByIdAndDelete(
-      req.params.contactId
-    ).exec();
-    if (!contact) {
-      throw HttpError(404);
-    }
-    res.send({ code: 200, message: "contact deleted" });
-  });
-
-  updateByID = ctrlWrap(async (req, res) => {
-    const contact = await Contact.findByIdAndUpdate(
-      req.params.contactId,
-      req.body,
-      { new: true }
-    ).exec();
-    if (!contact) {
-      throw HttpError(404);
-    }
-    res.status(200).send({ code: 200, contact });
-  });
-
-  updateStatusContact = ctrlWrap(async (req, res) => {
-    const contact = await Contact.findByIdAndUpdate(
-      req.params.contactId,
-      req.body,
-      { new: true }
-    ).exec();
-    if (!contact) {
-      throw HttpError(404);
-    }
-    res.status(200).send({ code: 200, contact });
-  });
 }
 
-module.exports = new ContactsController();
+module.exports = new AuthController();
