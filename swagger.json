@@ -1,9 +1,9 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
     "version": "1.0.1",
     "title": "HealthyHub",
-    "description": "API documentation for project...",
+    "description": "API documentation for project Healthy Hub.\n\nThe Healthy Hub is a web-based application that helps users keep track of their diet, water intake and weight changes. The main objective of the project is to provide users with tools to control their recommended weight.\n\nThe project includes user registration, authentication and authorisation.\n\nThe app allows users to track their daily calorie, water and nutrient goals and keep a food diary.\n\nIn addition, the application has a friendly and intuitive user interface that allows users to perform all necessary actions conveniently and quickly. The project also ensures user security by encrypting passwords and identifying them with tokens.\n\n**Functional features:**\n\nRegistration and authorisation of users\n\nAbility to securely replace password in case of user forgetfulness\n\nReceipt of the recommended water and food intake calculated on the basis of the user's data, which can be modified by the user\n\nGet a list of recommended products\n\nThe possibility of keeping a diary, which will help you to stick to the recommendations that you receive.\n\n**The technology stack used in the project:**\n\nNode.js - server-side JavaScript runtime\n\nExpress.js - a framework for developing web apps using Node.js\n\nMongoDB - NoSQL database\n\nMongoose - a library for working with MongoDB in Node.js",
     "contact": {
       "email": "artem1145819@gmail.com"
     }
@@ -19,7 +19,7 @@
   "tags": [
     { "name": "Auth", "description": "Authorization endpoints" },
     { "name": "User", "description": "User endpoints" },
-    { "name": "Food", "description": "Recommended food" }
+    { "name": "Food", "description": "Recommended food endpoints" }
   ],
 
   "paths": {
@@ -30,7 +30,7 @@
         "parameters": [],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - integer, User`s age,\n\n**weight** - number, User`s weight,\n\n**height** - number, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender,\n\n**yourGoal** - string, User`s goal.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**email** - string, User`s email,\n\n**password** - string, User`s password,\n\n**age** - integer, User`s age,\n\n**weight** - number, User`s weight,\n\n**height** - number, User`s height,\n\n**kef** - number, User`s kef, chosen from: [1.2, 1.375, 1.55, 1.725, 1.9],\n\n**gender** - string, User`s gender, chosen from: [male, female],\n\n**yourGoal** - string, User`s goal, chosen from: [lose fat, maintain, gain muscle].",
           "content": {
             "application/json": {
               "schema": {
@@ -41,7 +41,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created session for existing user",
+            "description": "Create a session for an existing user",
             "content": {
               "application/json": {
                 "schema": {
@@ -91,7 +91,7 @@
         },
         "responses": {
           "200": {
-            "description": "Return the token to the user who logged in",
+            "description": "Return token to the logged-in user. A token is used to store the user's authorisation status in the system, allowing users to make secure requests to the API. The token is an arbitrary string of characters and is generated at each new user authorisation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -141,11 +141,51 @@
         },
         "responses": {
           "200": {
-            "description": "Sending a new password to the user's email",
+            "description": "Sending a new password to the user's email.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NewPasswordResetResponse"
+                  "$ref": "#/components/schemas/NewTokenResetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (validation error)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/create-new-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User`s new password",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Description of request parameters:\n\n**token** - string, User`s resetToken. The resetToken is used to cache the user's permission state in the system, allowing the user to change the password during a secure API request. The resetToken is an arbitrary string and is generated with each new user request to change the password.\n\n**password** - string, User`s new password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserNewPassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Confirm to register a new password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewPasswordRegistrationResponse"
                 }
               }
             }
@@ -196,12 +236,12 @@
     "/api/user/current": {
       "get": {
         "tags": ["User"],
-        "summary": "Receiving user data",
+        "summary": "Used to retrieve information about the current authenticated user. Returns an object containing information about the user, recommendedWater, waterToday, recommendedCalories, caloriesToday, breakfastSumNutrientsToday, lunchtSumNutrientsToday, dinnerSumNutrientsToday, snackSumNutrientsToday and recommendedFood (4 meals) ",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "Data for the HomePage",
+            "description": "Data for the HomePage", 
             "content": {
               "application/json": {
                 "schema": {
@@ -236,7 +276,7 @@
     "/api/user/avatars": {
       "patch": {
         "tags": ["User"],
-        "summary": "Uploading a new avatare",
+        "summary": "Upload a new avatar. Here you can replace the avatar you received when you registered with your own, or add a photo.",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -287,12 +327,12 @@
     "/api/user/update": {
       "put": {
         "tags": ["User"],
-        "summary": "Updated user`s information",
+        "summary": "Updated user`s information. The user can change information about themselves in any of the following fields in the Request body",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - integer, User`s age,\n\n**weight** - number, User`s weight,\n\n**height** - number, User`s height,\n\n**kef** - number, User`s kef,\n\n**gender** - string, User`s gender.",
+          "description": "Description of request parameters:\n\n**name** - string, User`s name,\n\n**age** - integer, User`s age,\n\n**weight** - number, User`s weight,\n\n**height** - number, User`s height,\n\n**kef** - number, User`s kef, chosen from: [1.2, 1.375, 1.55, 1.725, 1.9],\n\n**gender** - string, User`s gender, chosen from: [male, female].",
           "content": {
             "application/json": {
               "schema": {
@@ -338,12 +378,12 @@
     "/api/user/goal": {
       "put": {
         "tags": ["User"],
-        "summary": "Update user goal",
+        "summary": "Update user goal. The user can change their goal information. Returns an object containing information about the user`s goal, newRecommended (calories, protein, fat, carbohydrates)",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:**yourGoal** - string, User`s new goal you must select from the following list:  [lose fat, maintain, gain muscle].",
+          "description": "Description of request parameters:\n\n**yourGoal** - string, chosen from: [lose fat, maintain, gain muscle].",
           "content": {
             "application/json": {
               "schema": {
@@ -389,7 +429,7 @@
     "/api/user/weight": {
       "post": {
         "tags": ["User"],
-        "summary": "Update user weight",
+        "summary": "Update user weight. The user can change their weight information. Returns an object containing information about the user`s weigh, recommendedCalories (calories, protein, fat, carbohydrates) and recommendedWater",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -440,12 +480,12 @@
     "/api/user/food-intake": {
       "post": {
         "tags": ["User"],
-        "summary": "Save information about the food consumed by the user for the current date",
+        "summary": "Save information about the food consumed by the user for the current date. Can enter a single meal or a list of meals simultaneously. Returns an object containing information about the newCaloriesAndDate (calories, protein, fat, carbohydrates), mealtimes with a list of food and newSumNutrientsPerDay (protein, fat, carbohydrates)",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:**meals** - string, meal time,\n\n**entries** - array, which includes:\n\n**title** - string, name of food,\n\n**calories** - number, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
+          "description": "Description of request parameters:\n\n**meals** - string, meal time, chosen from: [breakfast, dinner, lunch, snack]\n\n**entries** - array, which includes:\n\n**title** - string, name of food,\n\n**calories** - number, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
           "content": {
             "application/json": {
               "schema": {
@@ -489,7 +529,7 @@
       },
       "get": {
         "tags": ["User"],
-        "summary": "Information for user diary",
+        "summary": "Information for user diary. Returns an object containing information about mealtimes with a list of food",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
@@ -527,7 +567,7 @@
       },      
       "delete": {
         "tags": ["User"],
-        "summary": "Delete information about the food consumed by the user for the current date",
+        "summary": "Delete meal information for mealtimes by user on current date. Returns an object containing information about the newCaloriesAndDate (calories, protein, fat, carbohydrates), mealtimes with a list of food",
         "parameters": [
           {
             "in": "query",
@@ -535,7 +575,7 @@
             "required": true,
             "type": "string",
             "enum": ["lose fat", "maintain", "gain muscle"],
-            "description": "Meal time",
+            "description": "Meal time,  chosen from: [breakfast, dinner, lunch, snack]",
             "example": "lunch"
           }
         ],
@@ -578,20 +618,21 @@
       "put": {
         "tags": ["User"],
         "operationId": "TransactionsController_updateTransaction",
-        "summary": "Update information about consumed food for a specific food by its identifier (id)",
+        "summary": "Update of food consumption information for a specific food by means of its identifier (id). Returns an object containing information about the mealtimes, title of food, calories, carbohydrates, protein and fat",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
             "type": "string",
-            "description": "id specific food"
+            "description": "id specific food",
+            "example": "658b7defab1c7e08f16c5e9a"
           }
         ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
-          "description": "Description of request parameters:\n\n**meals** - string, meal time,\n\n**title** - string, name of food,\n\n**calories** - number, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
+          "description": "Description of request parameters:\n\n**meals** - string, meal time, chosen from: [breakfast, dinner, lunch, snack]\n\n**title** - string, name of food,\n\n**calories** - number, number of calories,\n\n**carbohydrates** - number, number of carbohydrates,\n\n**protein** - number, number of protein,\n\n**fat** - number, number of fat",
           "content": {
             "application/json": {
               "schema": {
@@ -636,14 +677,15 @@
       "delete": {
         "tags": ["User"],
         "operationId": "TransactionsController_deleteTransaction",
-        "summary": "Delete information about the food consumed by the user for the current date",
+        "summary": "Delete information about the food consumed by the user for the current date. Returns an object containing information about the mealtimes with a list of nutrients (protein, fat, carbohydrates  and newListMeal with a list of food",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
             "type": "string",
-            "description": "id specific food"
+            "description": "id specific food",
+            "example": "658b893bd871da3c03f48198"
           },
           {
             "in": "query",
@@ -651,12 +693,7 @@
             "required": true,
             "type": "string",
             "description": "Select a meal time from the following list: [breakfast, dinner, lunch, snack].",
-            "enum": ["breakfast", "dinner", "lunch", "snack"],
-            "example": "snack",
-            "x-ms-enum": {
-              "name": "Meal",
-              "modelAsString": true
-            }
+            "example": "snack"
           }
         ],
         "security": [{ "Bearer": [] }],
@@ -910,7 +947,7 @@
           "password": {
             "type": "string",
             "minLength": 6,
-            "example": "jac123"
+            "example": "Jac123"
           },
           "age": {
             "type": "integer",
@@ -959,7 +996,7 @@
           "password": {
             "type": "string",
             "minLength": 6,
-            "example": "jac123"
+            "example": "Jac123"
           }
         }
       },
@@ -971,6 +1008,21 @@
             "type": "string",
             "pattern": "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$",
             "example": "jacob@gmail.com"
+          }
+        }
+      },
+      "UserNewPassword": {
+        "type": "object",
+        "required": ["token", "password"],
+        "properties": {
+          "token": {
+            "type": "string",           
+            "example": "b7aWtZ4f1kITnxlSieY6X"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "Jac456"
           }
         }
       },
@@ -1204,14 +1256,14 @@
             "example": 200
           },
           "token": {
-            "type": "string",
+            "type": "string",            
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODRjOWRkZWU1ZjM0NzU4MGNiZDQ2NiIsImlhdCI6MTcwMzIwMTg0NCwiZXhwIjoxNzA0MDI5ODQ0fQ.w4Cdc-jG9C7mA0l47v-iHRk8Z7a_BvlEFDVMOg8VLtA"
           }
         }
       },
-      "NewPasswordResetResponse": {
+      "NewTokenResetResponse": {
         "type": "object",
-        "required": ["message", "password"],
+        "required": ["message"],
         "properties": {
           "code": {
             "type": "integer",
@@ -1220,11 +1272,22 @@
           },
           "message": {
             "type": "string",
-            "example": "This is your new password as requested"
+            "example": "Check your email, please"
+          }
+        }
+      },
+      "NewPasswordRegistrationResponse": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Positive status code",
+            "example": 200
           },
-          "password": {
+          "message": {
             "type": "string",
-            "example": "$2b$10$nEY72GRp4lbObt32LASiHuxZh81zkjkEa9Q3YzkshoihJmbQF2oSu"
+            "example": "Password reset successfully"
           }
         }
       },
