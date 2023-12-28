@@ -48,7 +48,7 @@ const statistics = async (req, res) => {
     caloriesAndDate,
     monthNumber
   ).map((item) => ({
-    calories: parseFloat(item.calories.toFixed(0)),
+    calories: parseFloat(item.calories).toFixed(0),
     date: item.date,
   }));
   const weightPerDayThisMonth = perDayThisMonth(weightAndDate, monthNumber).map(
