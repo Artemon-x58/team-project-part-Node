@@ -71,10 +71,10 @@ const deleteDiary = async (req, res) => {
   if (!caloriesAndDate) {
     throw HttpError(404, "Calories not found");
   }
-  const newCaloriesAndDate = caloriesAndDate[0];
+  const todayEntry = caloriesAndDate.find((entry) => entry.date === date);
 
   res.json({
-    newCaloriesAndDate: funcToFixed(newCaloriesAndDate),
+    newCaloriesAndDate: funcToFixed(todayEntry),
     [meals]: funcToFixed(nutrientsPerDay[meals], true),
   });
 };
