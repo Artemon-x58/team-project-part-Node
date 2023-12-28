@@ -48,7 +48,7 @@ const statistics = async (req, res) => {
     caloriesAndDate,
     monthNumber
   ).map((item) => ({
-    calories: parseFloat(item.calories).toFixed(0),
+    calories: parseFloat(item.calories.toFixed(0)),
     date: item.date,
   }));
   const weightPerDayThisMonth = perDayThisMonth(weightAndDate, monthNumber).map(
@@ -64,7 +64,7 @@ const statistics = async (req, res) => {
 
   res.json({
     months: months,
-    averageCalories: parseFloat(averageCalories.toFixed(0)),
+    averageCalories: parseFloat(averageCalories).toFixed(0),
     averageWeight: parseFloat(averageWeight.toFixed(0)),
     averageWater: parseFloat(averageWater.toFixed(0)),
     caloriesPerDayThisMonth: caloriesPerDayThisMonth,
